@@ -3,6 +3,8 @@ package entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Warehouse")
 @Getter
@@ -27,7 +29,13 @@ public class Warehouse {
     @JoinColumn(name = "WarehouseManagerID")
     private WarehouseManager warehouseManager;
 
+    @OneToOne(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private WarehouseStaff warehouseStaff;
+
     @OneToOne
     @JoinColumn(name = "AddressID", nullable = false, unique = true) // unique đảm bảo one-to-one
     private Address address;
+
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StockLot> stockLots;
 }

@@ -3,29 +3,35 @@ package entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Cart")
-public class Cart {
+@Table(name = "StockLot")
+public class StockLot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CartID")
+    @Column(name = "StockLotID")
     private int id;
 
     @Column(name = "Quantity")
     private int quantity;
 
-    /* n Cart ↔ 1 Customer */
-    @OneToOne
-    @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
-    private WholesaleCustomer customer;
+    @Column(name = "ImportDate")
+    private LocalDateTime importDate;
 
-    /* n Cart ↔ 1 Product */
+    @Column(name = "ExpiredDate")
+    private LocalDateTime expiredDate;
+
     @ManyToOne
     @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "WarehouseID", nullable = false, insertable = false, updatable = false)
+    private Warehouse warehouse;
 }

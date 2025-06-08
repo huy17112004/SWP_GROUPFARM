@@ -30,6 +30,15 @@ public class WholesaleCustomer extends Account {
     @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomerAddress> customerAddresses;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contract> contract;
+
+    @OneToOne(mappedBy = "customer")
+    private Cart cart;
+
+    @OneToOne(mappedBy = "customer")
+    private ShippingLog shippingLog;
+
     @Column(name = "TaxCode", length = 50)
     private String taxCode;
 

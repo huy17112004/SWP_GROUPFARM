@@ -5,19 +5,21 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Shipper")
-public class Shipper extends Account {
+@Table(name = "WarehouseStaff")
+public class WarehouseStaff extends Account{
+
+    @OneToOne
+    @JoinColumn(name = "WarehouseID")
+    private Warehouse warehouse;
 
     @Column(name = "Name", nullable = false)
     private String name;
-
-    @Column(name = "WarehouseID")
-    private Integer warehouseId;
 
     @Column(name = "Email", nullable = false, length = 100)
     private String email;
@@ -27,12 +29,4 @@ public class Shipper extends Account {
 
     @Column(name = "CreateAt", nullable = false)
     private LocalDateTime createdAt;
-
-    @Column(name = "Status", nullable = false, length = 50)
-    private String status;
-
-    @OneToOne(mappedBy = "shipper")
-    private ShippingLog shippingLog;
-
-    // Getters & Setters...
 }

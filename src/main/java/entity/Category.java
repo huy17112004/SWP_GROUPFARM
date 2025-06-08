@@ -16,7 +16,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CategoryID")
-    private int categoryID;
+    private int id;
 
     @Column(name = "CategoryName", length = 255, nullable = false)
     private String categoryName;
@@ -25,6 +25,6 @@ public class Category {
     private int shelfLifeDays; // Số ngày hạn sử dụng, ví dụ 2 hoặc 3 ngày
 
     /* 1 Category ↔ n Product */
-    @OneToMany(mappedBy = "categoryId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }
