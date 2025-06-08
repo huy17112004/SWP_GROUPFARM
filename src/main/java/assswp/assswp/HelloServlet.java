@@ -23,8 +23,8 @@ public class HelloServlet extends HttpServlet {
         entity.Account acc = new entity.Account();
         acc.setUsername("admin");
         acc.setPassword("123456");
-
         session.persist(acc);  // Bắt buộc phải persist thì Hibernate mới tạo bảng
+
 
         session.getTransaction().commit();
         session.close();

@@ -1,0 +1,37 @@
+package entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "Cart")
+public class Cart {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CartID")
+    private int cartID;
+
+    @Column(name = "CustomerID", nullable = false)
+    private int customerID;
+
+    @Column(name = "ProductID", nullable = false)
+    private int productID;
+
+    @Column(name = "Quantity", nullable = false)
+    private int quantity;
+
+    /* n Cart ↔ 1 Customer */
+    @ManyToOne
+    @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
+    private Customer customer;
+
+    /* n Cart ↔ 1 Product */
+    @ManyToOne
+    @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
+    private Product product;
+}

@@ -6,7 +6,7 @@
     <session-factory>
         <!-- JDBC Configuration -->
         <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ASSSWP1;encrypt=true;trustServerCertificate=true</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ASSSWP2;encrypt=true;trustServerCertificate=true</property>
         <property name="hibernate.connection.username">sa</property>
         <property name="hibernate.connection.password">123</property>
 
@@ -22,5 +22,16 @@
 
         <!-- Add class want to mapping -->
         <mapping class="entity.Account"/>
+        <mapping class="entity.Cart"/>
+        <mapping class="entity.Category"/>
+        <mapping class="entity.Contract"/>
+        <mapping class="entity.Customer"/>
+        <mapping class="entity.OrderRisk"/>
+        <mapping class="entity.Product"/>
+        <mapping class="entity.ProductImage"/>
+        <mapping class="entity.ShippingLog"/>
+        <mapping class="entity.WholesaleOrder"/>
+        <mapping class="entity.WholesaleOrderItem"/>
+
     </session-factory>
 </hibernate-configuration>
