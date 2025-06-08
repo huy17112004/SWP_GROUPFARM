@@ -6,7 +6,7 @@
     <session-factory>
         <!-- JDBC Configuration -->
         <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ASSSWP1;encrypt=true;trustServerCertificate=true</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ASSSWP4;encrypt=true;trustServerCertificate=true</property>
         <property name="hibernate.connection.username">sa</property>
         <property name="hibernate.connection.password">123</property>
 
@@ -19,8 +19,5 @@
         <!-- Show SQL in console -->
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-
-        <!-- Add class want to mapping -->
-        <mapping class="entity.Account"/>
     </session-factory>
 </hibernate-configuration>

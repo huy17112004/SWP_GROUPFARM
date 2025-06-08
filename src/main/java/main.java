@@ -12,14 +12,6 @@ public class main {
         try {
             tx = session.beginTransaction();
 
-            // Tạo mới một đối tượng Account
-            Account acc = new Account();
-            acc.setUsername("testuser");
-            acc.setPassword("123456");
-
-            // Ghi vào DB
-            session.persist(acc);
-
             tx.commit();
             System.out.println("✅ Account saved successfully!");
         } catch (Exception e) {

@@ -8,11 +8,17 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AccountID")
     private long id;
 
-    private String username;
+    @Column(name = "UserName", nullable = false, length = 50)
+    private String userName;
+
+    @Column(name = "Password", nullable = false, length = 50)
     private String password;
 }
