@@ -24,6 +24,18 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(entity.Address.class);
             configuration.addAnnotatedClass(entity.CustomerAddress.class);
             configuration.addAnnotatedClass(entity.Warehouse.class);
+            configuration.addAnnotatedClass(entity.Cart.class);
+            configuration.addAnnotatedClass(entity.Category.class);
+            configuration.addAnnotatedClass(entity.Contract.class);
+            configuration.addAnnotatedClass(entity.Customer.class);
+            configuration.addAnnotatedClass(entity.OrderRisk.class);
+            configuration.addAnnotatedClass(entity.Product.class);
+            configuration.addAnnotatedClass(entity.ProductImage.class);
+            configuration.addAnnotatedClass(entity.ShippingLog.class);
+            configuration.addAnnotatedClass(entity.WholesaleOrder.class);
+            configuration.addAnnotatedClass(entity.WholesaleOrderItem.class);
+
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
 
