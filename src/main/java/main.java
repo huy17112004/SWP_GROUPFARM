@@ -14,6 +14,7 @@ public class main {
 
             tx.commit();
             System.out.println("✅ Account saved successfully!");
+            String a = "ádasd";
         } catch (Exception e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();

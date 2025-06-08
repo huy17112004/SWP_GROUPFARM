@@ -19,5 +19,35 @@
         <!-- Show SQL in console -->
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
+
+        <mapping class="entity.Account"/>
+        <mapping class="entity.Admin"/>
+        <mapping class="entity.Saler"/>
+        <mapping class="entity.Manager"/>
+        <mapping class="entity.Shipper"/>
+        <mapping class="entity.WholesaleCustomer"/>
+        <mapping class="entity.WarehouseManager"/>
+        <mapping class="entity.Province"/>
+        <mapping class="entity.Ward"/>
+        <mapping class="entity.District"/>
+        <mapping class="entity.Address"/>
+        <mapping class="entity.CustomerAddress"/>
+        <mapping class="entity.Warehouse"/>
+        <mapping class="entity.Cart"/>
+        <mapping class="entity.Category"/>
+        <mapping class="entity.Contract"/>
+        <mapping class="entity.OrderRisk"/>
+        <mapping class="entity.Product"/>
+        <mapping class="entity.ProductImage"/>
+        <mapping class="entity.ShippingLog"/>
+        <mapping class="entity.WholesaleOrder"/>
+        <mapping class="entity.WholesaleOrderItem"/>
+        <mapping class="entity.StockLot"/>
+        <mapping class="entity.WarehouseStaff"/>
+
+
+
+
+
     </session-factory>
 </hibernate-configuration>
