@@ -15,14 +15,9 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CartID")
     private int cartID;
-
-    @Column(name = "CustomerID", nullable = false)
+    
     private int customerID;
-
-    @Column(name = "ProductID", nullable = false)
     private int productID;
-
-    @Column(name = "Quantity", nullable = false)
     private int quantity;
 
     /* n Cart ↔ 1 Customer */
