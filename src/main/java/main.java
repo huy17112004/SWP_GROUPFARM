@@ -1,0 +1,33 @@
+import entity.Account;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.HibernateUtil;
+
+public class main {
+    public static void main(String[] args) {
+        // Mở session từ HibernateUtil
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            // Tạo mới một đối tượng Account
+            Account acc = new Account();
+            acc.setUsername("testuser");
+            acc.setPassword("123456");
+
+            // Ghi vào DB
+            session.persist(acc);
+
+            tx.commit();
+            System.out.println("✅ Account saved successfully!");
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+            HibernateUtil.getSessionFactory().close();
+        }
+    }
+}

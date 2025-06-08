@@ -46,6 +46,17 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.6.1.jre11</version> <!-- hoặc version khác nếu bạn dùng Java 21 -->
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version> <!-- Mới nhất thời điểm hiện tại -->
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
