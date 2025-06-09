@@ -17,13 +17,10 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ProductID")
-    private int productID;
+    private int id;
 
     @Column(name = "ProductName", length = 50, nullable = false)
     private String productName;
-
-    @Column(name = "CategoryID", nullable = false)
-    private int categoryId;
 
     @Column(name = "EntryPrice", nullable = false)
     private int entryPrice;
@@ -38,16 +35,19 @@ public class Product {
     private String description;
 
     /* 1 Product ↔ n ProductImage */
-    @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images;
 
     /* 1 Product ↔ n Cart */
-    @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cart> carts;
 
     /* 1 Product ↔ n WholesaleOrderItem */
-    @OneToMany(mappedBy = "productID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WholesaleOrderItem> wholesaleOrderItems;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StockLot> stockLots;
 
     /* 1 Category ↔ n Product */
     @ManyToOne

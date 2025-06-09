@@ -17,10 +17,7 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ContractID")
-    private int contractID;
-
-    @Column(name = "CustomerID", nullable = false)
-    private int customerID;
+    private int id;
 
     @Column(name = "PDFUrl", length = 255)
     private String pdfUrl;
@@ -43,9 +40,9 @@ public class Contract {
     /* 1 Customer ↔ n Contract */
     @ManyToOne
     @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
-    private Customer customer;
+    private WholesaleCustomer customer;
 
     /* 1 Contract ↔ n WholesaleOrder */
-    @OneToMany(mappedBy = "contractID", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WholesaleOrder> wholesaleOrders;
+    @OneToOne(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private WholesaleOrder wholesaleOrders;
 }

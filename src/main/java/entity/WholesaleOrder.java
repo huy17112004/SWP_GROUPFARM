@@ -18,13 +18,7 @@ public class WholesaleOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WholesaleOrderID")
-    private int wholesaleOrderID;
-
-    @Column(name = "SalerID")
-    private int salerID;
-
-    @Column(name = "DeliveryAddressID")
-    private int deliveryAddressID;
+    private int id;
 
     @Column(name = "Status", length = 38)
     private String status;
@@ -53,20 +47,17 @@ public class WholesaleOrder {
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
 
-    @Column(name = "ContractID", nullable = false)
-    private int contractID;
-
     /* n WholesaleOrder ↔ 1 Contract */
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ContractID", nullable = false, insertable = false, updatable = false)
     private Contract contract;
 
     /* 1 WholesaleOrder ↔ n WholesaleOrderItem */
-    @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WholesaleOrderItem> items;
 
     /* 1 WholesaleOrder ↔ n ShippingLog */
-    @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShippingLog> shippingLogs;
 
     /* 1 WholesaleOrder ↔ n OrderRisk */

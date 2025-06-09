@@ -16,22 +16,21 @@ public class ShippingLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ShippingLogID")
-    private int shippingLogID;
-
-    @Column(name = "OrderID", nullable = false)
-    private int orderID;
-
-    @Column(name = "CustomerID", nullable = false)
-    private int customerID;
-
-    @Column(name = "ShipperID", nullable = false)
-    private int shipperID;
+    private int id;
 
     @Column(name = "Status", length = 50, nullable = false)
     private String status;
 
     @Column(name = "ShippedAtDateTime")
     private LocalDateTime shippedAtDateTime;
+
+    @OneToOne
+    @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
+    private WholesaleCustomer customer;
+
+    @OneToOne
+    @JoinColumn(name = "ShipperID", nullable = false, insertable = false, updatable = false)
+    private Shipper shipper;
 
     /* n ShippingLog ↔ 1 WholesaleOrder */
     @ManyToOne

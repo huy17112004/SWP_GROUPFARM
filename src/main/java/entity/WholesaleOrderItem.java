@@ -16,13 +16,7 @@ public class WholesaleOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ItemID")
-    private int itemID;
-
-    @Column(name = "OrderID", nullable = false)
-    private int orderID;
-
-    @Column(name = "ProductID", nullable = false)
-    private int productID;
+    private int id;
 
     @Column(name = "Quantity", nullable = false)
     private int quantity;

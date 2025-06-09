@@ -16,10 +16,7 @@ public class OrderRisk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RiskID")
-    private int riskID;
-
-    @Column(name = "OrderID", nullable = false)
-    private int orderID;
+    private int id;
 
     @Column(name = "RiskType", length = 50)
     private String riskType;
@@ -28,7 +25,7 @@ public class OrderRisk {
     private String description;
 
     @Column(name = "ReportedBy")
-    private int reportedBy;
+    private String reportedBy;
 
     @Column(name = "ReportedAt")
     private LocalDateTime reportedAt;
