@@ -1,8 +1,8 @@
 package dao;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import util.HibernateUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import util.JpaUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,38 +16,65 @@ public class GenericDAO<T> {
     }
 
     public void save(T entity) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-            session.persist(entity);
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.persist(entity);
             tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void update(T entity) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-            session.merge(entity);
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(entity);
             tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void delete(T entity) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-            session.remove(entity);
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.contains(entity) ? entity : em.merge(entity)); // ensure managed
             tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
         }
     }
 
     public T findById(Serializable id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(type, id);
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.find(type, id);
+        } finally {
+            em.close();
         }
     }
 
     public List<T> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM " + type.getSimpleName(), type).list();
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.createQuery("FROM " + type.getSimpleName(), type).getResultList();
+        } finally {
+            em.close();
         }
     }
 }

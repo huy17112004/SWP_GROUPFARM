@@ -16,8 +16,8 @@ public abstract class Account {
     @Column(name = "AccountID")
     private long id;
 
-    @Column(name = "UserName", nullable = false, length = 50)
-    private String userName;
+    @Column(name = "Username", nullable = false, length = 50)
+    private String username;
 
     @Column(name = "Password", nullable = false, length = 50)
     private String password;
