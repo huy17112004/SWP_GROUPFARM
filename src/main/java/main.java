@@ -11,7 +11,6 @@ public class main {
 
         try {
             tx = session.beginTransaction();
-
             tx.commit();
             System.out.println("✅ Account saved successfully!");
             String a = "ádasd";
