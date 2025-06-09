@@ -28,12 +28,12 @@ public class WholesaleOrderItem {
     private BigDecimal subTotal;
 
     /* n WholesaleOrderItem ↔ 1 WholesaleOrder */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OrderID", nullable = false, insertable = false, updatable = false)
     private WholesaleOrder order;
 
     /* n WholesaleOrderItem ↔ 1 Product */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
     private Product product;
 }

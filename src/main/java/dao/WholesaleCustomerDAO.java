@@ -13,7 +13,7 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
         super(WholesaleCustomer.class);
     }
 
-    public WholesaleCustomer checkLogin(String username, String password) {
+    public WholesaleCustomer findByUsernameAndPassword(String username, String password) {
         EntityManager em = JpaUtil.getEntityManager();
 
         try {

@@ -25,17 +25,17 @@ public class Warehouse {
     private String warehousePhone;
 
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseManagerID")
     private WarehouseManager warehouseManager;
 
-    @OneToOne(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private WarehouseStaff warehouseStaff;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AddressID", nullable = false, unique = true) // unique đảm bảo one-to-one
     private Address address;
 
-    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<StockLot> stockLots;
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -23,7 +24,7 @@ public class Saler extends Account {
     private String phone;
 
     @Column(name = "CreateAt", nullable = false)
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @Column(name = "Status", nullable = false, length = 50)
     private String status;

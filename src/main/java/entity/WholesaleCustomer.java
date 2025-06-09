@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,18 +28,6 @@ public class WholesaleCustomer extends Account {
     @Column(name = "CompanyName", length = 50)
     private String companyName;
 
-    @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CustomerAddress> customerAddresses;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Contract> contract;
-
-    @OneToOne(mappedBy = "customer")
-    private Cart cart;
-
-    @OneToOne(mappedBy = "customer")
-    private ShippingLog shippingLog;
-
     @Column(name = "TaxCode", length = 50)
     private String taxCode;
 
@@ -46,8 +35,20 @@ public class WholesaleCustomer extends Account {
     private String businessType;
 
     @Column(name = "CreatedAt")
-    private LocalDate createdAt;
+    private Date createdAt;
 
     @Column(name = "Status", length = 20)
     private String status;
+
+    @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<CustomerAddress> customerAddresses;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<Contract> contract;
+
+    @OneToOne(mappedBy = "customer",fetch = FetchType.LAZY)
+    private Cart cart;
+
+    @OneToOne(mappedBy = "customer",fetch = FetchType.LAZY)
+    private ShippingLog shippingLog;
 }

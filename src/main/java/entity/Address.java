@@ -27,13 +27,13 @@ public class Address {
     @Column(name = "Longitude")
     private Float longitude;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WardID", nullable = false)
     private Ward ward;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
     private Warehouse warehouse;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
     private CustomerAddress customerAddresses;
 }

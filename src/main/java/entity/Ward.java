@@ -20,7 +20,7 @@ public class Ward {
     @Column(name = "WardName", nullable = false, length = 255)
     private String wardName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DistrictID", nullable = false)
     private District district;
 

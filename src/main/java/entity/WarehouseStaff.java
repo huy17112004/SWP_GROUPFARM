@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "WarehouseStaff")
 public class WarehouseStaff extends Account{
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseID")
     private Warehouse warehouse;
 
@@ -28,5 +29,5 @@ public class WarehouseStaff extends Account{
     private String phone;
 
     @Column(name = "CreateAt", nullable = false)
-    private LocalDateTime createdAt;
+    private Date createdAt;
 }
