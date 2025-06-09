@@ -20,7 +20,7 @@ public class ProductImage {
     private String imageUrl;
 
     /* n ProductImage ↔ 1 Product */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
     private Product product;
 }

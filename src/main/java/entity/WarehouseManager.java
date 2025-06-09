@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "WarehouseManager")
 public class WarehouseManager extends Account {
 
-    @OneToOne(mappedBy = "warehouseManager")
+    @OneToOne(mappedBy = "warehouseManager",fetch = FetchType.LAZY)
     private Warehouse warehouse;
 
     @Column(name = "Name", nullable = false)
@@ -26,5 +27,5 @@ public class WarehouseManager extends Account {
     private String phone;
 
     @Column(name = "CreateAt", nullable = false)
-    private LocalDateTime createdAt;
+    private Date createdAt;
 }

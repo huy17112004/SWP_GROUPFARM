@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,16 +23,16 @@ public class StockLot {
     private int quantity;
 
     @Column(name = "ImportDate")
-    private LocalDateTime importDate;
+    private Date importDate;
 
     @Column(name = "ExpiredDate")
-    private LocalDateTime expiredDate;
+    private Date expiredDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseID", nullable = false, insertable = false, updatable = false)
     private Warehouse warehouse;
 }

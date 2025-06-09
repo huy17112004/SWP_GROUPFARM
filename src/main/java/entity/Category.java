@@ -25,6 +25,6 @@ public class Category {
     private int shelfLifeDays; // Số ngày hạn sử dụng, ví dụ 2 hoặc 3 ngày
 
     /* 1 Category ↔ n Product */
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Product> products;
 }

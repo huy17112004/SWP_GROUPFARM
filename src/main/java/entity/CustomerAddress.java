@@ -11,11 +11,11 @@ public class CustomerAddress {
     @Column(name = "CustomerAddressID")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WholesaleCustomerID", nullable = false)
     private WholesaleCustomer wholesaleCustomer;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AddressID", nullable = false)
     private Address address;
 }

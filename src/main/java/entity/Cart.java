@@ -20,12 +20,12 @@ public class Cart {
     private int quantity;
 
     /* n Cart ↔ 1 Customer */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
     private WholesaleCustomer customer;
 
     /* n Cart ↔ 1 Product */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
     private Product product;
 }

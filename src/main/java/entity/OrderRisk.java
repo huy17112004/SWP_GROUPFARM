@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -28,19 +29,19 @@ public class OrderRisk {
     private String reportedBy;
 
     @Column(name = "ReportedAt")
-    private LocalDateTime reportedAt;
+    private Date reportedAt;
 
     @Column(name = "IsResolved", columnDefinition = "BIT")
     private boolean isResolved;
 
     @Column(name = "ResolvedAt")
-    private LocalDateTime resolvedAt;
+    private Date resolvedAt;
 
     @Column(name = "ResolutionNote", columnDefinition = "NVARCHAR(MAX)")
     private String resolutionNote;
 
     /* n OrderRisk ↔ 1 WholesaleOrder */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OrderID", nullable = false, insertable = false, updatable = false)
     private WholesaleOrder order;
 }

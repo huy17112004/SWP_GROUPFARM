@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,18 +23,18 @@ public class ShippingLog {
     private String status;
 
     @Column(name = "ShippedAtDateTime")
-    private LocalDateTime shippedAtDateTime;
+    private Date shippedAtDateTime;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
     private WholesaleCustomer customer;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ShipperID", nullable = false, insertable = false, updatable = false)
     private Shipper shipper;
 
     /* n ShippingLog ↔ 1 WholesaleOrder */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OrderID", nullable = false, insertable = false, updatable = false)
     private WholesaleOrder order;
 }
