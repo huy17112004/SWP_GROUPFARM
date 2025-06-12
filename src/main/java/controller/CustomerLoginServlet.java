@@ -1,10 +1,8 @@
 package controller;
 
 import com.google.gson.Gson;
-import dao.WholesaleCustomerDAO;
-import dto.LoginRequest;
+import dto.LoginRequestDTO;
 import entity.WholesaleCustomer;
-import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import service.WholesaleCustomerService;
@@ -20,23 +18,29 @@ public class CustomerLoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+
+        HttpSession session = request.getSession();
+
         // Đọc JSON request body
-        BufferedReader reader = request.getReader();
-        LoginRequest login = gson.fromJson(reader, LoginRequest.class);
+        try (BufferedReader reader = request.getReader()) {
+            LoginRequestDTO login = gson.fromJson(reader, LoginRequestDTO.class);
 
-        // Kiểm tra đăng nhập
-        WholesaleCustomer customer = wholesaleCustomerService.login(login.getUsername(), login.getPassword());
+            // Kiểm tra đăng nhập
+            WholesaleCustomer customer = wholesaleCustomerService.login(login.getUsername(), login.getPassword());
 
-        if (customer != null) {
-            // Trả JSON thành công
-            String json = gson.toJson(new MessageResponse("Login successfully", true));
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(json);
-        } else {
-            // Trả JSON thất bại
-            String json = gson.toJson(new MessageResponse("Login failed", false));
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(json);
+            if (customer != null) {
+                // Trả JSON thành công
+                String json = gson.toJson(new MessageResponse("Login successfully", true));
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write(json);
+                session.setAttribute("accountID", customer.getId());
+            } else {
+                // Trả JSON thất bại
+                String json = gson.toJson(new MessageResponse("Login failed", false));
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write(json);
+            }
         }
     }
 
