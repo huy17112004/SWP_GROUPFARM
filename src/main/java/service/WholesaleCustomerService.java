@@ -9,9 +9,15 @@ public class WholesaleCustomerService {
     private final WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO();
 
     public WholesaleCustomer login(String username, String password) {
-        // Có thể thêm validate hoặc mã hóa password tại đây nếu cần
-        return customerDAO.findByUsernameAndPassword(username, password);
+        WholesaleCustomer customer = customerDAO.findByUsername(username);
+
+        if (customer != null && BCrypt.checkpw(password, customer.getPassword())) {
+            return customer;
+        } else {
+            return null;
+        }
     }
+
     // SIGNUP
     public WholesaleCustomer signup(String username, String email, String password) {
         // Xác thực dữ liệu đầu vào
