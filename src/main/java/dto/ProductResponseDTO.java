@@ -18,7 +18,7 @@ public class ProductResponseDTO {
     private int retailPrice;
     private BigDecimal wholesalePrice;
     private String description;
-    private List<String> imageUrls;
+    private String imageUrl;
     private String categoryName;
 
     public ProductResponseDTO(Product product) {
@@ -28,9 +28,7 @@ public class ProductResponseDTO {
         this.description = product.getDescription();
 
         // map hình ảnh (giả sử có thuộc tính getImageUrl() trong ProductImage)
-        this.imageUrls = product.getImages().stream()
-                .map(ProductImage::getImageUrl)
-                .collect(Collectors.toList());
+        this.imageUrl = product.getImages().get(0).getImageUrl();
 
         this.categoryName = product.getCategory().getCategoryName();
     }

@@ -12,4 +12,8 @@ public class ProductService {
         return productDAO.findAll();
     }
 
+    public List<Product> searchProducts(List<Integer> categoryIds, Double minPrice, Double maxPrice, String name) {
+        return productDAO.searchProducts(categoryIds, minPrice, maxPrice, name);
+    }
+
 }
