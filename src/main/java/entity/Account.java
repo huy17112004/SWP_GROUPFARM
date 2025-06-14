@@ -21,4 +21,6 @@ public abstract class Account {
 
     @Column(name = "Password", nullable = false, length = 50)
     private String password;
+
+
 }

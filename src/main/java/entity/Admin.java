@@ -11,6 +11,7 @@ import lombok.*;
 @Table(name = "Admin")
 public class Admin extends Account {
     public Admin(int accountId, String username, String password) {
+        
         super(accountId, username, password);
     }
 }

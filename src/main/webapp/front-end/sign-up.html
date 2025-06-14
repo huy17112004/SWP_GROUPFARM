@@ -1249,68 +1249,65 @@
                 <div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
                     <div class="log-in-box">
                         <div class="log-in-title">
-                            <h3>Welcome To Fastkart</h3>
-                            <h4>Create New Account</h4>
+                            <h3>Chào mừng đến với Fastkart</h3>
+                            <h4>Tạo tài khoản mới</h4>
                         </div>
 
                         <div class="input-box">
-                            <form class="row g-4">
+                            <form id="signUpForm" class="row g-4">
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
-                                        <input type="text" class="form-control" id="fullname" placeholder="Full Name">
-                                        <label for="fullname">Full Name</label>
+                                        <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập">
+                                        <label for="userName">Tên đăng nhập</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Email Address">
-                                        <label for="email">Email Address</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Địa chỉ Email">
+                                        <label for="email">Địa chỉ Email</label>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
-                                        <input type="password" class="form-control" id="password"
-                                            placeholder="Password">
-                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+                                        <label for="password">Mật khẩu</label>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="forgot-box">
                                         <div class="form-check ps-0 m-0 remember-box">
-                                            <input class="checkbox_animated check-box" type="checkbox"
-                                                id="flexCheckDefault">
-                                            <label class="form-check-label" for="flexCheckDefault">I agree with
-                                                <span>Terms</span> and <span>Privacy</span></label>
+                                            <input class="checkbox_animated check-box" type="checkbox" id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">Tôi đồng ý với
+                                                <span>Điều khoản</span> và <span>Chính sách bảo mật</span></label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
-                                    <button class="btn btn-animation w-100" type="submit">Sign Up</button>
+                                    <button class="btn btn-animation w-100" type="submit">Đăng ký</button>
                                 </div>
                             </form>
                         </div>
 
                         <div class="other-log-in">
-                            <h6>or</h6>
+                            <h6>hoặc</h6>
                         </div>
 
                         <div class="log-in-button">
                             <ul>
                                 <li>
                                     <a href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
-                                        class="btn google-button w-100">
-                                        <img src="../assets/images/inner-page/google.png" class="blur-up lazyload"
-                                            alt="">
-                                        Sign up with Google
+                                       class="btn google-button w-100">
+                                        <img src="../assets/images/inner-page/google.png" class="blur-up lazyload" alt="">
+                                        Đăng ký bằng Google
                                     </a>
                                 </li>
                                 <li>
                                     <a href="https://www.facebook.com/" class="btn google-button w-100">
-                                        <img src="../assets/images/inner-page/facebook.png" class="blur-up lazyload"
-                                            alt=""> Sign up with Facebook
+                                        <img src="../assets/images/inner-page/facebook.png" class="blur-up lazyload" alt="">
+                                        Đăng ký bằng Facebook
                                     </a>
                                 </li>
                             </ul>
@@ -1321,8 +1318,8 @@
                         </div>
 
                         <div class="sign-up-box">
-                            <h4>Already have an account?</h4>
-                            <a href="login.html">Log In</a>
+                            <h4>Đã có tài khoản?</h4>
+                            <a href="login.html">Đăng nhập</a>
                         </div>
                     </div>
                 </div>
@@ -1413,6 +1410,8 @@
 
     <!-- script js -->
     <script src="../assets/js/script.js"></script>
+
+    <script src="../assets/jsLogic/signUp.js"></script>
 </body>
 
 </html>
