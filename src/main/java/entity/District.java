@@ -17,8 +17,8 @@ public class District {
     @Column(name = "DistrictID")
     private int id;
 
-    @Column(name = "DistrictName", nullable = false, length = 255)
-    private String districtName;
+    @Column(name = "DistrictName", columnDefinition = "NVARCHAR(50)", nullable = false, length = 255)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProvinceID", nullable = false)

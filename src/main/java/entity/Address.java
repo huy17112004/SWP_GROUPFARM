@@ -18,7 +18,7 @@ public class Address {
     @Column(name = "AddressID")
     private int id;
 
-    @Column(name = "Street", nullable = false, length = 255)
+    @Column(name = "Street", nullable = false, columnDefinition = "NVARCHAR(50)", length = 255)
     private String street;
 
     @Column(name = "Latitude")
