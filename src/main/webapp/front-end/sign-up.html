@@ -1298,11 +1298,18 @@
                         <div class="log-in-button">
                             <ul>
                                 <li>
-                                    <a href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
-                                       class="btn google-button w-100">
-                                        <img src="../assets/images/inner-page/google.png" class="blur-up lazyload" alt="">
-                                        Đăng ký bằng Google
-                                    </a>
+                                        <a href="https://accounts.google.com/o/oauth2/v2/auth?
+                                            scope=email%20profile&
+                                            access_type=online&
+                                            include_granted_scopes=true&
+                                            response_type=code&
+                                            redirect_uri=http://localhost:8080/Clien_SignUp/oauth2callback&
+                                            client_id=790885197434-al5bp8gv64digpfvjtt7e8qbn2tmcr43.apps.googleusercontent.com"
+                                           class="btn google-button w-100">
+                                            <img src="../assets/images/inner-page/google.png" class="blur-up lazyload" alt="">
+                                            Đăng ký bằng Google
+                                        </a>
+
                                 </li>
                                 <li>
                                     <a href="https://www.facebook.com/" class="btn google-button w-100">
