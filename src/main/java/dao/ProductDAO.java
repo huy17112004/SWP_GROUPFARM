@@ -9,8 +9,8 @@ import util.JpaUtil;
 import java.util.List;
 
 public class ProductDAO extends GenericDAO<Product> {
-    public ProductDAO() {
-        super(Product.class);
+    public ProductDAO(EntityManager em) {
+        super(Product.class, em);
     }
 
     @Override

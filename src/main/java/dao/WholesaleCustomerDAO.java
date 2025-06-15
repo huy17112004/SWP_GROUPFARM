@@ -9,8 +9,8 @@ import org.hibernate.Session;
 import util.JpaUtil;
 
 public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
-    public WholesaleCustomerDAO() {
-        super(WholesaleCustomer.class);
+    public WholesaleCustomerDAO(EntityManager em) {
+        super(WholesaleCustomer.class, em);
     }
 
     public WholesaleCustomer findByUsernameAndPassword(String username, String password) {
@@ -25,6 +25,21 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             return query.getSingleResult(); // Nếu tìm thấy
         } catch (NoResultException e) {
             return null; // Không tìm thấy
+        } finally {
+            em.close();
+        }
+    }
+
+    public WholesaleCustomer findByUsername(String username) {
+        EntityManager em = JpaUtil.getEntityManager();
+
+        try {
+            String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.username = :username";
+            TypedQuery<WholesaleCustomer> query = em.createQuery(jpql, WholesaleCustomer.class);
+            query.setParameter("username", username);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

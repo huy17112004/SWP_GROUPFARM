@@ -2,18 +2,31 @@ package service;
 
 import dao.ProductDAO;
 import entity.Product;
+import jakarta.persistence.EntityManager;
+import util.JpaUtil;
 
 import java.util.List;
 
 public class ProductService {
-    private final ProductDAO productDAO = new ProductDAO();
 
     public List<Product> findAll() {
-        return productDAO.findAll();
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO productDAO = new ProductDAO(em);
+            return productDAO.findAll();
+        } finally {
+            em.close();
+        }
     }
 
     public List<Product> searchProducts(List<Integer> categoryIds, Double minPrice, Double maxPrice, String name) {
-        return productDAO.searchProducts(categoryIds, minPrice, maxPrice, name);
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO productDAO = new ProductDAO(em);
+            return productDAO.searchProducts(categoryIds, minPrice, maxPrice, name);
+        } finally {
+            em.close();
+        }
     }
 
 }

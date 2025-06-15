@@ -8,11 +8,12 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GenericDAO<T> {
-
+    protected EntityManager em;
     private final Class<T> type;
 
-    public GenericDAO(Class<T> type) {
+    public GenericDAO(Class<T> type, EntityManager em) {
         this.type = type;
+        this.em = em;
     }
 
     public void save(T entity) {
@@ -73,6 +74,21 @@ public class GenericDAO<T> {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             return em.createQuery("FROM " + type.getSimpleName(), type).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void deleteAll() {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.createQuery("DELETE FROM " + type.getSimpleName()).executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
         } finally {
             em.close();
         }

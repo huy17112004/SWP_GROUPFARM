@@ -19,7 +19,7 @@ public abstract class Account {
     @Column(name = "Username", nullable = false, length = 50)
     private String username;
 
-    @Column(name = "Password", nullable = false, length = 50)
+    @Column(name = "Password", nullable = false, length = 100)
     private String password;
 
 
