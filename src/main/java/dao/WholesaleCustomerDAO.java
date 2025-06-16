@@ -9,8 +9,8 @@ import org.hibernate.Session;
 import util.JpaUtil;
 
 public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
-    public WholesaleCustomerDAO() {
-        super(WholesaleCustomer.class);
+    public WholesaleCustomerDAO(EntityManager em) {
+        super(WholesaleCustomer.class, em);
     }
 
     public WholesaleCustomer findByUsernameAndPassword(String username, String password) {

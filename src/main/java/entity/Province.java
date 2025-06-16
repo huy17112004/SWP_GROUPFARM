@@ -17,8 +17,8 @@ public class Province {
     @Column(name = "ProvinceID")
     private int id;
 
-    @Column(name = "ProvinceName", nullable = false, length = 255)
-    private String provinceName;
+    @Column(name = "ProvinceName",columnDefinition = "NVARCHAR(50)", nullable = false, length = 255)
+    private String name;
 
     @OneToMany(mappedBy = "province", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<District> districts;
