@@ -22,9 +22,9 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             query.setParameter("username", username);
             query.setParameter("password", password);
 
-            return query.getSingleResult(); // Nếu tìm thấy
+            return query.getSingleResult();
         } catch (NoResultException e) {
-            return null; // Không tìm thấy
+            return null;
         } finally {
             em.close();
         }
@@ -54,9 +54,9 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
 
             query.setParameter("email", email);
 
-            return query.getSingleResult(); // Nếu tìm thấy
+            return query.getSingleResult();
         } catch (NoResultException e) {
-            return null; // Không tìm thấy
+            return null;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -64,20 +64,21 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
         }
     }
 
-//    public WholesaleCustomer findByUsername(String username) {
-//        EntityManager em = JpaUtil.getEntityManager();
-//        try {
-//            String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.username = :username";
-//            return em.createQuery(jpql, WholesaleCustomer.class)
-//                    .setParameter("username", username)
-//                    .getSingleResult();
-//        } catch (NoResultException e) {
-//            return null;
-//        } finally {
-//            em.close();
-//        }
-//    }
-
+    public void createOrUpdate(WholesaleCustomer customer) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(customer);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Failed to save OTP: " + e.getMessage(), e);
+        } finally {
+            em.close();
+        }
+    }
 
     public void createAccount(WholesaleCustomer customer) {
         EntityManager em = JpaUtil.getEntityManager();
