@@ -5,6 +5,7 @@ import entity.WholesaleCustomer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import util.JpaUtil;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 
@@ -80,4 +81,25 @@ public class ProductDAO extends GenericDAO<Product> {
             em.close();
         }
     }
+
+    // find product detail
+    public Product findById(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            String jpql = "SELECT p FROM Product p " +
+                    "LEFT JOIN FETCH p.images " +
+                    "LEFT JOIN FETCH p.category " +
+                    "WHERE p.id = :id";
+
+            return em.createQuery(jpql, Product.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+
 }
