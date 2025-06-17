@@ -13,7 +13,7 @@ import jakarta.persistence.EntityTransaction;
 import util.JpaUtil;
 
 public class CustomerAddressService {
-    public static boolean addCustomerAddress(Integer accountId, String street, Integer wardId) {
+    public boolean addCustomerAddress(Integer accountID, String street, Integer wardID, Float latitude, Float longitude) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -26,17 +26,19 @@ public class CustomerAddressService {
             tx.begin();
 
             // 1. Lấy customer từ accountID
-            WholesaleCustomer customer = customerDAO.findById(accountId);
+            WholesaleCustomer customer = customerDAO.findById(accountID);
             if (customer == null) return false;
 
             // 2. Lấy ward
-            Ward ward = wardDAO.findById(wardId);
+            Ward ward = wardDAO.findById(wardID);
             if (ward == null) return false;
 
             // 3. Tạo Address mới
             Address address = new Address();
             address.setStreet(street);
             address.setWard(ward);
+            address.setLatitude(latitude);
+            address.setLongitude(longitude);
             addressDAO.save(address);
 
 
