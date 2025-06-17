@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Lấy kinh độ vĩ độ bằng OpenStreetMap & Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <style>
+        #map { height: 400px; width: 100%; }
+    </style>
+</head>
+<body>
+<h3>Chọn vị trí nhà bạn trên bản đồ</h3>
+<div id="map"></div>
+<p>
+    Latitude: <span id="lat"></span> <br>
+    Longitude: <span id="lng"></span>
+</p>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Khởi tạo bản đồ tại VN
+    var map = L.map('map').setView([21.0285, 105.8542], 13);
+
+    // Thêm tile OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Tạo marker và cho phép kéo
+    var marker = L.marker([21.0285, 105.8542], {draggable:true}).addTo(map);
+
+    // Lắng nghe sự kiện click trên bản đồ
+    map.on('click', function(e) {
+        marker.setLatLng(e.latlng);
+        document.getElementById('lat').innerText = e.latlng.lat;
+        document.getElementById('lng').innerText = e.latlng.lng;
+    });
+
+    // Lắng nghe sự kiện kéo marker
+    marker.on('dragend', function(e) {
+        var pos = marker.getLatLng();
+        document.getElementById('lat').innerText = pos.lat;
+        document.getElementById('lng').innerText = pos.lng;
+    });
+
+    // Hiện sẵn lat/lng ban đầu
+    document.getElementById('lat').innerText = marker.getLatLng().lat;
+    document.getElementById('lng').innerText = marker.getLatLng().lng;
+</script>
+</body>
+</html>

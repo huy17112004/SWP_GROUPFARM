@@ -16,4 +16,8 @@ public class ShippingService {
     public static double estimateDeliveryTime(double distanceKm, double averageSpeedKmph) {
         return distanceKm / averageSpeedKmph; // thời gian tính bằng giờ
     }
+
+    public static double calculateShippingFee(double distanceKm, double weightKg, double unitPricePerKgPerKm) {
+        return distanceKm * weightKg * unitPricePerKgPerKm;
+    }
 }
