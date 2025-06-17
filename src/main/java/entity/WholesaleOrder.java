@@ -48,9 +48,9 @@ public class WholesaleOrder {
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
 
-    /* n WholesaleOrder ↔ 1 Contract */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ContractID", nullable = false, insertable = false, updatable = false)
+    /* 1 WholesaleOrder ↔ 1 Contract */
+
+    @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Contract contract;
 
     /* 1 WholesaleOrder ↔ n WholesaleOrderItem */

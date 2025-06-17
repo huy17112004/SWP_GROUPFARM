@@ -34,7 +34,6 @@ public class Product {
     @Column(name = "Description", length = 50)
     private String description;
 
-
     /* 1 Product ↔ n ProductImage */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductImage> images;
@@ -54,4 +53,7 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CategoryID", nullable = false, insertable = false, updatable = false)
     private Category category;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    private ShippingRequirement shippingRequirement;
 }

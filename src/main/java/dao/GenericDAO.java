@@ -17,7 +17,6 @@ public class GenericDAO<T> {
     }
 
     public void save(T entity) {
-        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -32,7 +31,6 @@ public class GenericDAO<T> {
     }
 
     public void update(T entity) {
-        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -41,13 +39,10 @@ public class GenericDAO<T> {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
-        } finally {
-            em.close();
         }
     }
 
     public void delete(T entity) {
-        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -56,31 +51,18 @@ public class GenericDAO<T> {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
-        } finally {
-            em.close();
         }
     }
 
     public T findById(Serializable id) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            return em.find(type, id);
-        } finally {
-            em.close();
-        }
+        return em.find(type, id);
     }
 
     public List<T> findAll() {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            return em.createQuery("FROM " + type.getSimpleName(), type).getResultList();
-        } finally {
-            em.close();
-        }
+        return em.createQuery("FROM " + type.getSimpleName(), type).getResultList();
     }
 
     public void deleteAll() {
-        EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -89,8 +71,6 @@ public class GenericDAO<T> {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
-        } finally {
-            em.close();
         }
     }
 }
