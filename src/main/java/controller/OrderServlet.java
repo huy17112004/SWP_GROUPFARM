@@ -1,12 +1,16 @@
 package controller;
 
 import com.google.gson.Gson;
+import dto.OrderCheckRequestDTO;
+import dto.OrderResponseDTO;
 import dto.PlaceOrderRequestDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import service.WholesaleOrderService;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebServlet("/api/orders")
 public class OrderServlet extends HttpServlet {
@@ -15,29 +19,55 @@ public class OrderServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
+        Integer customerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+        if (customerId == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(gson.toJson(new MessageResponse("Chưa đăng nhập", false)));
+            response.getWriter().write(gson.toJson(
+                    new MessageResponse("Bạn chưa đăng nhập!", false)
+            ));
             return;
         }
 
-        int customerId = (Integer) session.getAttribute("accountId");
-        PlaceOrderRequestDTO placeOrderRequestDTO = gson.fromJson(request.getReader(), PlaceOrderRequestDTO.class);
-        placeOrderRequestDTO.setCustomerId(customerId);
+        OrderCheckRequestDTO orderReq;
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        try (BufferedReader reader = request.getReader()) {
+            orderReq = gson.fromJson(reader, OrderCheckRequestDTO.class);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write(gson.toJson(
+                    new OrderResponseDTO(false, "Dữ liệu đầu vào không hợp lệ", null, null, null)
+            ));
+            return;
+        }
 
         try {
-            int orderId = wholesaleOrderService.placeOrder(placeOrderRequestDTO);
-            MessageResponse messageResponse = new MessageResponse("Đặt hàng thành công", true, orderId);
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(gson.toJson(messageResponse));
+            // Chuyển deliveryDate từ String sang LocalDateTime nếu cần
+            LocalDateTime deliveryDate = LocalDateTime.parse(orderReq.getDeliveryDate());
+
+            OrderResponseDTO orderResp = wholesaleOrderService.placeOrder(
+                    customerId,
+                    deliveryDate,
+                    orderReq.getLatitude(),
+                    orderReq.getLongitude(),
+                    40 // tốc độ km/h giả định
+            );
+
+            // 4. Trả kết quả
+            if (orderResp.isSuccess()) {
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+            response.getWriter().write(gson.toJson(orderResp));
+
         } catch (Exception e) {
-            MessageResponse messageResponse = new MessageResponse("Đặt hàng thất bại", false);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write(gson.toJson(messageResponse));
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(gson.toJson(
+                    new OrderResponseDTO(false, "Lỗi hệ thống: " + e.getMessage(), null, null, null)
+            ));
         }
     }
 }

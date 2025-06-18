@@ -20,7 +20,7 @@ public class Cart {
     private int quantity;
 
     /* n Cart ↔ 1 Customer */
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
     private WholesaleCustomer customer;
 
