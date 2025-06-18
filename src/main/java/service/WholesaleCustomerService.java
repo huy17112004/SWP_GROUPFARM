@@ -29,18 +29,20 @@ public class WholesaleCustomerService {
     // SIGNUP
     public WholesaleCustomer signup(String username, String email, String password) {
         EntityManager em = JpaUtil.getEntityManager();
+        var tx = em.getTransaction();
+
         try {
+            tx.begin();
+
             WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
             // Xác thực dữ liệu đầu vào
             AccountValidation.validateAccountCreation(username, email, password, WholesaleCustomer.class);
 
-            // Kiểm tra username đã tồn tại chưa
+            // Kiểm tra username/email
             if (customerDAO.findByUsername(username) != null) {
                 throw new IllegalArgumentException("Username already exists");
             }
-
-            // Kiểm tra email đã tồn tại chưa
             if (customerDAO.findByEmail(email) != null) {
                 throw new IllegalArgumentException("Email already exists");
             }
@@ -54,11 +56,17 @@ public class WholesaleCustomerService {
             customer.setEmail(email);
             customer.setPassword(hashedPassword);
 
-            // Lưu khách hàng vào cơ sở dữ liệu
-            customerDAO.createAccount(customer);
+            // Lưu vào DB
+            customerDAO.createAccount(customer); // chỉ persist
 
-            // Trả về khách hàng đã tạo
+            tx.commit(); // Giao dịch commit nếu thành công
+
             return customer;
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback(); // rollback nếu có lỗi
+            }
+            throw new RuntimeException("Signup failed: " + e.getMessage(), e);
         } finally {
             em.close();
         }

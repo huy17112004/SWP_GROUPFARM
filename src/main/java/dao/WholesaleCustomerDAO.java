@@ -64,34 +64,9 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
         }
     }
 
-//    public WholesaleCustomer findByUsername(String username) {
-//        EntityManager em = JpaUtil.getEntityManager();
-//        try {
-//            String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.username = :username";
-//            return em.createQuery(jpql, WholesaleCustomer.class)
-//                    .setParameter("username", username)
-//                    .getSingleResult();
-//        } catch (NoResultException e) {
-//            return null;
-//        } finally {
-//            em.close();
-//        }
-//    }
-
 
     public void createAccount(WholesaleCustomer customer) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(customer);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new RuntimeException("Failed to create account: " + e.getMessage(), e);
-        } finally {
-            em.close();
-        }
+        em.persist(customer);
     }
+
 }
