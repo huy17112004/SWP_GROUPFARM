@@ -64,4 +64,8 @@ public class WholesaleOrder {
     /* 1 WholesaleOrder ↔ n OrderRisk */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<OrderRisk> risks;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WarehouseID", nullable = false)
+    private Warehouse sourceWarehouse;
 }
