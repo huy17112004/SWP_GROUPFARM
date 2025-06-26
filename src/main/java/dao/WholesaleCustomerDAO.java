@@ -50,21 +50,6 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
         }
     }
 
-//    public WholesaleCustomer findByUsername(String username) {
-//        EntityManager em = JpaUtil.getEntityManager();
-//        try {
-//            String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.username = :username";
-//            return em.createQuery(jpql, WholesaleCustomer.class)
-//                    .setParameter("username", username)
-//                    .getSingleResult();
-//        } catch (NoResultException e) {
-//            return null;
-//        } finally {
-//            em.close();
-//        }
-//    }
-
-
     public void createAccount(WholesaleCustomer customer) {
         try {
             em.getTransaction().begin();
