@@ -19,7 +19,7 @@ public class WarehouseStaff extends Account{
     @JoinColumn(name = "WarehouseID")
     private Warehouse warehouse;
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "Name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;
 
     @Column(name = "Email", nullable = false, length = 100)
@@ -30,4 +30,5 @@ public class WarehouseStaff extends Account{
 
     @Column(name = "CreateAt", nullable = false)
     private Date createdAt;
+
 }

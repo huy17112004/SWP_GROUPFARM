@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "Saler")
 public class Saler extends Account {
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "Name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;
 
     @Column(name = "Email", nullable = false, length = 100)
@@ -28,6 +28,4 @@ public class Saler extends Account {
 
     @Column(name = "Status", nullable = false, length = 50)
     private String status;
-
-    // Getters & Setters...
 }

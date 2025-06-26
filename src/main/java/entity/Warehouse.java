@@ -25,7 +25,7 @@ public class Warehouse {
     private String warehousePhone;
 
 
-    @OneToOne(orphanRemoval = true,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseManagerID")
     private WarehouseManager warehouseManager;
 

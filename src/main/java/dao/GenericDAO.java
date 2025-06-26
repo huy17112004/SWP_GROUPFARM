@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 
-public class GenericDAO<T> {
+    public class GenericDAO<T> {
     protected EntityManager em;
     private final Class<T> type;
 
