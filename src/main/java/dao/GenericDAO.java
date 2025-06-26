@@ -1,9 +1,6 @@
 package dao;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import util.JpaUtil;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,80 +14,26 @@ public class GenericDAO<T> {
     }
 
     public void save(T entity) {
-        EntityManager em = JpaUtil.getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.persist(entity);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        em.persist(entity);
     }
 
     public void update(T entity) {
-        EntityManager em = JpaUtil.getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.merge(entity);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        em.merge(entity);
     }
 
     public void delete(T entity) {
-        EntityManager em = JpaUtil.getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.remove(em.contains(entity) ? entity : em.merge(entity)); // ensure managed
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
     public T findById(Serializable id) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            return em.find(type, id);
-        } finally {
-            em.close();
-        }
+        return em.find(type, id);
     }
 
     public List<T> findAll() {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            return em.createQuery("FROM " + type.getSimpleName(), type).getResultList();
-        } finally {
-            em.close();
-        }
+        return em.createQuery("FROM " + type.getSimpleName(), type).getResultList();
     }
 
     public void deleteAll() {
-        EntityManager em = JpaUtil.getEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.createQuery("DELETE FROM " + type.getSimpleName()).executeUpdate();
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        em.createQuery("DELETE FROM " + type.getSimpleName()).executeUpdate();
     }
 }

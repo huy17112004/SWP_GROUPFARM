@@ -30,6 +30,8 @@ public class WholesaleCustomerService {
     public WholesaleCustomer signup(String username, String email, String password) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
+            em.getTransaction().begin(); // Bắt đầu transaction
+
             WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
             // Xác thực dữ liệu đầu vào
@@ -55,10 +57,18 @@ public class WholesaleCustomerService {
             customer.setPassword(hashedPassword);
 
             // Lưu khách hàng vào cơ sở dữ liệu
-            customerDAO.createAccount(customer);
+            em.persist(customer); // Sử dụng persist của EntityManager
+
+            em.getTransaction().commit(); // Commit transaction
 
             // Trả về khách hàng đã tạo
             return customer;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback(); // Rollback nếu có lỗi
+            }
+            // Ném lại exception để servlet có thể xử lý
+            throw e;
         } finally {
             em.close();
         }

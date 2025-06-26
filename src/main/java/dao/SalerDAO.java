@@ -10,6 +10,10 @@ public class SalerDAO extends GenericDAO<Saler> {
         super(Saler.class, em);
     }
 
+    public void createAccount(Saler saler) {
+        save(saler);
+    }
+
     public Saler findByUsername(String username) {
         try {
             String jpql = "SELECT s FROM Saler s WHERE s.username = :username";
