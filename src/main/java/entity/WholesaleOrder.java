@@ -50,6 +50,14 @@ public class WholesaleOrder {
 
     /* 1 WholesaleOrder ↔ 1 Contract */
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SellerID")
+    private Seller seller;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CustomerID")
+    private WholesaleCustomer customer;
+
     @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Contract contract;
 

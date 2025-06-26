@@ -1,0 +1,49 @@
+[1mdiff --git a/src/main/java/controller/OrderServlet.java b/src/main/java/controller/OrderServlet.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..ceabf4e[m
+[1m--- /dev/null[m
+[1m+++ b/src/main/java/controller/OrderServlet.java[m
+[36m@@ -0,0 +1,43 @@[m
+[32m+[m[32mpackage controller;[m
+[32m+[m
+[32m+[m[32mimport com.google.gson.Gson;[m
+[32m+[m[32mimport dto.PlaceOrderRequestDTO;[m
+[32m+[m[32mimport jakarta.servlet.annotation.WebServlet;[m
+[32m+[m[32mimport jakarta.servlet.http.*;[m
+[32m+[m[32mimport service.WholesaleOrderService;[m
+[32m+[m
+[32m+[m[32mimport java.io.IOException;[m
+[32m+[m
+[32m+[m[32m@WebServlet("/api/orders")[m
+[32m+[m[32mpublic class    OrderServlet extends HttpServlet {[m
+[32m+[m[32m    private final WholesaleOrderService wholesaleOrderService = new WholesaleOrderService();[m
+[32m+[m[32m    private final Gson gson = new Gson();[m
+[32m+[m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {[m
+[32m+[m[32m        HttpSession session = request.getSession(false);[m
+[32m+[m[32m        if (session == null || session.getAttribute("accountId") == null) {[m
+[32m+[m[32m            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);[m
+[32m+[m[32m            response.getWriter().write(gson.toJson(new MessageResponse("Chưa đăng nhập", false)));[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        int customerId = (Integer) session.getAttribute("accountId");[m
+[32m+[m[32m        PlaceOrderRequestDTO placeOrderRequestDTO = gson.fromJson(request.getReader(), PlaceOrderRequestDTO.class);[m
+[32m+[m[32m        placeOrderRequestDTO.setCustomerId(customerId);[m
+[32m+[m
+[32m+[m[32m        response.setContentType("application/json");[m
+[32m+[m[32m        response.setCharacterEncoding("UTF-8");[m
+[32m+[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            int orderId = wholesaleOrderService.placeOrder(placeOrderRequestDTO);[m
+[32m+[m[32m            MessageResponse messageResponse = new MessageResponse("Đặt hàng thành công", true, orderId);[m
+[32m+[m[32m            response.setStatus(HttpServletResponse.SC_OK);[m
+[32m+[m[32m            response.getWriter().write(gson.toJson(messageResponse));[m
+[32m+[m[32m        } catch (Exception e) {[m
+[32m+[m[32m            MessageResponse messageResponse = new MessageResponse("Đặt hàng thất bại", false);[m
+[32m+[m[32m            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);[m
+[32m+[m[32m            response.getWriter().write(gson.toJson(messageResponse));[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m

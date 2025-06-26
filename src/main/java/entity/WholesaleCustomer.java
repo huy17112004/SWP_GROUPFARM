@@ -40,6 +40,9 @@ public class WholesaleCustomer extends Account {
     @Column(name = "Status", length = 20)
     private String status;
 
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<WholesaleOrder> orders;
+
     @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CustomerAddress> customerAddresses;
 
