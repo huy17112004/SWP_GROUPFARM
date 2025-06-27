@@ -50,8 +50,7 @@ public class OrderServlet extends HttpServlet {
             OrderResponseDTO orderResp = wholesaleOrderService.placeOrder(
                     customerId,
                     deliveryDate,
-                    orderReq.getLatitude(),
-                    orderReq.getLongitude(),
+                    orderReq.getAddressId(),
                     40 // tốc độ km/h giả định
             );
 

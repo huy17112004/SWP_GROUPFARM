@@ -25,7 +25,7 @@ public class AccountService {
 
             // SALER
             if (account == null) {
-                Saler saler = new SalerDAO(em).findByUsername(username);
+                Seller saler = new SellerDAO(em).findByUsername(username);
                 if (tryLogin(saler, password)) {
                     account = saler;
                     accountType = "SALER";

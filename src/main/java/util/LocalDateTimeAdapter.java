@@ -1,23 +1,23 @@
 package util;
 
-import com.google.gson.*;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocalDateTimeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
-
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @Override
-    public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext context) {
-        return new JsonPrimitive(localDateTime.format(formatter));
+    public void write(JsonWriter out, LocalDateTime value) throws IOException {
+        out.value(value.format(formatter));
     }
 
     @Override
-    public LocalDateTime deserialize(JsonElement json, Type type, JsonDeserializationContext context)
-            throws JsonParseException {
-        return LocalDateTime.parse(json.getAsString(), formatter);
+    public LocalDateTime read(JsonReader in) throws IOException {
+        return LocalDateTime.parse(in.nextString(), formatter);
     }
 }

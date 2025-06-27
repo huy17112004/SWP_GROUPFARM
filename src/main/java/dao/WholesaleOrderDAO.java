@@ -11,12 +11,14 @@ public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
     public WholesaleOrderDAO(EntityManager entityManager) {
         super(WholesaleOrder.class, entityManager);
     }
+
     public Map<Integer, Long> getNegotiatingCountBySeller() {
-        List<Object[]> results = em.createQuery(
-                        "SELECT o.seller.id, COUNT(o) FROM WholesaleOrder o " +
-                                "WHERE o.status = :status GROUP BY o.seller.id", Object[].class)
-                .setParameter("status", "Negotiating")
-                .getResultList();
+        String jpql = "SELECT o.seller.id, COUNT(o) " +
+                "FROM WholesaleOrder o " +
+                "WHERE o.status = 'NEGOTIATING' " +
+                "GROUP BY o.seller.id";
+
+        List<Object[]> results = em.createQuery(jpql, Object[].class).getResultList();
 
         Map<Integer, Long> map = new HashMap<>();
         for (Object[] row : results) {
@@ -26,6 +28,4 @@ public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
         }
         return map;
     }
-
-
 }

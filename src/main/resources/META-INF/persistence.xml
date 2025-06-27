@@ -27,6 +27,7 @@
         <class>entity.StockLot</class>
         <class>entity.WarehouseStaff</class>
         <class>entity.ShippingRequirement</class>
+        <class>entity.Message</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
