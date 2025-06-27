@@ -1,8 +1,21 @@
 package service;
 
+import dao.ShippingRequirementDAO;
+import dao.WarehouseDAO;
+import entity.Address;
+import entity.Cart;
+import entity.Warehouse;
+import jakarta.persistence.EntityManager;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.List;
+
 public class ShippingService {
 
-    public static double haversine(double lat1, double lon1, double lat2, double lon2) {
+    public double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Bán kính Trái Đất tính bằng km
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -13,7 +26,73 @@ public class ShippingService {
         return R * c; // khoảng cách tính bằng km
     }
 
-    public static double estimateDeliveryTime(double distanceKm, double averageSpeedKmph) {
+    public double estimateDeliveryTime(double distanceKm, double averageSpeedKmph) {
         return distanceKm / averageSpeedKmph; // thời gian tính bằng giờ
     }
+
+    public double calculateShippingFee(double distanceKm, double weightKg, double unitPricePerKgPerKm) {
+        return distanceKm * weightKg * unitPricePerKgPerKm;
+    }
+
+    public BigDecimal calculateShippingFee(double distanceKm, List<Cart> carts, EntityManager em) {
+        ShippingRequirementDAO shippingRequirementDAO = new ShippingRequirementDAO(em);
+//        double shippingFee = 0;
+//        for (Cart cart : carts) {
+//            shippingFee += distanceKm * cart.getQuantity() * (shippingRequirementDAO.findByProductId(cart.getProduct().getId()).getRatePerKmPerKg());
+//        }
+//
+//        return shippingFee;
+
+        BigDecimal distance = BigDecimal.valueOf(distanceKm);
+
+        return carts.stream()
+                .map(cart -> {
+                    BigDecimal rate = shippingRequirementDAO.findByProductId(cart.getProduct().getId()).getRatePerKmPerKg();
+                    BigDecimal quantity = BigDecimal.valueOf(cart.getQuantity());
+                    return distance.multiply(quantity).multiply(rate);
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Warehouse findNearestWarehouseOnTime(
+            List<Warehouse> warehouses,
+            double customerLat,
+            double customerLon,
+            LocalDateTime deliveryDate,
+            double avgSpeedKmph
+    ) {
+        LocalDateTime now = LocalDateTime.now();
+
+        int gatheringHours = 6;
+
+        return warehouses.stream()
+                .filter(wh -> {
+                    // chỉ lấy kho có tọa độ đầy đủ
+                    Address a = wh.getAddress();
+                    return a != null && a.getLatitude() != null && a.getLongitude() != null;
+                })
+                .filter(wh -> {
+                    // tính khoảng cách
+                    Address a = wh.getAddress();
+                    double dist = haversine(customerLat, customerLon, a.getLatitude(), a.getLongitude());
+
+                    // tính thời gian cần thiết (giờ)
+                    double travelHours = dist / avgSpeedKmph;
+
+                    // tính thời điểm khởi hành sau khi đã gom kho xong
+                    LocalDateTime departure = now.plusHours(gatheringHours);
+                    // tính thời điểm đến
+                    LocalDateTime arrival = departure.plusMinutes((long)(travelHours * 60));
+                    // giữ lại nếu kịp trước hoặc đúng hạn
+                    return !arrival.isAfter(deliveryDate);
+                })
+                // chọn kho có khoảng cách nhỏ nhất
+                .min(Comparator.comparingDouble(wh -> {
+                    Address a = wh.getAddress();
+                    return haversine(customerLat, customerLon, a.getLatitude(), a.getLongitude());
+                }))
+                .orElse(null);
+    }
+
+
 }

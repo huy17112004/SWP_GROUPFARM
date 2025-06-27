@@ -15,21 +15,14 @@ public class ProductDAO extends GenericDAO<Product> {
 
     @Override
     public List<Product> findAll() {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
             List<Product> list = em.createQuery(
                     "SELECT DISTINCT p FROM Product p " +
                     "LEFT JOIN FETCH p.images " +
                     "LEFT JOIN FETCH p.category", Product.class).getResultList();
             return list;
-        } finally {
-            em.close();
-        }
     }
 
     public List<Product> findAllByCategoryId(int categoryId) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
             List<Product> list = em.createQuery(
                             "SELECT DISTINCT p FROM Product p " +
                                     "LEFT JOIN FETCH p.images " +
@@ -38,14 +31,9 @@ public class ProductDAO extends GenericDAO<Product> {
                     .setParameter("categoryId", categoryId)
                     .getResultList();
             return list;
-        } finally {
-            em.close();
-        }
     }
 
     public List<Product> searchProducts(List<Integer> categoryIds, Double minPrice, Double maxPrice, String name) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
             StringBuilder jpql = new StringBuilder("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.images LEFT JOIN FETCH p.category WHERE 1=1 ");
             if (categoryIds != null && !categoryIds.isEmpty()) {
                 jpql.append("AND p.category.id IN :categoryIds ");
@@ -76,8 +64,6 @@ public class ProductDAO extends GenericDAO<Product> {
             }
 
             return query.getResultList();
-        } finally {
-            em.close();
-        }
+
     }
 }

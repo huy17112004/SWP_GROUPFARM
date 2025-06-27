@@ -48,9 +48,8 @@ public class WholesaleOrder {
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
 
-    /* n WholesaleOrder ↔ 1 Contract */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ContractID", nullable = false, insertable = false, updatable = false)
+    /* 1 WholesaleOrder ↔ 1 Contract */
+    @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Contract contract;
 
     /* 1 WholesaleOrder ↔ n WholesaleOrderItem */
@@ -64,4 +63,20 @@ public class WholesaleOrder {
     /* 1 WholesaleOrder ↔ n OrderRisk */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<OrderRisk> risks;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WarehouseID", nullable = false)
+    private Warehouse sourceWarehouse;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SellerID", nullable = false)
+    private Seller seller;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DeliveryAddressID", nullable = false)
+    private Address deliveryAddress;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CustomerID", nullable = false)
+    private WholesaleCustomer customer;
 }

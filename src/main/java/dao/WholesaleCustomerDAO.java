@@ -22,9 +22,9 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             query.setParameter("username", username);
             query.setParameter("password", password);
 
-            return query.getSingleResult();
+            return query.getSingleResult(); // Nếu tìm thấy
         } catch (NoResultException e) {
-            return null;
+            return null; // Không tìm thấy
         } finally {
             em.close();
         }
