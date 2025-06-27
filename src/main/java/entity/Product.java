@@ -19,7 +19,7 @@ public class Product {
     @Column(name = "ProductID")
     private int id;
 
-    @Column(name = "ProductName", length = 50, nullable = false)
+    @Column(name = "ProductName", columnDefinition = "NVARCHAR(50)", length = 50, nullable = false)
     private String productName;
 
     @Column(name = "EntryPrice", nullable = false)
@@ -31,9 +31,8 @@ public class Product {
     @Column(name = "WholesalePrice", precision = 10, scale = 2, nullable = false)
     private BigDecimal wholesalePrice;
 
-    @Column(name = "Description", length = 50)
+    @Column(name = "Description", columnDefinition = "NVARCHAR(50)", length = 50)
     private String description;
-
 
     /* 1 Product ↔ n ProductImage */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -54,4 +53,7 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CategoryID", nullable = false, insertable = false, updatable = false)
     private Category category;
+
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    private ShippingRequirement shippingRequirement;
 }

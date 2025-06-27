@@ -4,7 +4,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>entity.Account</class>
         <class>entity.Admin</class>
-        <class>entity.Saler</class>
+        <class>entity.Seller</class>
         <class>entity.Manager</class>
         <class>entity.Shipper</class>
         <class>entity.WholesaleCustomer</class>
@@ -26,6 +26,8 @@
         <class>entity.WholesaleOrderItem</class>
         <class>entity.StockLot</class>
         <class>entity.WarehouseStaff</class>
+        <class>entity.ShippingRequirement</class>
+        <class>entity.Message</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>

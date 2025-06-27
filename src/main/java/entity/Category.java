@@ -18,11 +18,8 @@ public class Category {
     @Column(name = "CategoryID")
     private int id;
 
-    @Column(name = "CategoryName", length = 255, nullable = false)
+    @Column(name = "CategoryName",columnDefinition = "NVARCHAR(50)", length = 255, nullable = false)
     private String categoryName;
-
-    @Column(name = "ShelfLifeDays", nullable = false)
-    private int shelfLifeDays; // Số ngày hạn sử dụng, ví dụ 2 hoặc 3 ngày
 
     /* 1 Category ↔ n Product */
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

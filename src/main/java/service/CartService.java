@@ -6,17 +6,18 @@ import entity.Cart;
 import jakarta.persistence.EntityManager;
 import util.JpaUtil;
 
+import java.math.BigDecimal;
+import java.util.List;
 
 public class CartService {
-    private final CartDAO cartDAO = new CartDAO();
 
 
     public Cart addToCart(CartItemDTO dto) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-
+            CartDAO cartDAO = new CartDAO(em);
             em.getTransaction().begin();
-            Cart cart = cartDAO.addToCart(dto,em);
+            Cart cart = cartDAO.addToCart(dto);
             em.getTransaction().commit();
             return cart;
 
@@ -35,11 +36,11 @@ public class CartService {
 
     public String removeFromCart(Long productId, long userId) {
         EntityManager em = JpaUtil.getEntityManager();
-        CartDAO cartDAO1 = new CartDAO();
+        CartDAO cartDAO1 = new CartDAO(em);
         try {
 
             em.getTransaction().begin();
-            Cart cart = cartDAO1.findByUserAndProduct(em, userId,productId);
+            Cart cart = cartDAO1.findByUserAndProduct(userId,productId);
             if (cart == null) {
                 throw new RuntimeException("Cart item not found for userId=" + userId + " and productId=" + productId);
             }
@@ -61,5 +62,15 @@ public class CartService {
                 em.close();
             }
         }
+    }
+
+    public BigDecimal calculateCartTotal(List<Cart> carts, EntityManager em) {
+        return carts.stream()
+                .map(cart -> {
+                    BigDecimal price = cart.getProduct().getWholesalePrice(); // hoặc lấy từ DB
+                    BigDecimal quantity = BigDecimal.valueOf(cart.getQuantity());
+                    return price.multiply(quantity);
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

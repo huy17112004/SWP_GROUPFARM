@@ -19,14 +19,13 @@ public class Cart {
     @Column(name = "Quantity")
     private int quantity;
 
-    /* 1 Cart ↔ 1 Customer */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "CustomerID", nullable = false)
+    /* n Cart ↔ 1 Customer */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
     private WholesaleCustomer customer;
 
     /* n Cart ↔ 1 Product */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "ProductID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
     private Product product;
-
 }

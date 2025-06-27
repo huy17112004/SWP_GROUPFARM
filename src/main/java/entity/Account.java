@@ -14,7 +14,7 @@ public abstract class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AccountID")
-    private long id;
+    private int id;
 
     @Column(name = "Username", nullable = false, length = 50)
     private String username;

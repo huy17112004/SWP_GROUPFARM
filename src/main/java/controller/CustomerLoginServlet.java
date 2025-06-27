@@ -33,7 +33,7 @@ public class CustomerLoginServlet extends HttpServlet {
                 String json = gson.toJson(new MessageResponse("Login successfully", true));
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write(json);
-                session.setAttribute("accountID", customer.getId());
+                session.setAttribute("accountId", customer.getId());
             } else {
                 // Trả JSON thất bại
                 String json = gson.toJson(new MessageResponse("Login failed", false));

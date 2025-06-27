@@ -6,12 +6,15 @@ import entity.Product;
 import entity.WholesaleCustomer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import util.JpaUtil;
 
-public class CartDAO {
+import java.io.Serializable;
+import java.util.List;
 
-
-    public Cart addToCart(CartItemDTO dto, EntityManager em) {
+public class CartDAO extends GenericDAO<Cart> {
+    public CartDAO(EntityManager entityManager) {
+        super(Cart.class, entityManager);
+    }
+    public Cart addToCart(CartItemDTO dto) {
         // Tìm customer và product từ cơ sở dữ liệu
         WholesaleCustomer customer = em.find(WholesaleCustomer.class, dto.getUserId().intValue());
         Product product = em.find(Product.class, dto.getProductId().intValue());
@@ -21,7 +24,7 @@ public class CartDAO {
         }
 
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        Cart existingCart = findByUserAndProduct(em, dto.getUserId(), dto.getProductId());
+        Cart existingCart = findByUserAndProduct(dto.getUserId(), dto.getProductId());
         Cart cart;
 
         if (existingCart != null) {
@@ -41,16 +44,24 @@ public class CartDAO {
         return cart;
     }
 
-//    public Cart removeFromCart(int productId, long userId, EntityManager em) {
-//            Cart existingCart = findByUserAndProduct(em, userId, (long) productId);
-//        if (existingCart != null) {
-//            em.remove(existingCart);
-//        }
-//        return existingCart;
-//    }
+    public List<Cart> findAllByCustomerId(int customerId) {
+        List<Cart> list = em.createQuery(
+                        "SELECT DISTINCT c FROM Cart c " +
+                                "LEFT JOIN FETCH c.product " +
+                                "WHERE c.customer.id = :customerId", Cart.class)
+                .setParameter("customerId", customerId)
+                .getResultList();
+        return list;
+    }
+
+    public void deleteByCustomerId(int customerId) {
+        em.createQuery("DELETE FROM Cart c WHERE c.customer.id = :customerId")
+                .setParameter("customerId", customerId)
+                .executeUpdate();
+    }
 
 
-    public Cart findByUserAndProduct(EntityManager em, Long userId, Long productId) {
+    public Cart findByUserAndProduct(Long userId, Long productId) {
         try {
             WholesaleCustomer customer = em.find(WholesaleCustomer.class, userId.intValue());
             Product product = em.find(Product.class, productId.intValue());
