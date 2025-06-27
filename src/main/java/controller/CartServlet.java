@@ -23,8 +23,16 @@ public class CartServlet extends HttpServlet {
         BufferedReader reader = req.getReader();
         CartItemDTO dto = gson.fromJson(reader, CartItemDTO.class);
 
+        HttpSession session = req.getSession(false);
+        if(session == null|| session.getAttribute("accountID") == null){
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+            return;
+        }
+
+        Long userId = (Long) session.getAttribute("accountID");
+        dto.setUserId(userId);
         try {
-            // Thêm sản phẩm vào giỏ hàng trong cơ sở dữ liệu
+
             Cart cart = cartService.addToCart(dto);
             CartItemDTO responseDTO = new CartItemDTO();
             resp.setContentType("application/json;charset=UTF-8");
@@ -40,19 +48,25 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        String userIdParam = req.getParameter("userId");
+        HttpSession session  = req.getSession();
 
-        if (pathInfo == null || pathInfo.equals("/") || userIdParam == null) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID and User ID are required");
+        if (session == null || session.getAttribute("accountID") == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
             return;
         }
 
+        if (pathInfo == null || pathInfo.equals("/")) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Product ID is required");
+            return;
+        }
         try {
             Long productId = (long) Integer.parseInt(pathInfo.substring(1));
-            long userId = Long.parseLong(userIdParam);
+            long userId = (long) session.getAttribute("accountID");
 
             cartService.removeFromCart(productId, userId);
             resp.setContentType("application/json;charset=UTF-8");
+            resp.getWriter().write("{\"message\":\"Item removed from cart successfully\"}");
+
 
         } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");

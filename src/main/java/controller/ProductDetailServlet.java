@@ -20,8 +20,7 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Lấy phần đuôi path sau /api/product-detail/
+        
         String pathInfo = request.getPathInfo(); // /6
 
         response.setContentType("application/json;charset=UTF-8");
@@ -36,7 +35,6 @@ public class ProductDetailServlet extends HttpServlet {
 
             // Cắt bỏ dấu "/" để lấy id
             int productId = Integer.parseInt(pathInfo.substring(1));
-
             Product product = productService.findById(productId);
 
             if (product != null) {

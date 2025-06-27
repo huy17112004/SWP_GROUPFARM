@@ -1,15 +1,14 @@
 package dao;
 
-import entity.Account;
-import entity.WholesaleCustomer;
+import dto.WholeSaleCustomerDTO;
+import entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.Session;
 import util.JpaUtil;
 
-public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
-    public WholesaleCustomerDAO(EntityManager em) {
+public class WholeSaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
+    public WholeSaleCustomerDAO(EntityManager em) {
         super(WholesaleCustomer.class, em);
     }
 
@@ -56,7 +55,7 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
 
             return query.getSingleResult(); // Nếu tìm thấy
         } catch (NoResultException e) {
-            return null; // Không tìm thấy
+            return null;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -64,9 +63,9 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
         }
     }
 
-
     public void createAccount(WholesaleCustomer customer) {
         em.persist(customer);
     }
+
 
 }

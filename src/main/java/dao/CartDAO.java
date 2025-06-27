@@ -41,9 +41,6 @@ public class CartDAO {
         return cart;
     }
 
-
-
-
 //    public Cart removeFromCart(int productId, long userId, EntityManager em) {
 //            Cart existingCart = findByUserAndProduct(em, userId, (long) productId);
 //        if (existingCart != null) {

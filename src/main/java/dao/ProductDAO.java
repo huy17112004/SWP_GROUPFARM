@@ -100,6 +100,4 @@ public class ProductDAO extends GenericDAO<Product> {
             em.close();
         }
     }
-
-
 }

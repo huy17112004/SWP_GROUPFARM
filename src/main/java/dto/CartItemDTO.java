@@ -14,4 +14,9 @@ public class CartItemDTO {
     private Long userId;
     private Long productId;
     private Integer quantity;
+
+
+
 }
+
+

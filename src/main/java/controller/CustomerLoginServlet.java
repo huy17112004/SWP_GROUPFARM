@@ -21,7 +21,6 @@ public class CustomerLoginServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
 
         HttpSession session = request.getSession();
-
         // Đọc JSON request body
         try (BufferedReader reader = request.getReader()) {
             LoginRequestDTO login = gson.fromJson(reader, LoginRequestDTO.class);

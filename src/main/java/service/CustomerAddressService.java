@@ -3,7 +3,7 @@ package service;
 import dao.AddressDAO;
 import dao.CustomerAddressDAO;
 import dao.WardDAO;
-import dao.WholesaleCustomerDAO;
+import dao.WholeSaleCustomerDAO;
 import entity.Address;
 import entity.CustomerAddress;
 import entity.Ward;
@@ -17,7 +17,7 @@ public class CustomerAddressService {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
-        WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
+        WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
         WardDAO wardDAO = new WardDAO(em);
         CustomerAddressDAO customerAddressDAO = new CustomerAddressDAO(em);
         AddressDAO addressDAO = new AddressDAO(em);

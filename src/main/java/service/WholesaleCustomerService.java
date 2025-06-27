@@ -1,6 +1,7 @@
 package service;
 
-import dao.WholesaleCustomerDAO;
+import dao.WholeSaleCustomerDAO;
+import dto.WholeSaleCustomerDTO;
 import entity.WholesaleCustomer;
 import validation.AccountValidation;
 import org.mindrot.jbcrypt.BCrypt;
@@ -9,11 +10,11 @@ import util.JpaUtil;
 
 public class WholesaleCustomerService {
 
-    // LOGIN
+
     public WholesaleCustomer login(String username, String password) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
+            WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
             WholesaleCustomer customer = customerDAO.findByUsername(username);
 
             if (customer != null && BCrypt.checkpw(password, customer.getPassword())) {
@@ -34,12 +35,12 @@ public class WholesaleCustomerService {
         try {
             tx.begin();
 
-            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
+            WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
 
             // Xác thực dữ liệu đầu vào
             AccountValidation.validateAccountCreation(username, email, password, WholesaleCustomer.class);
 
-            // Kiểm tra username/email
+
             if (customerDAO.findByUsername(username) != null) {
                 throw new IllegalArgumentException("Username already exists");
             }
@@ -56,10 +57,10 @@ public class WholesaleCustomerService {
             customer.setEmail(email);
             customer.setPassword(hashedPassword);
 
-            // Lưu vào DB
-            customerDAO.createAccount(customer); // chỉ persist
 
-            tx.commit(); // Giao dịch commit nếu thành công
+            customerDAO.createAccount(customer);
+
+            tx.commit();
 
             return customer;
         } catch (Exception e) {
@@ -70,5 +71,9 @@ public class WholesaleCustomerService {
         } finally {
             em.close();
         }
+    }
+    public void updateInfor(){
+        EntityManager em = JpaUtil.getEntityManager();
+
     }
 }

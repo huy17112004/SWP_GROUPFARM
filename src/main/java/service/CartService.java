@@ -37,7 +37,7 @@ public class CartService {
         EntityManager em = JpaUtil.getEntityManager();
         CartDAO cartDAO1 = new CartDAO();
         try {
-            
+
             em.getTransaction().begin();
             Cart cart = cartDAO1.findByUserAndProduct(em, userId,productId);
             if (cart == null) {
