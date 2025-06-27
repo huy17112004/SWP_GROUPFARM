@@ -51,4 +51,7 @@ public class WholesaleCustomer extends Account {
 
     @OneToOne(mappedBy = "customer",fetch = FetchType.LAZY)
     private ShippingLog shippingLog;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<WholesaleOrder> orders;
 }

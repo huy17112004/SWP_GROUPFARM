@@ -1,13 +1,11 @@
 package service;
 
-import dao.CartDAO;
-import dao.StockLotDAO;
-import dao.WarehouseDAO;
-import dao.WholesaleOrderDAO;
+import dao.*;
 import dto.OrderResponseDTO;
 import dto.PlaceOrderRequestDTO;
 import entity.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import util.JpaUtil;
 
 import java.math.BigDecimal;
@@ -21,111 +19,128 @@ public class WholesaleOrderService {
     public OrderResponseDTO placeOrder(
             int customerId,
             LocalDateTime deliveryDate,
-            double latitude,
-            double longitude,
+            int addressId,
             double avgSpeedKmph
     ) {
         EntityManager em = JpaUtil.getEntityManager();
-        CartDAO cartDAO = new CartDAO(em);
-        WarehouseDAO warehouseDAO = new WarehouseDAO(em);
-        StockLotDAO stockLotDAO = new StockLotDAO(em);
-        ShippingService shippingService = new ShippingService();
+        EntityTransaction tx = em.getTransaction();
+
+
         OrderResponseDTO resp = new OrderResponseDTO();
-        List<Cart> carts = cartDAO.findAllByCustomerId(customerId);
-        if (carts.isEmpty()) {
-            resp.setSuccess(false);
-            resp.setMessage("Giỏ hàng trống.");
-            return resp;
-        }
-
-        // 1. Tìm kho đích
-        List<Warehouse> warehouses = warehouseDAO.findAll();
-        Warehouse destWarehouse = shippingService.findNearestWarehouseOnTime(
-                warehouses, latitude, longitude, deliveryDate, avgSpeedKmph
-        );
-        if (destWarehouse == null) {
-            resp.setSuccess(false);
-            resp.setMessage("Địa chỉ quá xa, không thể giao hàng đúng hạn!");
-            return resp;
-        }
-
-        // 2. Kiểm tra tồn kho từng sản phẩm
-        List<OrderResponseDTO.ProductStockInfo> lackList = new ArrayList<>();
-        Date deliveryDateSql = java.sql.Timestamp.valueOf(deliveryDate);
-        for (Cart c : carts) {
-            List<StockLot> lots = stockLotDAO.findEligibleStockLotsJava(c.getProduct().getId(), deliveryDateSql);
-            int total = lots.stream().mapToInt(StockLot::getQuantity).sum();
-            if (total < c.getQuantity()) {
-                OrderResponseDTO.ProductStockInfo info = new OrderResponseDTO.ProductStockInfo();
-                info.setProductId(c.getProduct().getId());
-                info.setProductName(c.getProduct().getProductName());
-                info.setRequired(c.getQuantity());
-                info.setAvailable(total);
-                lackList.add(info);
-            }
-        }
-        if (!lackList.isEmpty()) {
-            resp.setSuccess(false);
-            resp.setMessage("Thiếu sản phẩm trong kho.");
-            resp.setStockDetails(lackList);
-            return resp;
-        }
-
-        // 3. Đủ điều kiện -> lên đơn
-        // Tạo WholesaleOrder (code như các lần trước), gán destWarehouse làm sourceWarehouse
-        // (Bạn có thể gọi orderDAO.save() ở đây)
-
-        // ...code tạo order, tạo item, xóa cart...
-
-        resp.setSuccess(true);
-        resp.setMessage("Đặt hàng thành công!");
-        // resp.setOrderId(order.getId()); // nếu cần trả mã đơn cho frontend
-        return resp;
-    }
-
-
-    public int placeOrder(PlaceOrderRequestDTO dto) {
-        // 1. Lấy cart
-        EntityManager em = JpaUtil.getEntityManager();
         try {
             CartDAO cartDAO = new CartDAO(em);
-            WholesaleOrderDAO wholesaleOrderDAO = new WholesaleOrderDAO(em);
-            List<Cart> cartList = cartDAO.findAllByCustomerId(dto.getCustomerId());
-            if (cartList == null || cartList.isEmpty()) throw new RuntimeException("Cart is empty");
+            WarehouseDAO warehouseDAO = new WarehouseDAO(em);
+            WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+            StockLotDAO stockLotDAO = new StockLotDAO(em);
+            AddressDAO addressDAO = new AddressDAO(em);
+            SellerService  sellerService = new SellerService();
+            ShippingService shippingService = new ShippingService();
+            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
-            // 2. Tạo order và item (giống phần trên)
-            WholesaleOrder order = new WholesaleOrder();
-            order.setStatus("PENDING");
-            order.setEstimatedShipFee(dto.getEstimatedShipFee());
-            order.setCreatedAt(new Date());
-            BigDecimal totalPrice = BigDecimal.ZERO;
-
-            List<WholesaleOrderItem> orderItems = new ArrayList<>();
-            for (Cart cart : cartList) {
-                WholesaleOrderItem item = new WholesaleOrderItem();
-                item.setProduct(cart.getProduct());
-                item.setQuantity(cart.getQuantity());
-                item.setPrice(cart.getProduct().getWholesalePrice());
-                BigDecimal subTotal = cart.getProduct().getWholesalePrice().multiply(BigDecimal.valueOf(cart.getQuantity()));
-                item.setSubTotal(subTotal);
-                item.setOrder(order);
-                orderItems.add(item);
-                totalPrice = totalPrice.add(subTotal);
+            List<Cart> carts = cartDAO.findAllByCustomerId(customerId);
+            if (carts.isEmpty()) {
+                resp.setSuccess(false);
+                resp.setMessage("Giỏ hàng trống.");
+                return resp;
             }
-            order.setItems(orderItems);
-            order.setTotalPrice(totalPrice);
 
-            // 3. Lưu order và item (cascade)
-            wholesaleOrderDAO.save(order);
+            // 1. Tìm kho đích
+            Address deliveryAddress = addressDAO.findById(addressId);
+            float latitude =  deliveryAddress.getLatitude();
+            float longitude = deliveryAddress.getLongitude();
+            List<Warehouse> warehouses = warehouseDAO.findAll();
+            Warehouse destWarehouse = shippingService.findNearestWarehouseOnTime(
+                    warehouses, latitude, longitude, deliveryDate, avgSpeedKmph
+            );
+            if (destWarehouse == null) {
+                resp.setSuccess(false);
+                resp.setMessage("Địa chỉ quá xa, không thể giao hàng đúng hạn!");
+                return resp;
+            }
 
-            // 4. Xóa cart
-            cartDAO.deleteByCustomerId(dto.getCustomerId());
+            // 2. Kiểm tra tồn kho từng sản phẩm
+            List<OrderResponseDTO.ProductStockInfo> lackList = new ArrayList<>();
+            Date deliveryDateSql = java.sql.Timestamp.valueOf(deliveryDate);
+            for (Cart c : carts) {
+                List<StockLot> lots = stockLotDAO.findEligibleStockLotsJava(c.getProduct().getId(), deliveryDateSql);
+                int total = lots.stream().mapToInt(StockLot::getQuantity).sum();
+                if (total < c.getQuantity()) {
+                    OrderResponseDTO.ProductStockInfo info = new OrderResponseDTO.ProductStockInfo();
+                    info.setProductId(c.getProduct().getId());
+                    info.setProductName(c.getProduct().getProductName());
+                    info.setRequired(c.getQuantity());
+                    info.setAvailable(total);
+                    lackList.add(info);
+                }
+            }
+            if (!lackList.isEmpty()) {
+                resp.setSuccess(false);
+                resp.setMessage("Thiếu sản phẩm trong kho.");
+                resp.setStockDetails(lackList);
+                return resp;
+            }
 
-            return order.getId();
+            // 3. Đủ điều kiện -> lên đơn
+            tx.begin();
+            double distanceKm = shippingService.haversine(
+                    destWarehouse.getAddress().getLatitude(),
+                    destWarehouse.getAddress().getLongitude(),
+                    latitude, longitude);
 
+            CartService cartService = new CartService();
+            WholesaleOrder wholesaleOrder = new WholesaleOrder();
+            wholesaleOrder.setStatus("CREATED");
+            wholesaleOrder.setCreatedAt(new Date());
+            wholesaleOrder.setCustomer(customerDAO.findById(customerId));
+
+            // set ship
+            wholesaleOrder.setEstimatedShipFee(
+                    shippingService.calculateShippingFee(distanceKm, carts, em));
+
+            // set total price before deal
+            wholesaleOrder.setTotalPrice(
+                    wholesaleOrder.getEstimatedShipFee().add(cartService.calculateCartTotal(carts, em)));
+
+            // set source warehouse
+            wholesaleOrder.setSourceWarehouse(destWarehouse);
+
+            List<WholesaleOrderItem> wholesaleOrderItems = new ArrayList<>();
+            for (Cart c : carts) {
+                WholesaleOrderItem wholesaleOrderItem = new WholesaleOrderItem();
+                wholesaleOrderItem.setProduct(c.getProduct());
+                wholesaleOrderItem.setQuantity(c.getQuantity());
+                wholesaleOrderItem.setPrice(c.getProduct().getWholesalePrice());
+                wholesaleOrderItem.setSubTotal(
+                        wholesaleOrderItem.getPrice().multiply(BigDecimal.valueOf(wholesaleOrderItem.getQuantity())));
+                wholesaleOrderItem.setOrder(wholesaleOrder);
+                wholesaleOrderItems.add(wholesaleOrderItem);
+            }
+            wholesaleOrder.setItems(wholesaleOrderItems);
+
+            // get seller
+            Seller seller = sellerService.selectBestSeller(em);
+            wholesaleOrder.setSeller(seller);
+
+            wholesaleOrder.setDeliveryAddress(deliveryAddress);
+
+            orderDAO.save(wholesaleOrder);
+            cartDAO.deleteByCustomerId(customerId);
+
+            tx.commit();
+
+            resp.setSuccess(true);
+            resp.setMessage("Đặt hàng thành công!");
+            resp.setOrderId(wholesaleOrder.getId());
+            return resp;
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
         } finally {
-            em.close();
+            if (em.isOpen()) {
+                em.close();
+            }
         }
-
     }
 }

@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderCheckRequestDTO {
     private String deliveryDate; // yyyy-MM-dd'T'HH:mm:ss
-    private Double latitude;
-    private Double longitude;
+    private int addressId;
 }
