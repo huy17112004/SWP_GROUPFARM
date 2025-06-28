@@ -1,6 +1,7 @@
 package dao;
+import dto.WarehouseDetailRequestDTO;
 import dto.WarehouseDetailViewDTO;
-import entity.Warehouse;
+import entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
@@ -47,5 +48,66 @@ public class WarehouseDetailViewDAO {
         TypedQuery<WarehouseDetailViewDTO> q = em.createQuery(jpql, WarehouseDetailViewDTO.class);
         q.setParameter("id", id);
         return q.getResultStream().findFirst().orElse(null);
+    }
+    public void create(WarehouseDetailRequestDTO dto) {
+        // 1. Lấy đối tượng Address (đã tồn tại) hoặc tạo mới
+        Ward ward = em.find(Ward.class, dto.getWardId());
+        Address addr = new Address();
+        addr.setStreet(dto.getStreet());
+        addr.setWard(ward);
+        em.persist(addr);
+
+        // 2. Tạo Warehouse
+        Warehouse w = new Warehouse();
+        w.setWarehouseName(dto.getWarehouseName());
+        w.setWarehousePhone(dto.getWarehousePhone());
+        w.setAddress(addr);
+
+        // 3. Gắn manager và staff nếu có
+        if (dto.getManagerId()!=null) {
+            WarehouseManager wm = em.find(WarehouseManager.class, dto.getManagerId());
+            w.setWarehouseManager(wm);
+        }
+        if (dto.getStaffId()!=null) {
+            WarehouseStaff ws = em.find(WarehouseStaff.class, dto.getStaffId());
+            w.setWarehouseStaff(ws);
+        }
+
+        em.persist(w);
+    }
+
+    public boolean update(int id, WarehouseDetailRequestDTO dto) {
+        Warehouse w = em.find(Warehouse.class, id);
+        if (w == null) return false;
+
+        w.setWarehouseName(dto.getWarehouseName());
+        w.setWarehousePhone(dto.getWarehousePhone());
+        // Cập nhật Address
+        Address addr = w.getAddress();
+        addr.setStreet(dto.getStreet());
+        // Nếu thay ward
+        if (addr.getWard().getId() != dto.getWardId()) {
+            Ward newWard = em.find(Ward.class, dto.getWardId());
+            addr.setWard(newWard);
+        }
+        // Manager / Staff
+        w.setWarehouseManager(dto.getManagerId() != null
+                ? em.find(WarehouseManager.class, dto.getManagerId())
+                : null);
+        w.setWarehouseStaff(dto.getStaffId() != null
+                ? em.find(WarehouseStaff.class, dto.getStaffId())
+                : null);
+
+        em.merge(addr);
+        em.merge(w);
+        return true;
+    }
+
+    public boolean delete(int id) {
+        Warehouse w = em.find(Warehouse.class, id);
+        if (w == null) return false;
+        // Nếu cascade REMOVE cho Address, Manager, Staff thì chỉ cần remove Warehouse.
+        em.remove(w);
+        return true;
     }
 }

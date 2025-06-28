@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import dto.WarehouseDetailRequestDTO;
 import dto.WarehouseDetailViewDTO;
 import service.WarehouseDetailViewService;
 import service.WarehouseService;
@@ -45,5 +46,49 @@ public class WarehouseDetailViewServlet extends HttpServlet {
         List<WarehouseDetailViewDTO> list = warehouseService.getAllDetailView();
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(gson.toJson(list));
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // Tạo mới
+        resp.setContentType("application/json");
+        WarehouseDetailRequestDTO dto = gson.fromJson(req.getReader(), WarehouseDetailRequestDTO.class);
+        boolean ok = warehouseService.createDetail(dto);
+        resp.setStatus(ok ? HttpServletResponse.SC_CREATED : HttpServletResponse.SC_BAD_REQUEST);
+        resp.getWriter().write(gson.toJson(new MessageResponse(ok ? "Created" : "Failed", ok)));
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // Cập nhật: URL /api/warehouses-detail/{id}
+        resp.setContentType("application/json");
+        String path = req.getPathInfo();
+        if (path == null || path.length()<=1) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson(new MessageResponse("Missing ID", false)));
+            return;
+        }
+        int id = Integer.parseInt(path.substring(1));
+        WarehouseDetailRequestDTO dto = gson.fromJson(req.getReader(), WarehouseDetailRequestDTO.class);
+        boolean ok = warehouseService.updateDetail(id, dto);
+        resp.setStatus(ok ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
+        resp.getWriter().write(gson.toJson(new MessageResponse(ok ? "Updated" : "Not Found", ok)));
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // Xóa: URL /api/warehouses-detail/{id}
+        resp.setContentType("application/json");
+        String path = req.getPathInfo();
+        if (path==null || path.length()<=1) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson(new MessageResponse("Missing ID", false)));
+            return;
+        }
+        int id = Integer.parseInt(path.substring(1));
+        boolean ok = warehouseService.deleteDetail(id);
+        resp.setStatus(ok ? HttpServletResponse.SC_NO_CONTENT : HttpServletResponse.SC_NOT_FOUND);
+        if (!ok) {
+            resp.getWriter().write(gson.toJson(new MessageResponse("Not Found", false)));
+        }
     }
 }

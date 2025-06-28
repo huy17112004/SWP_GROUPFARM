@@ -1,69 +1,54 @@
 package dao;
 
 import entity.Product;
-import entity.WholesaleCustomer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import util.JpaUtil;
-
 import java.util.List;
 
-public class ProductDAO extends GenericDAO<Product> {
-    public ProductDAO(EntityManager em) {
-        super(Product.class, em);
+public class ProductDAO {
+    private final EntityManager em;
+    public ProductDAO(EntityManager em) { this.em = em; }
+
+    public Product findById(int id) {
+        return em.find(Product.class, id);
     }
 
-    @Override
     public List<Product> findAll() {
-            List<Product> list = em.createQuery(
-                    "SELECT DISTINCT p FROM Product p " +
-                    "LEFT JOIN FETCH p.images " +
-                    "LEFT JOIN FETCH p.category", Product.class).getResultList();
-            return list;
+        TypedQuery<Product> q = em.createQuery(
+                "SELECT p FROM Product p LEFT JOIN FETCH p.category ORDER BY p.productName", Product.class
+        );
+        return q.getResultList();
     }
 
-    public List<Product> findAllByCategoryId(int categoryId) {
-            List<Product> list = em.createQuery(
-                            "SELECT DISTINCT p FROM Product p " +
-                                    "LEFT JOIN FETCH p.images " +
-                                    "LEFT JOIN FETCH p.category c " +
-                                    "WHERE c.id = :categoryId", Product.class)
-                    .setParameter("categoryId", categoryId)
-                    .getResultList();
-            return list;
+    public List<Product> searchByName(String keyword) {
+        TypedQuery<Product> q = em.createQuery(
+                "SELECT p FROM Product p LEFT JOIN FETCH p.category " +
+                        "WHERE LOWER(p.productName) LIKE :kw ORDER BY p.productName", Product.class
+        );
+        q.setParameter("kw", "%" + keyword.toLowerCase() + "%");
+        return q.getResultList();
     }
 
-    public List<Product> searchProducts(List<Integer> categoryIds, Double minPrice, Double maxPrice, String name) {
-            StringBuilder jpql = new StringBuilder("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.images LEFT JOIN FETCH p.category WHERE 1=1 ");
-            if (categoryIds != null && !categoryIds.isEmpty()) {
-                jpql.append("AND p.category.id IN :categoryIds ");
-            }
-            if (minPrice != null) {
-                jpql.append("AND p.wholesalePrice >= :minPrice ");
-            }
-            if (maxPrice != null) {
-                jpql.append("AND p.wholesalePrice <= :maxPrice ");
-            }
-            if (name != null && !name.isEmpty()) {
-                jpql.append("AND LOWER(p.productName) LIKE :name ");
-            }
+    public List<Product> findByCategory(int categoryId) {
+        TypedQuery<Product> q = em.createQuery(
+                "SELECT p FROM Product p LEFT JOIN FETCH p.category " +
+                        "WHERE p.category.id = :cid ORDER BY p.productName", Product.class
+        );
+        q.setParameter("cid", categoryId);
+        return q.getResultList();
+    }
 
-            TypedQuery<Product> query = em.createQuery(jpql.toString(), Product.class);
+    public void create(Product product) {
+        em.persist(product);
+    }
 
-            if (categoryIds != null && !categoryIds.isEmpty()) {
-                query.setParameter("categoryIds", categoryIds);
-            }
-            if (minPrice != null) {
-                query.setParameter("minPrice", minPrice);
-            }
-            if (maxPrice != null) {
-                query.setParameter("maxPrice", maxPrice);
-            }
-            if (name != null && !name.isEmpty()) {
-                query.setParameter("name", "%" + name.toLowerCase() + "%");
-            }
+    public Product update(Product product) {
+        return em.merge(product);
+    }
 
-            return query.getResultList();
-
+    public void delete(Product product) {
+        Product managed = product;
+        if (!em.contains(product)) managed = em.merge(product);
+        em.remove(managed);
     }
 }
