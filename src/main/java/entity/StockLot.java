@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+
 
 @Entity
 @Getter
@@ -35,4 +37,7 @@ public class StockLot {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseID", nullable = false, insertable = false, updatable = false)
     private Warehouse warehouse;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockLot")
+    private List<ExportOrderItem> exportOrderItems;
 }

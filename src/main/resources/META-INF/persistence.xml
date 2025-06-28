@@ -27,6 +27,9 @@
         <class>entity.StockLot</class>
         <class>entity.WarehouseStaff</class>
         <class>entity.ShippingRequirement</class>
+        <class>entity.ExportOrder</class>
+        <class>entity.ExportOrderItem</class>
+        <class>entity.StockLotAudit</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
