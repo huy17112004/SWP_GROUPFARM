@@ -21,6 +21,8 @@ public class ForgotPasswordServlet extends HttpServlet {
         BufferedReader reader = request.getReader();
         ForgotPasswordRequestDTO req = gson.fromJson(reader, ForgotPasswordRequestDTO.class);
 
+        response.setContentType("application/json;charset=UTF-8");
+
         try {
             customerService.sendOtp(req.getEmail());
 

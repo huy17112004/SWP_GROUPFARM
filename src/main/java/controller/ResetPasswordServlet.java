@@ -21,6 +21,8 @@ public class ResetPasswordServlet extends HttpServlet {
         BufferedReader reader = request.getReader();
         ResetPasswordRequestDTO req = gson.fromJson(reader, ResetPasswordRequestDTO.class);
 
+        response.setContentType("application/json;charset=UTF-8");
+
         try {
             customerService.resetPassword(req.getEmail(), req.getOtp(), req.getNewPassword());
 
@@ -41,8 +43,13 @@ public class ResetPasswordServlet extends HttpServlet {
             this.success = success;
         }
 
-        public String getMessage() { return message; }
-        public boolean isSuccess() { return success; }
+        public String getMessage() {
+            return message;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
     }
 }
 
