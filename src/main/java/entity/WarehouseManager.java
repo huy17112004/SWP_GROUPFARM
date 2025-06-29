@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,10 +15,10 @@ import java.util.Date;
 @Table(name = "WarehouseManager")
 public class WarehouseManager extends Account {
 
-    @OneToOne(mappedBy = "warehouseManager",fetch = FetchType.LAZY)
-    private Warehouse warehouse;
+    @OneToMany(mappedBy = "warehouseManager",fetch = FetchType.LAZY)
+    private List<Warehouse> warehouses;
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "Name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;
 
     @Column(name = "Email", nullable = false, length = 100)

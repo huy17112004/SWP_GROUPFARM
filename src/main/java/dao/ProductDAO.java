@@ -15,55 +15,55 @@ public class ProductDAO extends GenericDAO<Product> {
 
     @Override
     public List<Product> findAll() {
-            List<Product> list = em.createQuery(
-                    "SELECT DISTINCT p FROM Product p " +
-                    "LEFT JOIN FETCH p.images " +
-                    "LEFT JOIN FETCH p.category", Product.class).getResultList();
-            return list;
+        List<Product> list = em.createQuery(
+                "SELECT DISTINCT p FROM Product p " +
+                        "LEFT JOIN FETCH p.images " +
+                        "LEFT JOIN FETCH p.category", Product.class).getResultList();
+        return list;
     }
 
     public List<Product> findAllByCategoryId(int categoryId) {
-            List<Product> list = em.createQuery(
-                            "SELECT DISTINCT p FROM Product p " +
-                                    "LEFT JOIN FETCH p.images " +
-                                    "LEFT JOIN FETCH p.category c " +
-                                    "WHERE c.id = :categoryId", Product.class)
-                    .setParameter("categoryId", categoryId)
-                    .getResultList();
-            return list;
+        List<Product> list = em.createQuery(
+                        "SELECT DISTINCT p FROM Product p " +
+                                "LEFT JOIN FETCH p.images " +
+                                "LEFT JOIN FETCH p.category c " +
+                                "WHERE c.id = :categoryId", Product.class)
+                .setParameter("categoryId", categoryId)
+                .getResultList();
+        return list;
     }
 
     public List<Product> searchProducts(List<Integer> categoryIds, Double minPrice, Double maxPrice, String name) {
-            StringBuilder jpql = new StringBuilder("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.images LEFT JOIN FETCH p.category WHERE 1=1 ");
-            if (categoryIds != null && !categoryIds.isEmpty()) {
-                jpql.append("AND p.category.id IN :categoryIds ");
-            }
-            if (minPrice != null) {
-                jpql.append("AND p.wholesalePrice >= :minPrice ");
-            }
-            if (maxPrice != null) {
-                jpql.append("AND p.wholesalePrice <= :maxPrice ");
-            }
-            if (name != null && !name.isEmpty()) {
-                jpql.append("AND LOWER(p.productName) LIKE :name ");
-            }
+        StringBuilder jpql = new StringBuilder("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.images LEFT JOIN FETCH p.category WHERE 1=1 ");
+        if (categoryIds != null && !categoryIds.isEmpty()) {
+            jpql.append("AND p.category.id IN :categoryIds ");
+        }
+        if (minPrice != null) {
+            jpql.append("AND p.wholesalePrice >= :minPrice ");
+        }
+        if (maxPrice != null) {
+            jpql.append("AND p.wholesalePrice <= :maxPrice ");
+        }
+        if (name != null && !name.isEmpty()) {
+            jpql.append("AND LOWER(p.productName) LIKE :name ");
+        }
 
-            TypedQuery<Product> query = em.createQuery(jpql.toString(), Product.class);
+        TypedQuery<Product> query = em.createQuery(jpql.toString(), Product.class);
 
-            if (categoryIds != null && !categoryIds.isEmpty()) {
-                query.setParameter("categoryIds", categoryIds);
-            }
-            if (minPrice != null) {
-                query.setParameter("minPrice", minPrice);
-            }
-            if (maxPrice != null) {
-                query.setParameter("maxPrice", maxPrice);
-            }
-            if (name != null && !name.isEmpty()) {
-                query.setParameter("name", "%" + name.toLowerCase() + "%");
-            }
+        if (categoryIds != null && !categoryIds.isEmpty()) {
+            query.setParameter("categoryIds", categoryIds);
+        }
+        if (minPrice != null) {
+            query.setParameter("minPrice", minPrice);
+        }
+        if (maxPrice != null) {
+            query.setParameter("maxPrice", maxPrice);
+        }
+        if (name != null && !name.isEmpty()) {
+            query.setParameter("name", "%" + name.toLowerCase() + "%");
+        }
 
-            return query.getResultList();
+        return query.getResultList();
 
     }
 }
