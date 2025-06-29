@@ -44,6 +44,7 @@ public class Contract {
     private WholesaleCustomer customer;
 
     /* 1 Contract ↔ n WholesaleOrder */
-    @OneToOne(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private WholesaleOrder wholesaleOrders;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wholesaleOrderID", nullable = false, insertable = false, updatable = false)
+    private WholesaleOrder wholesaleOrder;
 }
