@@ -13,7 +13,11 @@ public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
 
     @Override
     public void write(JsonWriter out, LocalDateTime value) throws IOException {
-        out.value(value.format(formatter));
+        if (value == null) {
+            out.nullValue();
+        } else {
+            out.value(value.format(formatter));
+        }
     }
 
     @Override

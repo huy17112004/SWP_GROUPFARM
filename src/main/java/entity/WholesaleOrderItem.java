@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,4 +37,7 @@ public class WholesaleOrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductID", nullable = false)
     private Product product;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderItem")
+    private List<DealRequest> dealRequests;
 }

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>HỢP ĐỒNG MUA BÁN HÀNG NÔNG SẢN SỈ ONLINE</title>
+    <style>
+        /* reset & base */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            color: #333;
+            background-color: #fafafa;
+        }
+
+        .header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .header hr {
+            margin-top: 10px;
+            border: 0;
+            border-top: 1px solid #999;
+        }
+
+        /* headings */
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.8em;
+        }
+
+        h2 {
+            margin-top: 30px;
+            font-size: 1.4em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+
+        /* clauses */
+        .clause {
+            margin-top: 20px;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        /* tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f0f0f0;
+        }
+
+        table tfoot td {
+            font-weight: bold;
+        }
+
+        /* lists */
+        ul {
+            margin: 10px 0 10px 20px;
+        }
+
+        .container {
+            max-width: 800px; /* điều chỉnh theo ý bạn */
+            margin: 0 auto; /* tự động căn giữa */
+            padding: 0 20px; /* khoảng đệm hai bên */
+        }
+
+        /* signature pad */
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .signature-container {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* căn giữa ngang */
+        }
+
+        .signature-container h3 {
+            text-align: center;
+            width: 100%;
+        }
+
+        canvas.signature-pad {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 400px;
+            height: 150px;
+        }
+
+        .sig-buttons {
+            margin-top: 10px;
+            text-align: center; /* căn giữa các nút */
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
+    Độc lập – Tự do – Hạnh phúc
+    <hr>
+</div>
+<div class="container">
+    <h1>HỢP ĐỒNG MUA BÁN HÀNG NÔNG SẢN SỈ ONLINE</h1>
+    <p style="text-align: center;">Số: {Số hợp đồng} / HĐMN-SX</p>
+
+    <div class="clause">
+        <h2>ĐIỀU 1. CÁC BÊN</h2>
+        <h3>1.1. Bên A (Bên Bán):</h3>
+        <p>
+            – Tên doanh nghiệp: <span class="underline">{Tên công ty Bên A}</span><br>
+            – Địa chỉ trụ sở: {Địa chỉ đầy đủ}<br>
+            – Điện thoại: {Số ĐT} – Email: {Email}<br>
+            – Mã số thuế: {MST}<br>
+            – Đại diện: {Họ tên người đại diện}, Chức vụ: {Chức vụ}<br>
+            – Tài khoản ngân hàng: {Số TK} – Ngân hàng: {Tên ngân hàng}, Chi nhánh: {Chi nhánh}
+        </p>
+
+        <h3>1.2. Bên B (Bên Mua):</h3>
+        <p>
+            – Tên doanh nghiệp: <span class="underline">{Tên công ty Bên B}</span><br>
+            – Địa chỉ trụ sở: {Địa chỉ đầy đủ}<br>
+            – Điện thoại: {Số ĐT} – Email: {Email}<br>
+            – Mã số thuế: {MST}<br>
+            – Đại diện: {Họ tên người đại diện}, Chức vụ: {Chức vụ}<br>
+            – Tài khoản ngân hàng: {Số TK} – Ngân hàng: {Tên ngân hàng}, Chi nhánh: {Chi nhánh}
+        </p>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 2. ĐỐI TƯỢNG HỢP ĐỒNG</h2>
+        <p>Bên A đồng ý bán và Bên B đồng ý mua các loại nông sản sau:</p>
+        <table>
+            <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên hàng</th>
+                <th>Quy cách</th>
+                <th>Đơn vị tính</th>
+                <th>Đơn giá (VNĐ)</th>
+                <th>Số lượng</th>
+                <th>Thành tiền (VNĐ)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>{Ví dụ: Khoai tây Đà Lạt}</td>
+                <td>{Loại 1, tươi}</td>
+                <td>kg</td>
+                <td>{Giá}</td>
+                <td>{Số lượng}</td>
+                <td>{Tính tự động}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6" style="text-align: right;">Tổng cộng:</td>
+                <td>{Tổng tiền}</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 3. GIÁ CẢ VÀ THANH TOÁN</h2>
+        <h3>3.1. Giá bán:</h3>
+        <p>Giá bán như trong Điều 2, đã bao gồm VAT và các phí đóng gói.</p>
+        <h3>3.2. Phương thức thanh toán:</h3>
+        <ul>
+            <li>Bên B chuyển khoản đặt cọc {tỉ lệ %} trước khi giao hàng.</li>
+            <li>Số dư thanh toán ngay sau khi nhận hàng, trong vòng {số ngày} ngày.</li>
+            <li>Thông tin chuyển khoản theo Điều 1.</li>
+        </ul>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 4. GIAO NHẬN VÀ VẬN CHUYỂN</h2>
+        <p>
+            – Thời gian giao: Trong vòng {số ngày} ngày kể từ khi đặt cọc.<br>
+            – Địa điểm giao: {Địa chỉ giao hàng}.<br>
+            – Phí vận chuyển: {Ai chịu phí}.<br>
+            – Bên A chịu trách nhiệm đóng gói, bốc xếp và bàn giao đúng quy cách.
+        </p>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 5. CHẤT LƯỢNG VÀ KIỂM TRA</h2>
+        <ul>
+            <li>Nông sản tươi, sạch, không vượt dư lượng thuốc BVTV theo quy định.</li>
+            <li>Bên B kiểm tra ngay khi nhận hàng và thông báo khiếu nại trong {số giờ} giờ.</li>
+            <li>Trường hợp sai lệch, Bên A đổi trả hoặc hoàn tiền trong {số ngày} ngày.</li>
+        </ul>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 6. BẤT KHẢ KHÁNG</h2>
+        <p>
+            Sự kiện bất khả kháng kéo dài trên {số ngày} ngày thì Bên bị ảnh hưởng thông báo và hai Bên cùng xử lý.
+        </p>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 7. CHẤM DỨT HỢP ĐỒNG</h2>
+        <p>
+            Hợp đồng chấm dứt khi một Bên vi phạm nghiêm trọng và không khắc phục trong {số ngày} ngày.
+        </p>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 8. GIẢI QUYẾT TRANH CHẤP</h2>
+        <p>
+            Tranh chấp thương lượng không được sẽ đưa ra Tòa án nhân dân nơi Bên A có trụ sở.
+        </p>
+    </div>
+
+    <div class="clause">
+        <h2>ĐIỀU 9. ĐIỀU KHOẢN CHUNG</h2>
+        <ul>
+            <li>Hợp đồng có hiệu lực từ ngày ký.</li>
+            <li>Mọi sửa đổi phải bằng văn bản có chữ ký, đóng dấu.</li>
+            <li>Lập thành 02 bản, mỗi Bên giữ 01 bản.</li>
+        </ul>
+    </div>
+
+
+<div class="signature-section">
+    <div class="signature-container">
+        <h3>Chữ ký điện tử Bên A (Bên Bán):</h3>
+        <canvas id="sigA" class="signature-pad"></canvas>
+        <div class="sig-buttons">
+            <button id="clearA">Xóa</button>
+            <button id="saveA">Lưu</button>
+        </div>
+    </div>
+
+    <div class="signature-container">
+        <h3>Chữ ký điện tử Bên B (Bên Mua):</h3>
+        <canvas id="sigB" class="signature-pad"></canvas>
+        <div class="sig-buttons">
+            <button id="clearB">Xóa</button>
+            <button id="saveB">Lưu</button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Thư viện SignaturePad từ CDN -->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script>
+    function resizeCanvas(canvas) {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext('2d').scale(ratio, ratio);
+    }
+
+    function initSignature(idCanvas, idClear, idSave) {
+        const canvas = document.getElementById(idCanvas);
+        resizeCanvas(canvas);
+        const pad = new SignaturePad(canvas, {backgroundColor: 'rgba(255,255,255,0)', penColor: 'black'});
+
+        const btnClear = document.getElementById(idClear);
+        const btnSave = document.getElementById(idSave);
+
+        btnClear.addEventListener('click', () => {
+            pad.clear();
+            // Mở lại vẽ khi xóa
+            pad.on();
+            // nếu dùng CSS disable, thì:
+            canvas.style.pointerEvents = 'auto';
+        });
+
+        btnSave.addEventListener('click', () => {
+            if (pad.isEmpty()) {
+                return alert('Bạn chưa ký!');
+            }
+            // Lấy data, gửi lên server hoặc show preview...
+            const dataURL = pad.toDataURL();
+            // Ví dụ hiển thị preview:
+            // document.getElementById(idImg).src = dataURL;
+
+            // Cách 1: dùng API SignaturePad
+            pad.off();
+
+            // Cách 2: dùng CSS
+            // canvas.style.pointerEvents = 'none';
+        });
+    }
+
+    window.addEventListener('resize', () => {
+        ['sigA', 'sigB'].forEach(id => resizeCanvas(document.getElementById(id)));
+    });
+
+    initSignature('sigA', 'clearA', 'saveA', 'imgA');
+    initSignature('sigB', 'clearB', 'saveB', 'imgB');
+</script>
+
+</body>
+</html>

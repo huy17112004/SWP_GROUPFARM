@@ -79,4 +79,20 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             em.close();
         }
     }
+
+    public void createOrUpdate(WholesaleCustomer customer) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(customer);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Failed to save OTP: " + e.getMessage(), e);
+        } finally {
+            em.close();
+        }
+    }
 }
