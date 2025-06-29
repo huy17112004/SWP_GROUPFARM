@@ -1,6 +1,8 @@
 package service;
 
 import dao.*;
+import dto.OrderCustomerDTO;
+import dto.OrderItemCustomerDTO;
 import dto.OrderResponseDTO;
 import dto.PlaceOrderRequestDTO;
 import entity.*;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WholesaleOrderService {
 
@@ -142,5 +145,46 @@ public class WholesaleOrderService {
                 em.close();
             }
         }
+    }
+
+    public OrderCustomerDTO getOrderForCustomer(int orderId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleOrderDAO orderDao = new WholesaleOrderDAO(em);
+            WholesaleOrder order = orderDao.findByIdWithItems(orderId);
+            if (order == null) {
+                throw new IllegalArgumentException("Order không tồn tại: id=" + orderId);
+            }
+
+            // Map từng WholesaleOrderItem → DTO
+            List<OrderItemCustomerDTO> items = order.getItems().stream()
+                    .map(this::mapItem)
+                    .collect(Collectors.toList());
+
+            // Tính tổng đơn
+            BigDecimal total = items.stream()
+                    .map(OrderItemCustomerDTO::getSubTotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            return new OrderCustomerDTO(
+                    order.getId(),
+                    items,
+                    total,
+                    order.getEstimatedShipFee(),
+                    order.getStatus()
+            );
+        } finally {
+            em.close();
+        }
+    }
+
+    private OrderItemCustomerDTO mapItem(WholesaleOrderItem item) {
+        return new OrderItemCustomerDTO(
+                item.getId(),
+                item.getProduct().getProductName(),
+                item.getPrice(),
+                item.getQuantity(),
+                item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
+        );
     }
 }
