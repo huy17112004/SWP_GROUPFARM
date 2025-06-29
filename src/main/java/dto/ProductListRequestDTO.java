@@ -4,7 +4,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class ProductRequestDTO {
+public class ProductListRequestDTO {
     private String productName;
     private int entryPrice;
     private int retailPrice;
