@@ -10,6 +10,10 @@ public class ManagerDAO extends GenericDAO<Manager> {
         super(Manager.class, em);
     }
 
+    public void createAccount(Manager manager) {
+        save(manager);
+    }
+
     public Manager findByUsername(String username) {
         try {
             String jpql = "SELECT m FROM Manager m WHERE m.username = :username";
