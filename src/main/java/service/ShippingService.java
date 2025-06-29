@@ -1,10 +1,13 @@
 package service;
 
+import dao.ShippingRequirementDAO;
 import dao.WarehouseDAO;
 import entity.Address;
+import entity.Cart;
 import entity.Warehouse;
 import jakarta.persistence.EntityManager;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
@@ -31,6 +34,20 @@ public class ShippingService {
         return distanceKm * weightKg * unitPricePerKgPerKm;
     }
 
+    public BigDecimal calculateShippingFee(double distanceKm, List<Cart> carts, EntityManager em) {
+        ShippingRequirementDAO shippingRequirementDAO = new ShippingRequirementDAO(em);
+
+        BigDecimal distance = BigDecimal.valueOf(distanceKm);
+
+        return carts.stream()
+                .map(cart -> {
+                    BigDecimal rate = shippingRequirementDAO.findByProductId(cart.getProduct().getId()).getRatePerKmPerKg();
+                    BigDecimal quantity = BigDecimal.valueOf(cart.getQuantity());
+                    return distance.multiply(quantity).multiply(rate);
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public Warehouse findNearestWarehouseOnTime(
             List<Warehouse> warehouses,
             double customerLat,
@@ -52,8 +69,10 @@ public class ShippingService {
                     // tính khoảng cách
                     Address a = wh.getAddress();
                     double dist = haversine(customerLat, customerLon, a.getLatitude(), a.getLongitude());
+
                     // tính thời gian cần thiết (giờ)
                     double travelHours = dist / avgSpeedKmph;
+
                     // tính thời điểm khởi hành sau khi đã gom kho xong
                     LocalDateTime departure = now.plusHours(gatheringHours);
                     // tính thời điểm đến

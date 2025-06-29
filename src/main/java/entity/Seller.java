@@ -3,18 +3,18 @@ package entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Saler")
-public class Saler extends Account {
+@Table(name = "Seller")
+public class Seller extends Account {
 
-    @Column(name = "Name", nullable = false, columnDefinition = "NVARCHAR(100)")
+    @Column(name = "Name", nullable = false)
     private String name;
 
     @Column(name = "Email", nullable = false, length = 100)
@@ -28,4 +28,8 @@ public class Saler extends Account {
 
     @Column(name = "Status", nullable = false, length = 50)
     private String status;
+
+    @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
+    private List<WholesaleOrder>  wholesaleOrders;
+    // Getters & Setters...
 }

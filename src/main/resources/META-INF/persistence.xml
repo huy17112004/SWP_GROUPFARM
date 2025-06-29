@@ -30,6 +30,8 @@
         <class>entity.ExportOrder</class>
         <class>entity.ExportOrderItem</class>
         <class>entity.StockLotAudit</class>
+        <class>entity.Message</class>
+        <class>entity.DealRequest</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
