@@ -14,6 +14,8 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
     }
 
     public WholesaleCustomer findByUsernameAndPassword(String username, String password) {
+        EntityManager em = JpaUtil.getEntityManager();
+
         try {
             String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.username = :username AND a.password = :password";
             TypedQuery<WholesaleCustomer> query = em.createQuery(jpql, WholesaleCustomer.class);
@@ -23,10 +25,14 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             return query.getSingleResult(); // Nếu tìm thấy
         } catch (NoResultException e) {
             return null; // Không tìm thấy
+        } finally {
+            em.close();
         }
     }
 
     public WholesaleCustomer findByUsername(String username) {
+        EntityManager em = JpaUtil.getEntityManager();
+
         try {
             String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.username = :username";
             TypedQuery<WholesaleCustomer> query = em.createQuery(jpql, WholesaleCustomer.class);
@@ -34,10 +40,14 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
+        } finally {
+            em.close();
         }
     }
 
     public WholesaleCustomer findByEmail(String email) {
+        EntityManager em = JpaUtil.getEntityManager();
+
         try {
             String jpql = "SELECT a FROM WholesaleCustomer a WHERE a.email = :email";
             TypedQuery<WholesaleCustomer> query = em.createQuery(jpql, WholesaleCustomer.class);
@@ -47,10 +57,15 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
             return query.getSingleResult(); // Nếu tìm thấy
         } catch (NoResultException e) {
             return null; // Không tìm thấy
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
     }
 
     public void createAccount(WholesaleCustomer customer) {
+        EntityManager em = JpaUtil.getEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(customer);
@@ -60,6 +75,8 @@ public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
                 em.getTransaction().rollback();
             }
             throw new RuntimeException("Failed to create account: " + e.getMessage(), e);
+        } finally {
+            em.close();
         }
     }
 }

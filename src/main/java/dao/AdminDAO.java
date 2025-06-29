@@ -10,6 +10,10 @@ public class AdminDAO extends GenericDAO<Admin> {
         super(Admin.class, em);
     }
 
+    public void createAccount(Admin admin) {
+        save(admin);
+    }
+
     public Admin findByUsername(String username) {
         try {
             String jpql = "SELECT a FROM Admin a WHERE a.username = :username";

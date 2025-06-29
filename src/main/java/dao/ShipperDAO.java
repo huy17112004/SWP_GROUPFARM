@@ -10,6 +10,10 @@ public class ShipperDAO extends GenericDAO<Shipper> {
         super(Shipper.class, em);
     }
 
+    public void createAccount(Shipper shipper) {
+        save(shipper);
+    }
+
     public Shipper findByUsername(String username) {
         try {
             String jpql = "SELECT s FROM Shipper s WHERE s.username = :username";
