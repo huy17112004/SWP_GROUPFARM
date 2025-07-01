@@ -95,6 +95,7 @@ public class WholesaleOrderService {
             wholesaleOrder.setStatus("CREATED");
             wholesaleOrder.setCreatedAt(new Date());
             wholesaleOrder.setCustomer(customerDAO.findById(customerId));
+            wholesaleOrder.setDeliveryDate(deliveryDate);
 
             // set ship
             wholesaleOrder.setEstimatedShipFee(

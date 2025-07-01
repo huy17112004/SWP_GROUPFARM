@@ -48,6 +48,9 @@ public class WholesaleOrder {
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
 
+    @Column(name = "DeliveryDate")
+    private LocalDateTime deliveryDate;
+
     /* 1 WholesaleOrder ↔ 1 Contract */
     @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Contract contract;
