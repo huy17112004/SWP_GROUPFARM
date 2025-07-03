@@ -24,23 +24,31 @@ public class CartServlet extends HttpServlet {
         CartItemDTO dto = gson.fromJson(reader, CartItemDTO.class);
 
         HttpSession session = req.getSession(false);
-        if(session == null|| session.getAttribute("accountID") == null){
+        if(session == null|| session.getAttribute("accountId") == null){
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
             return;
         }
 
-        Long userId = (Long) session.getAttribute("accountID");
+        Object accountId = session.getAttribute("accountId");
+        Long userId;
+        if (accountId instanceof Integer) {
+            userId = ((Integer) accountId).longValue();
+        } else if (accountId instanceof Long) {
+            userId = (Long) accountId;
+        } else {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+            return;
+        }
+        
         dto.setUserId(userId);
         try {
-
             Cart cart = cartService.addToCart(dto);
-            CartItemDTO responseDTO = new CartItemDTO();
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write(gson.toJson(responseDTO));
+            resp.getWriter().write("{\"message\":\"Item added to cart successfully\",\"success\":true}");
 
         } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\",\"success\":false}");
         }
     }
 
@@ -50,30 +58,38 @@ public class CartServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
         HttpSession session  = req.getSession();
 
-        if (session == null || session.getAttribute("accountID") == null) {
+        if (session == null || session.getAttribute("accountId") == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
             return;
         }
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Product ID is required");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is required");
             return;
         }
         try {
-            Long productId = (long) Integer.parseInt(pathInfo.substring(1));
-            long userId = (long) session.getAttribute("accountID");
+            Long productId = Long.parseLong(pathInfo.substring(1));
+            
+            Object accountIdObj = session.getAttribute("accountId");
+            long userId;
+            if (accountIdObj instanceof Integer) {
+                userId = ((Integer) accountIdObj).longValue();
+            } else if (accountIdObj instanceof Long) {
+                userId = (Long) accountIdObj;
+            } else {
+                resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+                return;
+            }
 
             cartService.removeFromCart(productId, userId);
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write("{\"message\":\"Item removed from cart successfully\"}");
-
+            resp.getWriter().write("{\"message\":\"Item removed from cart successfully\",\"success\":true}");
 
         } catch (NumberFormatException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");
         } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\",\"success\":false}");
         }
     }
-
 }

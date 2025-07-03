@@ -5,8 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
-public class WholeSaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
-    public WholeSaleCustomerDAO(EntityManager em) {
+public class WholesaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
+    public WholesaleCustomerDAO(EntityManager em) {
         super(WholesaleCustomer.class, em);
     }
 
@@ -48,15 +48,6 @@ public class WholeSaleCustomerDAO extends GenericDAO<WholesaleCustomer> {
     }
 
     public void createAccount(WholesaleCustomer customer) {
-        try {
-            em.getTransaction().begin();
             em.persist(customer);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new RuntimeException("Failed to create account: " + e.getMessage(), e);
-        }
     }
 }

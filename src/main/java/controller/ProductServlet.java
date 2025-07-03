@@ -56,6 +56,4 @@ public class ProductServlet extends HttpServlet {
         response.getWriter().write(json);
     }
 
-
-
 }

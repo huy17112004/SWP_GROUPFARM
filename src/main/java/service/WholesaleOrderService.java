@@ -34,7 +34,7 @@ public class WholesaleOrderService {
             AddressDAO addressDAO = new AddressDAO(em);
             SellerService  sellerService = new SellerService();
             ShippingService shippingService = new ShippingService();
-            WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
+            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
             List<Cart> carts = cartDAO.findAllByCustomerId(customerId);
             if (carts.isEmpty()) {

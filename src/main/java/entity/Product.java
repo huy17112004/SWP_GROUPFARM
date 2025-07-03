@@ -49,9 +49,13 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<StockLot> stockLots;
 
+    /* 1 Product ↔ n Wishlist */
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Wishlist> wishlists;
+
     /* 1 Category ↔ n Product */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "CategoryID", nullable = false)   //Insertable = false, updatable = false)
     private Category category;
 
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)

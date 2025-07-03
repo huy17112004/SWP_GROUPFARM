@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
     public WholesaleOrderDAO(EntityManager entityManager) {
+
         super(WholesaleOrder.class, entityManager);
     }
 

@@ -1,7 +1,6 @@
 package service;
 
-import dao.WholeSaleCustomerDAO;
-import dto.WholeSaleCustomerDTO;
+import dao.WholesaleCustomerDAO;
 import entity.WholesaleCustomer;
 import validation.AccountValidation;
 import org.mindrot.jbcrypt.BCrypt;
@@ -14,7 +13,7 @@ public class WholesaleCustomerService {
     public WholesaleCustomer login(String username, String password) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
+            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
             WholesaleCustomer customer = customerDAO.findByUsername(username);
 
             if (customer != null && BCrypt.checkpw(password, customer.getPassword())) {
@@ -35,7 +34,7 @@ public class WholesaleCustomerService {
         try {
             tx.begin();
 
-            WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
+            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
             // Xác thực dữ liệu đầu vào
             AccountValidation.validateAccountCreation(username, email, password, WholesaleCustomer.class);
@@ -75,5 +74,18 @@ public class WholesaleCustomerService {
     public void updateInfor(){
         EntityManager em = JpaUtil.getEntityManager();
 
+    }
+    
+    /**
+     * Tìm customer theo email (dùng cho Google OAuth)
+     */
+    public WholesaleCustomer findByEmail(String email) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
+            return customerDAO.findByEmail(email);
+        } finally {
+            em.close();
+        }
     }
 }

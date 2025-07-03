@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import dto.ProductDetailDTO;
 import dto.ProductResponseDTO;
 import entity.Product;
 import jakarta.servlet.ServletException;
@@ -38,7 +39,7 @@ public class ProductDetailServlet extends HttpServlet {
             Product product = productService.findById(productId);
 
             if (product != null) {
-                ProductResponseDTO dto = new ProductResponseDTO(product);
+                ProductDetailDTO dto = new ProductDetailDTO(product);
                 response.getWriter().write(gson.toJson(dto));
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

@@ -12,6 +12,7 @@ import java.util.List;
 
 public class CartDAO extends GenericDAO<Cart> {
     public CartDAO(EntityManager entityManager) {
+
         super(Cart.class, entityManager);
     }
     public Cart addToCart(CartItemDTO dto) {

@@ -13,23 +13,22 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponseDTO {
+public class ProductDetailDTO {
+    private int id;
     private String productName;
-//    private int retailPrice;
     private BigDecimal wholesalePrice;
     private String description;
-    private String imageUrl;
+    private List<String> imageUrl;
     private String categoryName;
 
-    public ProductResponseDTO(Product product) {
+    public ProductDetailDTO(Product product) {
+        this.id = product.getId();
         this.productName = product.getProductName();
-//        this.retailPrice = product.getRetailPrice();
         this.wholesalePrice = product.getWholesalePrice();
         this.description = product.getDescription();
-
-
-        this.imageUrl = product.getImages().get(0).getImageUrl();
-
-        this.categoryName = product.getCategory().getCategoryName();
+        this.categoryName = product.getCategory() != null ? product.getCategory().getCategoryName() : "";
+        this.imageUrl = product.getImages() != null
+                ? product.getImages().stream().map(img -> img.getImageUrl()).collect(java.util.stream.Collectors.toList())
+                : new java.util.ArrayList<>();
     }
 }

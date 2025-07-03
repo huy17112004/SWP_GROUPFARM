@@ -59,7 +59,7 @@ public class CustomerAddressService {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
-        WholeSaleCustomerDAO customerDAO = new WholeSaleCustomerDAO(em);
+        WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
         WardDAO wardDAO = new WardDAO(em);
         CustomerAddressDAO customerAddressDAO = new CustomerAddressDAO(em);
         AddressDAO addressDAO = new AddressDAO(em);

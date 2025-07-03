@@ -75,7 +75,7 @@ public class AccountService {
 
             // WHOLESALE CUSTOMER
             if (account == null) {
-                WholesaleCustomer customer = new WholeSaleCustomerDAO(em).findByUsername(username);
+                WholesaleCustomer customer = new WholesaleCustomerDAO(em).findByUsername(username);
                 if (tryLogin(customer, password)) {
                     account = customer;
                     accountType = "WHOLESALE_CUSTOMER";

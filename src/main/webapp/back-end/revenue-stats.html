@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê Doanh thu - GroupFarm Admin</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/feather.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/dark.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg header-nav">
+                <div class="navbar-header">
+                    <a id="mobile_btn" href="javascript:void(0);">
+                        <span class="bar-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </a>
+                    <a href="index.html" class="navbar-brand logo">
+                        <img src="assets/images/logo.png" class="img-fluid" alt="Logo">
+                    </a>
+                </div>
+                <div class="main-menu-wrapper">
+                    <div class="menu-header">
+                        <a href="index.html" class="menu-logo">
+                            <img src="assets/images/logo.png" class="img-fluid" alt="Logo">
+                        </a>
+                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    <ul class="main-nav">
+                        <li>
+                            <a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li class="active">
+                            <a href="revenue-stats.html"><i class="fas fa-chart-line"></i> <span>Thống kê Doanh thu</span></a>
+                        </li>
+                        <li>
+                            <a href="order-stats.html"><i class="fas fa-shopping-cart"></i> <span>Thống kê Đơn hàng</span></a>
+                        </li>
+                        <li>
+                            <a href="top-products.html"><i class="fas fa-star"></i> <span>Top Sản phẩm</span></a>
+                        </li>
+                        <li>
+                            <a href="shipping-report.html"><i class="fas fa-truck"></i> <span>Báo cáo Giao hàng</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="nav header-navbar-rht">
+                    <li class="nav-item dropdown has-arrow logged-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                            <span class="user-img">
+                                <img class="rounded-circle" src="assets/images/avatar.jpg" width="31" alt="Admin">
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <div class="user-header">
+                                <div class="avatar avatar-sm">
+                                    <img src="assets/images/avatar.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                </div>
+                                <div class="user-text">
+                                    <h6>Admin</h6>
+                                    <p class="text-muted mb-0">Administrator</p>
+                                </div>
+                            </div>
+                            <a class="dropdown-item" href="profile-setting.html">Hồ sơ</a>
+                            <a class="dropdown-item" href="login.html">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="page-title">Thống kê Doanh thu</h3>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Thống kê Doanh thu</li>
+                            </ul>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary" onclick="loadRevenue('today')">Hôm nay</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loadRevenue('week')">Tuần này</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loadRevenue('month')">Tháng này</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loadRevenue('year')">Năm nay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Cards -->
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-primary">
+                                        <i class="feather-dollar-sign"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="todayRevenue">0 VNĐ</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Doanh thu hôm nay</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-success">
+                                        <i class="feather-calendar"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="weekRevenue">0 VNĐ</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Doanh thu tuần này</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-warning">
+                                        <i class="feather-calendar"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="monthRevenue">0 VNĐ</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Doanh thu tháng này</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-info">
+                                        <i class="feather-calendar"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="yearRevenue">0 VNĐ</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Doanh thu năm nay</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Biểu đồ Doanh thu</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="revenueChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Phân tích</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="stats-info">
+                                    <h6>Tăng trưởng so với tuần trước</h6>
+                                    <h4 id="growthRate" class="text-success">+15.2%</h4>
+                                </div>
+                                <div class="stats-info">
+                                    <h6>Đơn hàng trung bình</h6>
+                                    <h4 id="avgOrderValue">2,500,000 VNĐ</h4>
+                                </div>
+                                <div class="stats-info">
+                                    <h6>Khách hàng mới</h6>
+                                    <h4 id="newCustomers">25</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Details -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Chi tiết Doanh thu</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Thời gian</th>
+                                                <th>Doanh thu</th>
+                                                <th>Số đơn hàng</th>
+                                                <th>Đơn hàng trung bình</th>
+                                                <th>Tỷ lệ tăng trưởng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="revenueDetailsTable">
+                                            <!-- Data will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/feather.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        let revenueChart;
+
+        $(document).ready(function() {
+            loadRevenue('all');
+            initChart();
+        });
+
+        function loadRevenue(period) {
+            // Update active button
+            $('.btn-group .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+            if (period !== 'all') {
+                $(`button[onclick="loadRevenue('${period}')"]`).removeClass('btn-outline-primary').addClass('btn-primary');
+            }
+
+            // Load revenue data
+            $.ajax({
+                url: `/api/revenue${period !== 'all' ? '?period=' + period : ''}`,
+                method: 'GET',
+                success: function(data) {
+                    updateRevenueCards(data);
+                    updateRevenueDetails(data);
+                    updateChart(data);
+                },
+                error: function(xhr) {
+                    console.error('Error loading revenue:', xhr);
+                }
+            });
+        }
+
+        function updateRevenueCards(data) {
+            $('#todayRevenue').text(formatCurrency(data.todayRevenue));
+            $('#weekRevenue').text(formatCurrency(data.weekRevenue));
+            $('#monthRevenue').text(formatCurrency(data.monthRevenue));
+            $('#yearRevenue').text(formatCurrency(data.yearRevenue));
+        }
+
+        function updateRevenueDetails(data) {
+            const tableBody = $('#revenueDetailsTable');
+            tableBody.empty();
+
+            const periods = [
+                { name: 'Hôm nay', revenue: data.todayRevenue, orders: 0, avgOrder: 0, growth: '+5.2%' },
+                { name: 'Tuần này', revenue: data.weekRevenue, orders: 0, avgOrder: 0, growth: '+12.8%' },
+                { name: 'Tháng này', revenue: data.monthRevenue, orders: 0, avgOrder: 0, growth: '+8.5%' },
+                { name: 'Năm nay', revenue: data.yearRevenue, orders: 0, avgOrder: 0, growth: '+15.3%' }
+            ];
+
+            periods.forEach(function(period) {
+                const row = `
+                    <tr>
+                        <td>${period.name}</td>
+                        <td>${formatCurrency(period.revenue)}</td>
+                        <td>${period.orders}</td>
+                        <td>${formatCurrency(period.avgOrder)}</td>
+                        <td><span class="text-success">${period.growth}</span></td>
+                    </tr>
+                `;
+                tableBody.append(row);
+            });
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                    datasets: [{
+                        label: 'Doanh thu (triệu VNĐ)',
+                        data: [0, 0, 0, 0, 0, 0, 0, 0],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(data) {
+            // Simulate weekly data for chart
+            const weeklyData = [
+                data.weekRevenue * 0.1,
+                data.weekRevenue * 0.15,
+                data.weekRevenue * 0.12,
+                data.weekRevenue * 0.18,
+                data.weekRevenue * 0.20,
+                data.weekRevenue * 0.15,
+                data.weekRevenue * 0.10
+            ];
+
+            revenueChart.data.datasets[0].data = weeklyData;
+            revenueChart.update();
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+    </script>
+</body>
+</html> 

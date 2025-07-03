@@ -8,6 +8,8 @@ import util.JpaUtil;
 import jakarta.persistence.NoResultException;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ProductDAO extends GenericDAO<Product> {
     public ProductDAO(EntityManager em) {
