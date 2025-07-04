@@ -3,10 +3,12 @@ package service;
 import dao.CartDAO;
 import dto.CartItemDTO;
 import entity.Cart;
+import entity.Product;
 import jakarta.persistence.EntityManager;
 import util.JpaUtil;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartService {
@@ -31,6 +33,30 @@ public class CartService {
             }
         }
     }
+
+    public List<CartItemDTO> getCartByUserId(Long userId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        CartDAO cartDAO = new CartDAO(em);
+        List<Cart> cartList = cartDAO.findByUserId(userId);
+        List<CartItemDTO> result = new ArrayList<>();
+
+        for (Cart cart : cartList) {
+            Product p = cart.getProduct();
+            if (p == null) continue;
+
+            CartItemDTO dto = new CartItemDTO();
+            dto.setProductId(Long.valueOf(p.getId()));
+            dto.setProductName(p.getProductName());
+            dto.setWholesalePrice(p.getWholesalePrice());
+            dto.setQuantity(cart.getQuantity());
+
+            result.add(dto);
+        }
+
+        em.close();
+        return result;
+    }
+
 
 
     public String removeFromCart(Long productId, long userId) {

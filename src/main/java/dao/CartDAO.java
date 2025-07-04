@@ -16,7 +16,7 @@ public class CartDAO extends GenericDAO<Cart> {
         super(Cart.class, entityManager);
     }
     public Cart addToCart(CartItemDTO dto) {
-        // Tìm customer và product từ cơ sở dữ liệu
+
         WholesaleCustomer customer = em.find(WholesaleCustomer.class, dto.getUserId().intValue());
         Product product = em.find(Product.class, dto.getProductId().intValue());
 
@@ -29,12 +29,12 @@ public class CartDAO extends GenericDAO<Cart> {
         Cart cart;
 
         if (existingCart != null) {
-            // Nếu đã có thì cộng thêm số lượng
+
             existingCart.setQuantity(existingCart.getQuantity() + dto.getQuantity());
             em.merge(existingCart);
             cart = existingCart;
         } else {
-            // Nếu chưa có thì tạo mới cart item
+
             cart = new Cart();
             cart.setCustomer(customer);
             cart.setProduct(product);
@@ -74,4 +74,14 @@ public class CartDAO extends GenericDAO<Cart> {
             return null;
         }
     }
+
+    public List<Cart> findByUserId(Long userId) {
+        return em.createQuery(
+                        "SELECT c FROM Cart c JOIN FETCH c.product WHERE c.customer.id = :userId", Cart.class)
+                .setParameter("userId", userId.intValue()) // vì customer.id là int
+                .getResultList();
+    }
+
+    
+
 }

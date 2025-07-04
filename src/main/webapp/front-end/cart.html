@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1337,287 +1338,104 @@
                     <div class="cart-table">
                         <div class="table-responsive-xl">
                             <table class="table">
-                                <tbody>
-                                    <tr class="product-box-contain">
-                                        <td class="product-detail">
-                                            <div class="product border-0">
-                                                <a href="product-image.html" class="product-image">
-                                                    <img src="../images/#"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                                <div class="product-detail">
-                                                    <ul>
-                                                        <li class="name" id="productName">
-                                                            <a href="product-image.html"></a>
-                                                        </li>
+                                <tbody id="cart-table-body">
+<!--                                    <tr class="product-box-contain">-->
+<!--                                        <td class="product-detail">-->
+<!--                                            <div class="product border-0">-->
+<!--                                                <a href="product-image.html" class="product-image">-->
+<!--                                                    <img src="../assets/images/vegetable/product/2.png"-->
+<!--                                                        class="img-fluid blur-up lazyload" alt="">-->
+<!--                                                </a>-->
+<!--                                                <div class="product-detail">-->
+<!--                                                    <ul>-->
+<!--                                                        <li class="name">-->
+<!--                                                            <a href="product-image.html"></a>-->
+<!--                                                        </li>-->
 
-                                                        <li class="text-content"><span class="text-title">Sold By:</span></li>
+<!--                                                        <li class="text-content"><span class="text-title">Sold-->
+<!--                                                                By:</span> Nesto-->
+<!--                                                        </li>-->
 
-                                                        <li class="text-content" id ="quantity"><span
-                                                                class="text-title">Quantity</span></li>
-                                                        <li>
-                                                            <h5 class="text-content d-inline-block" id="price">Price :</h5>
-                                                            <span></span>
+<!--                                                        <li class="text-content"><span-->
+<!--                                                                class="text-title">Quantity</span> - 250 g</li>-->
 
-                                                        </li>
+<!--                                                        <li>-->
+<!--                                                            <h5 class="text-content d-inline-block">Price :</h5>-->
+<!--                                                            <span>$35.10</span>-->
+<!--                                                            <span class="text-content">$45.68</span>-->
+<!--                                                        </li>-->
 
-                                                        <li>
-                                                            <h5 class="saving theme-color">Saving : $20.68</h5>
-                                                        </li>
+<!--                                                        <li>-->
+<!--                                                            <h5 class="saving theme-color">Saving : $20.68</h5>-->
+<!--                                                        </li>-->
 
-                                                        <li class="quantity-price-box">
-                                                            <div class="cart_qty" >
-                                                                <div class="input-group">
-                                                                    <button type="button" class="btn qty-left-minus"
-                                                                        data-type="minus" data-field="">
-                                                                        <i class="fa fa-minus ms-0"></i>
-                                                                    </button>
-                                                                    <input class="form-control input-number qty-input"
-                                                                        type="text" name="quantity" value="0">
-                                                                    <button type="button" class="btn qty-right-plus"
-                                                                        data-type="plus" data-field="">
-                                                                        <i class="fa fa-plus ms-0"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </li>
+<!--                                                        <li class="quantity">-->
+<!--                                                            <div class="quantity-price">-->
+<!--                                                                <div class="cart_qty">-->
+<!--                                                                    <div class="input-group">-->
+<!--                                                                        <button type="button" class="btn qty-left-minus"-->
+<!--                                                                            data-type="minus" data-field="">-->
+<!--                                                                            <i class="fa fa-minus ms-0"></i>-->
+<!--                                                                        </button>-->
+<!--                                                                        <input-->
+<!--                                                                            class="form-control input-number qty-input"-->
+<!--                                                                            type="text" name="quantity" value="0">-->
+<!--                                                                        <button type="button" class="btn qty-right-plus"-->
+<!--                                                                            data-type="plus" data-field="">-->
+<!--                                                                            <i class="fa fa-plus ms-0"></i>-->
+<!--                                                                        </button>-->
+<!--                                                                    </div>-->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                        </li>-->
 
-                                                        <li>
-                                                            <h5>Total: $35.10</h5>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
+<!--                                                        <li>-->
+<!--                                                            <h5>Total: $52.95</h5>-->
+<!--                                                        </li>-->
+<!--                                                    </ul>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </td>-->
 
-                                        <td class="price">
-                                            <h4 class="table-title text-content">Price</h4>
-                                            <h5>$35.10 <del class="text-content">$45.68</del></h5>
-                                            <h6 class="theme-color">You Save : $20.68</h6>
-                                        </td>
+<!--                                        <td class="price">-->
+<!--                                            <h4 class="table-title text-content">Price</h4>-->
+<!--                                            <h5>$52.95 <del class="text-content">$68.49</del></h5>-->
+<!--                                            <h6 class="theme-color">You Save : $15.14</h6>-->
+<!--                                        </td>-->
 
-                                        <td class="quantity">
-                                            <h4 class="table-title text-content">Quantity</h4>
-                                            <div class="quantity-price">
-                                                <div class="cart_qty">
-                                                    <div class="input-group">
-                                                        <button type="button" class="btn qty-left-minus"
-                                                            data-type="minus" data-field="">
-                                                            <i class="fa fa-minus ms-0"></i>
-                                                        </button>
-                                                        <input class="form-control input-number qty-input" type="text"
-                                                            name="quantity" value="0">
-                                                        <button type="button" class="btn qty-right-plus"
-                                                            data-type="plus" data-field="">
-                                                            <i class="fa fa-plus ms-0"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
+<!--                                        <td class="quantity">-->
+<!--                                            <h4 class="table-title text-content">Qty</h4>-->
+<!--                                            <div class="quantity-price">-->
+<!--                                                <div class="cart_qty">-->
+<!--                                                    <div class="input-group">-->
+<!--                                                        <button type="button" class="btn qty-left-minus"-->
+<!--                                                            data-type="minus" data-field="">-->
+<!--                                                            <i class="fa fa-minus ms-0"></i>-->
+<!--                                                        </button>-->
+<!--                                                        <input class="form-control input-number qty-input" type="text"-->
+<!--                                                            name="quantity" value="0">-->
+<!--                                                        <button type="button" class="btn qty-right-plus"-->
+<!--                                                            data-type="plus" data-field="">-->
+<!--                                                            <i class="fa fa-plus ms-0"></i>-->
+<!--                                                        </button>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </td>-->
 
-                                        <td class="subtotal">
-                                            <h4 class="table-title text-content">Total</h4>
-                                            <h5>$35.10</h5>
-                                        </td>
+<!--                                        <td class="subtotal">-->
+<!--                                            <h4 class="table-title text-content">Total</h4>-->
+<!--                                            <h5>$52.95</h5>-->
+<!--                                        </td>-->
 
-                                        <td class="save-remove">
-                                            <h4 class="table-title text-content">Action</h4>
-                                            <a class="save notifi-wishlist" href="javascript:void(0)">Save for later</a>
-                                            <a class="remove close_button" href="javascript:void(0)" >Remove</a>
-                                        </td>
-                                    </tr>
+<!--                                        <td class="save-remove">-->
+<!--                                            <h4 class="table-title text-content">Action</h4>-->
+<!--                                            <a class="save notifi-wishlist" href="javascript:void(0)">Save for later</a>-->
+<!--                                            <a class="remove close_button" href="javascript:void(0)">Remove</a>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
 
-                                    <tr class="product-box-contain">
-                                        <td class="product-detail">
-                                            <div class="product border-0">
-                                                <a href="product-left-thumbnail.html" class="product-image">
-                                                    <img src="../assets/images/vegetable/product/2.png"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                                <div class="product-detail">
-                                                    <ul>
-                                                        <li class="name">
-                                                            <a href="product-left-thumbnail.html">Eggplant</a>
-                                                        </li>
 
-                                                        <li class="text-content"><span class="text-title">Sold
-                                                                By:</span> Nesto
-                                                        </li>
-
-                                                        <li class="text-content"><span
-                                                                class="text-title">Quantity</span> - 250 g</li>
-
-                                                        <li>
-                                                            <h5 class="text-content d-inline-block">Price :</h5>
-                                                            <span>$35.10</span>
-                                                            <span class="text-content">$45.68</span>
-                                                        </li>
-
-                                                        <li>
-                                                            <h5 class="saving theme-color">Saving : $20.68</h5>
-                                                        </li>
-
-                                                        <li class="quantity">
-                                                            <div class="quantity-price">
-                                                                <div class="cart_qty">
-                                                                    <div class="input-group">
-                                                                        <button type="button" class="btn qty-left-minus"
-                                                                            data-type="minus" data-field="">
-                                                                            <i class="fa fa-minus ms-0"></i>
-                                                                        </button>
-                                                                        <input
-                                                                            class="form-control input-number qty-input"
-                                                                            type="text" name="quantity" value="0">
-                                                                        <button type="button" class="btn qty-right-plus"
-                                                                            data-type="plus" data-field="">
-                                                                            <i class="fa fa-plus ms-0"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li>
-                                                            <h5>Total: $52.95</h5>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="price">
-                                            <h4 class="table-title text-content">Price</h4>
-                                            <h5>$52.95 <del class="text-content">$68.49</del></h5>
-                                            <h6 class="theme-color">You Save : $15.14</h6>
-                                        </td>
-
-                                        <td class="quantity">
-                                            <h4 class="table-title text-content">Qty</h4>
-                                            <div class="quantity-price">
-                                                <div class="cart_qty">
-                                                    <div class="input-group">
-                                                        <button type="button" class="btn qty-left-minus"
-                                                            data-type="minus" data-field="">
-                                                            <i class="fa fa-minus ms-0"></i>
-                                                        </button>
-                                                        <input class="form-control input-number qty-input" type="text"
-                                                            name="quantity" value="0">
-                                                        <button type="button" class="btn qty-right-plus"
-                                                            data-type="plus" data-field="">
-                                                            <i class="fa fa-plus ms-0"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="subtotal">
-                                            <h4 class="table-title text-content">Total</h4>
-                                            <h5>$52.95</h5>
-                                        </td>
-
-                                        <td class="save-remove">
-                                            <h4 class="table-title text-content">Action</h4>
-                                            <a class="save notifi-wishlist" href="javascript:void(0)">Save for later</a>
-                                            <a class="remove close_button" href="javascript:void(0)">Remove</a>
-                                        </td>
-                                    </tr>
-
-                                    <tr class="product-box-contain">
-                                        <td class="product-detail">
-                                            <div class="product border-0">
-                                                <a href="product-left-thumbnail.html" class="product-image">
-                                                    <img src="../assets/images/vegetable/product/3.png"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                                <div class="product-detail">
-                                                    <ul>
-                                                        <li class="name">
-                                                            <a href="product-left-thumbnail.html">Onion</a>
-                                                        </li>
-
-                                                        <li class="text-content"><span class="text-title">Sold
-                                                                By:</span> Basket</li>
-
-                                                        <li class="text-content"><span
-                                                                class="text-title">Quantity</span> </li>
-
-                                                        <li>
-                                                            <h5 class="text-content d-inline-block">Price :</h5>
-                                                            <span>$35.10</span>
-                                                            <span class="text-content">$45.68</span>
-                                                        </li>
-
-                                                        <li>
-                                                            <h5 class="saving theme-color">Saving : $20.68</h5>
-                                                        </li>
-
-                                                        <li class="quantity">
-                                                            <div class="quantity-price">
-                                                                <div class="cart_qty">
-                                                                    <div class="input-group">
-                                                                        <button type="button" class="btn qty-left-minus"
-                                                                            data-type="minus" data-field="">
-                                                                            <i class="fa fa-minus ms-0"></i>
-                                                                        </button>
-                                                                        <input
-                                                                            class="form-control input-number qty-input"
-                                                                            type="text" name="quantity" value="0">
-                                                                        <button type="button" class="btn qty-right-plus"
-                                                                            data-type="plus" data-field="">
-                                                                            <i class="fa fa-plus ms-0"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li>
-                                                            <h5>Total: $67.36</h5>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="price">
-                                            <h4 class="table-title text-content">Price</h4>
-                                            <h5>$67.36 <del class="text-content">$96.58</del></h5>
-                                            <h6 class="theme-color">You Save : $29.22</h6>
-                                        </td>
-
-                                        <td class="quantity">
-                                            <h4 class="table-title text-content">Qty</h4>
-                                            <div class="quantity-price">
-                                                <div class="cart_qty">
-                                                    <div class="input-group">
-                                                        <button type="button" class="btn qty-left-minus"
-                                                            data-type="minus" data-field="">
-                                                            <i class="fa fa-minus ms-0"></i>
-                                                        </button>
-                                                        <input class="form-control input-number qty-input" type="text"
-                                                            name="quantity" value="0">
-                                                        <button type="button" class="btn qty-right-plus"
-                                                            data-type="plus" data-field="">
-                                                            <i class="fa fa-plus ms-0"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="subtotal">
-                                            <h4 class="table-title text-content">Total</h4>
-                                            <h5>$67.36</h5>
-                                        </td>
-
-                                        <td class="save-remove">
-                                            <h4 class="table-title text-content">Action</h4>
-                                            <a class="save notifi-wishlist" href="javascript:void(0)">Save for later</a>
-                                            <a class="remove close_button" href="javascript:void(0)">Remove</a>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2206,7 +2024,113 @@
     <!-- theme setting js -->
     <script src="../assets/js/theme-setting.js"></script>
 
-    <script src="../assets/js/cart.js"></script>
+    <script src="../assets/jsLogic/cart.js"></script>
+    
+    <script>
+        function loadCart() {
+            fetch("/api/cart", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("Không thể lấy dữ liệu giỏ hàng.");
+                    return res.json();
+                })
+                .then(cartItems => {
+                    const tbody = document.getElementById("cart-table-body");
+                    if (!tbody) return;
+
+                    tbody.innerHTML = "";
+
+                    cartItems.forEach(item => {
+                        const price = item.wholesalePrice;
+                        const quantity = item.quantity;
+                        const total = price * quantity;
+
+                        const row = `
+                <tr class="product-box-contain">
+                    <td class="product-detail">
+                        <div class="product border-0">
+                            <a href="product-image.html" class="product-image">
+                                <img src="${item.imageUrl || '../assets/images/placeholder.png'}"
+                                     class="img-fluid blur-up lazyload" alt="">
+                            </a>
+                            <div class="product-detail">
+                                <ul>
+                                    <li class="name">
+                                        <a href="product-image.html">${item.productName}</a>
+                                    </li>
+                                    <li class="text-content"><span class="text-title"></span></li>
+                                    <li class="text-content"><span class="text-title">Quantity</span> - ${quantity}</li>
+                                    <li>
+                                        <h5 class="text-content d-inline-block">Price :</h5>
+                                        <span>${price.toLocaleString('vi-VN')} VND</span>
+                                    </li>
+                                    <li>
+                                        <h5>Total: ${total.toLocaleString('vi-VN')} VND</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="price">
+                        <h4 class="table-title text-content">Price</h4>
+                        <h5>${price.toLocaleString('vi-VN')} VND</h5>
+                    </td>
+
+                    <td class="quantity">
+                        <h4 class="table-title text-content">Quantity</h4>
+                        <div class="quantity-price">
+                            <div class="cart_qty">
+                                <div class="input-group">
+                                    <button type="button" class="btn qty-left-minus" data-type="minus">
+                                        <i class="fa fa-minus ms-0"></i>
+                                    </button>
+                                    <input class="form-control input-number qty-input" type="text"
+                                           name="quantity" value="${quantity}">
+                                    <button type="button" class="btn qty-right-plus" data-type="plus">
+                                        <i class="fa fa-plus ms-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td class="subtotal">
+                        <h4 class="table-title text-content">Total</h4>
+                        <h5>${total.toLocaleString('vi-VN')} VND</h5>
+                    </td>
+                    <td class="save-remove">
+                        <h4 class="table-title text-content">Action</h4>
+                        <button class="btn btn-outline-secondary btn-sm"onclick="saveForLater(${item.productId})">
+                            Save for later
+                        </button>
+
+                        <button class="btn btn-danger btn-sm"onclick="removeFromCart(${item.productId})">
+                            Remove
+                        </button>
+                    </td>
+
+                </tr>
+                `;
+
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Lỗi khi tải giỏ hàng: " + err.message);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (document.getElementById("cart-table-body")) {
+                loadCart();
+            }
+        });
+    </script>
 </body>
 
 </html>
