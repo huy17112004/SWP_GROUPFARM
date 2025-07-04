@@ -18,24 +18,27 @@ public class Warehouse {
     @Column(name = "WarehouseID")
     private int id;
 
-    @Column(name = "WarehouseName", nullable = false, length = 50)
+    @Column(name = "WarehouseName", columnDefinition = "NVARCHAR(50)", nullable = false, length = 50)
     private String warehouseName;
 
-    @Column(name = "WarehousePhone", nullable = false, length = 12)
+    @Column(name = "WarehousePhone", columnDefinition = "NVARCHAR(15)", nullable = false, length = 12)
     private String warehousePhone;
 
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseManagerID")
     private WarehouseManager warehouseManager;
 
-    @OneToOne(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "warehouse", orphanRemoval = true,fetch = FetchType.LAZY)
     private WarehouseStaff warehouseStaff;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "AddressID", nullable = false, unique = true) // unique đảm bảo one-to-one
     private Address address;
 
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<StockLot> stockLots;
+
+    @OneToMany(mappedBy = "sourceWarehouse", orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<WholesaleOrder> orders;
 }

@@ -1,13 +1,10 @@
 package dao;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import util.JpaUtil;
-
 import java.io.Serializable;
 import java.util.List;
 
-public class GenericDAO<T> {
+    public class GenericDAO<T> {
     protected EntityManager em;
     private final Class<T> type;
 
@@ -17,41 +14,15 @@ public class GenericDAO<T> {
     }
 
     public void save(T entity) {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.persist(entity);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        em.persist(entity);
     }
 
     public void update(T entity) {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.merge(entity);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        }
+        em.merge(entity);
     }
 
     public void delete(T entity) {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.remove(em.contains(entity) ? entity : em.merge(entity)); // ensure managed
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        }
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
     public T findById(Serializable id) {
@@ -63,14 +34,6 @@ public class GenericDAO<T> {
     }
 
     public void deleteAll() {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.createQuery("DELETE FROM " + type.getSimpleName()).executeUpdate();
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        }
+        em.createQuery("DELETE FROM " + type.getSimpleName()).executeUpdate();
     }
 }

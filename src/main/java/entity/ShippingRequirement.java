@@ -3,6 +3,8 @@ package entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -24,5 +26,5 @@ public class ShippingRequirement {
     private int minExpiryDaysRequired;
 
     @Column(name = "RatePerKmPerKg", nullable = false)
-    private int ratePerKmPerKg;
+    private BigDecimal ratePerKmPerKg;
 }

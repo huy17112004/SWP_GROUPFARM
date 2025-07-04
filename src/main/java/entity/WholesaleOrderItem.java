@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,11 +30,14 @@ public class WholesaleOrderItem {
 
     /* n WholesaleOrderItem ↔ 1 WholesaleOrder */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OrderID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "OrderID", nullable = false)
     private WholesaleOrder order;
 
     /* n WholesaleOrderItem ↔ 1 Product */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "ProductID", nullable = false)
     private Product product;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderItem")
+    private List<DealRequest> dealRequests;
 }

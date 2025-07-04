@@ -18,7 +18,7 @@ public class CustomerAddress {
     @JoinColumn(name = "WholesaleCustomerID", nullable = false)
     private WholesaleCustomer wholesaleCustomer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "AddressID", nullable = false)
     private Address address;
 }

@@ -6,7 +6,8 @@ import util.JpaUtil;
 
 public class AccountValidation {
 
-    public static void validateAccountCreation(String userName, String email, String password, Class<?> entityType) throws IllegalArgumentException {
+    public static void validateAccountCreation(String userName, String email, String password, Class<?> entityType)
+            throws IllegalArgumentException {
         if (userName == null || userName.trim().isEmpty()) {
             throw new IllegalArgumentException("Username is required");
         }
@@ -32,8 +33,7 @@ public class AccountValidation {
         try (Session session = JpaUtil.getEntityManager().unwrap(Session.class)) {
             Query<Long> query = session.createQuery(
                     "SELECT COUNT(a) FROM " + entityType.getSimpleName() + " a WHERE a.email = :email",
-                    Long.class
-            );
+                    Long.class);
             query.setParameter("email", email);
             if (query.uniqueResult() > 0) {
                 throw new IllegalArgumentException("Email already exists");
