@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "WarehouseManager")
 public class WarehouseManager extends Account {
 
-    @OneToOne(mappedBy = "warehouseManager",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "warehouseManager", fetch = FetchType.LAZY)
     private Warehouse warehouse;
 
     @Column(name = "Name", nullable = false)

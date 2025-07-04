@@ -22,7 +22,7 @@ public class WholesaleOrder {
     private int id;
 
     @Column(name = "Status", length = 38)
-    private String status;
+    private String status = "PENDING";
 
     @Column(name = "EstimatedShipFee", precision = 18, scale = 2)
     private BigDecimal estimatedShipFee;
@@ -48,20 +48,23 @@ public class WholesaleOrder {
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
 
+    @Column(name = "Note", columnDefinition = "NVARCHAR(MAX)")
+    private String note;
+
     /* 1 WholesaleOrder ↔ 1 Contract */
     @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Contract contract;
 
     /* 1 WholesaleOrder ↔ n WholesaleOrderItem */
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<WholesaleOrderItem> items;
 
     /* 1 WholesaleOrder ↔ n ShippingLog */
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ShippingLog> shippingLogs;
 
     /* 1 WholesaleOrder ↔ n OrderRisk */
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderRisk> risks;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -79,4 +82,8 @@ public class WholesaleOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID", nullable = false)
     private WholesaleCustomer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ShipperID")
+    private Account shipper;
 }

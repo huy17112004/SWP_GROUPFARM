@@ -51,34 +51,6 @@
 
     <!-- App css -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
-    <style>
-        .sidebar-links .sidebar-list a.sidebar-link {
-            background: none !important;
-            box-shadow: none !important;
-            border: none !important;
-            color: #fff !important;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: background 0.2s, color 0.2s;
-        }
-        .sidebar-links .sidebar-list a.sidebar-link i {
-            color: #fff !important;
-            margin-right: 8px;
-        }
-        .sidebar-links .sidebar-list a.sidebar-link.active {
-            background: rgba(255,255,255,0.15) !important;
-            color: #fff !important;
-        }
-        .sidebar-links .sidebar-list a.sidebar-link.active i {
-            color: #fff !important;
-        }
-        .sidebar-links .sidebar-list a.sidebar-link:hover:not(.active),
-        .sidebar-links .sidebar-list a.sidebar-link:focus:not(.active) {
-            background: none !important;
-            color: #fff !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -164,11 +136,120 @@
             <!-- index body start -->
             <div class="page-body">
                 <div class="container-fluid">
-                    <div class="alert alert-primary" style="margin-top: 20px; font-size: 1.2em; text-align: center;">
-                        Chào mừng đến với hệ thống quản lý của Shipper
+                    <div class="card mt-4 shadow">
+                        <div class="custom-title" style="background: #17a589;">
+                            Danh Sách Các Đơn Đang Giao
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table id="deliveringOrdersTable" class="table table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col">Mã đơn</th>
+                                            <th scope="col">Địa chỉ</th>
+                                            <th scope="col">Tên người nhận</th>
+                                            <th scope="col">Số điện thoại</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col">Cập nhật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dữ liệu sẽ được render bằng JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Container-fluid Ends-->
+
+                <style>
+                    .custom-title {
+                        background: #17a589;
+                        color: #fff;
+                        font-size: 2rem;
+                        font-weight: bold;
+                        text-align: center;
+                        border-radius: 10px 10px 0 0;
+                        padding: 18px 0 18px 0;
+                        margin-bottom: 0;
+                        letter-spacing: 1px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                    }
+                    .card.mt-4 {
+                        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+                        border-radius: 12px;
+                        margin-top: 32px !important;
+                    }
+                    .card-body.p-0 {
+                        padding-top: 24px !important;
+                    }
+                    .badge-status {
+                        min-width: 48px;
+                        font-size: 0.95em;
+                        padding: 6px 10px;
+                        border-radius: 8px;
+                    }
+                    /* Ép màu vàng chuẩn cho badge bg-warning */
+                    .badge.bg-warning {
+                        background-color: #198754 !important; /* xanh đậm */
+                        color: #fff !important;
+                    }
+                    /* Ép màu đỏ chuẩn cho badge bg-danger */
+                    .badge.bg-danger {
+                        background-color: #dc3545 !important;
+                        color: #fff !important;
+                    }
+                    /* Màu status đơn hàng */
+                    .badge-status.status-layhang {
+                        background-color: #17a589 !important;
+                        color: #fff !important;
+                    }
+                    .badge-status.status-danggiao {
+                        background-color: #0d6efd !important;
+                        color: #fff !important;
+                    }
+                    .badge-status.status-dagiao {
+                        background-color: #a927f9 !important;
+                        color: #fff !important;
+                    }
+                    .badge-status.status-hoan {
+                        background-color: #ffc107 !important;
+                        color: #212529 !important;
+                    }
+                    .badge-status.status-thatbai {
+                        background-color: #dc3545 !important;
+                        color: #fff !important;
+                    }
+                    .sidebar-links .sidebar-list a.sidebar-link {
+                        background: none !important;
+                        box-shadow: none !important;
+                        border: none !important;
+                        color: #fff !important;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        transition: background 0.2s, color 0.2s;
+                    }
+                    .sidebar-links .sidebar-list a.sidebar-link i {
+                        color: #fff !important;
+                        margin-right: 8px;
+                    }
+                    .sidebar-links .sidebar-list a.sidebar-link.active {
+                        background: rgba(255,255,255,0.15) !important;
+                        color: #fff !important;
+                    }
+                    .sidebar-links .sidebar-list a.sidebar-link.active i {
+                        color: #fff !important;
+                    }
+                    .sidebar-links .sidebar-list a.sidebar-link:hover:not(.active),
+                    .sidebar-links .sidebar-list a.sidebar-link:focus:not(.active) {
+                        background: none !important;
+                        color: #fff !important;
+                    }
+                </style>
 
                 <!-- footer start-->
                 <div class="container-fluid">
@@ -236,6 +317,7 @@
 
     <!-- Theme js -->
     <script src="assets/js/script.js"></script>
+    <script src="../assets/jsLogic/Order.js"></script>
 
     <!-- component-loader js -->
     <script src="components/component-loader.js"></script>

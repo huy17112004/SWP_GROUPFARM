@@ -1,14 +1,12 @@
 package service;
 
 import dao.*;
-import dto.OrderCustomerDTO;
-import dto.OrderItemCustomerDTO;
-import dto.OrderResponseDTO;
-import dto.PlaceOrderRequestDTO;
+import dto.*;
 import entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import util.JpaUtil;
+import controller.ShipperOrderServlet.ApiResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,11 +21,9 @@ public class WholesaleOrderService {
             int customerId,
             LocalDateTime deliveryDate,
             int addressId,
-            double avgSpeedKmph
-    ) {
+            double avgSpeedKmph) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
-
 
         OrderResponseDTO resp = new OrderResponseDTO();
         try {
@@ -36,7 +32,7 @@ public class WholesaleOrderService {
             WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
             StockLotDAO stockLotDAO = new StockLotDAO(em);
             AddressDAO addressDAO = new AddressDAO(em);
-            SellerService  sellerService = new SellerService();
+            SellerService sellerService = new SellerService();
             ShippingService shippingService = new ShippingService();
             WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
@@ -49,12 +45,11 @@ public class WholesaleOrderService {
 
             // 1. Tìm kho đích
             Address deliveryAddress = addressDAO.findById(addressId);
-            float latitude =  deliveryAddress.getLatitude();
+            float latitude = deliveryAddress.getLatitude();
             float longitude = deliveryAddress.getLongitude();
             List<Warehouse> warehouses = warehouseDAO.findAll();
             Warehouse destWarehouse = shippingService.findNearestWarehouseOnTime(
-                    warehouses, latitude, longitude, deliveryDate, avgSpeedKmph
-            );
+                    warehouses, latitude, longitude, deliveryDate, avgSpeedKmph);
             if (destWarehouse == null) {
                 resp.setSuccess(false);
                 resp.setMessage("Địa chỉ quá xa, không thể giao hàng đúng hạn!");
@@ -171,8 +166,7 @@ public class WholesaleOrderService {
                     items,
                     total,
                     order.getEstimatedShipFee(),
-                    order.getStatus()
-            );
+                    order.getStatus());
         } finally {
             em.close();
         }
@@ -184,7 +178,69 @@ public class WholesaleOrderService {
                 item.getProduct().getProductName(),
                 item.getPrice(),
                 item.getQuantity(),
-                item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
-        );
+                item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+    }
+
+    public List<PendingOrderInfoDTO> getPendingOrderBasicInfo() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+            List<Object[]> rawList = orderDAO.findPendingOrderBasicInfo();
+            List<PendingOrderInfoDTO> result = new ArrayList<>();
+            for (Object[] row : rawList) {
+                result.add(new PendingOrderInfoDTO(
+                        (Integer) row[0],
+                        (String) row[1],
+                        (String) row[2],
+                        (String) row[3],
+                        (String) row[4]));
+            }
+            return result;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<DeliveringOrderInfoDTO> getDeliveringOrderBasicInfo() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+            List<Object[]> rawList = orderDAO.findDeliveringOrderBasicInfo();
+            List<DeliveringOrderInfoDTO> result = new ArrayList<>();
+            for (Object[] row : rawList) {
+                result.add(new DeliveringOrderInfoDTO(
+                        (Integer) row[0],
+                        (String) row[1],
+                        (String) row[2],
+                        (String) row[3],
+                        (String) row[4]));
+            }
+            return result;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<CompletedOrderInfoDTO> getCompletedOrderBasicInfo() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+            List<Object[]> rawList = orderDAO.findCompletedOrderBasicInfo();
+            List<CompletedOrderInfoDTO> result = new ArrayList<>();
+            for (Object[] row : rawList) {
+                result.add(new CompletedOrderInfoDTO(
+                        (Integer) row[0], // id
+                        (String) row[1], // address
+                        (String) row[2], // contactPerson
+                        (String) row[3], // phone
+                        (String) row[4], // status
+                        (LocalDateTime) row[5], // completedAt
+                        (String) row[6] // note
+                ));
+            }
+            return result;
+        } finally {
+            em.close();
+        }
     }
 }

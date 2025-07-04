@@ -17,6 +17,5 @@ public class Manager extends Account {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    private List<DealRequest>  dealRequests;
-
+    private List<DealRequest> dealRequests;
 }

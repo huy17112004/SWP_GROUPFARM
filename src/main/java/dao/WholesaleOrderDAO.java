@@ -40,4 +40,39 @@ public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
         q.setParameter("id", orderId);
         return q.getSingleResult();
     }
+
+    public List<WholesaleOrder> findPendingOrders() {
+        String jpql = "SELECT o FROM WholesaleOrder o WHERE o.status = 'PENDING'";
+        return em.createQuery(jpql, WholesaleOrder.class).getResultList();
+    }
+
+    public List<Object[]> findPendingOrderBasicInfo() {
+        String jpql = "SELECT o.id, a.street, c.contactPerson, c.phone, o.note " +
+                "FROM WholesaleOrder o " +
+                "JOIN o.deliveryAddress a " +
+                "JOIN o.customer c " +
+                "WHERE o.status = 'PENDING'";
+        return em.createQuery(jpql, Object[].class).getResultList();
+    }
+
+    public List<Object[]> findDeliveringOrderBasicInfo() {
+        String jpql = "SELECT o.id, a.street, c.contactPerson, c.phone, o.status " +
+                "FROM WholesaleOrder o " +
+                "JOIN o.deliveryAddress a " +
+                "JOIN o.customer c " +
+                "WHERE o.status NOT IN ('PENDING', 'COMPLETED', 'CANCELLED', 'CREATED')";
+        return em.createQuery(jpql, Object[].class).getResultList();
+    }
+
+    public List<Object[]> findCompletedOrderBasicInfo() {
+        // Lấy các đơn hàng đã kết thúc và log vận chuyển cuối cùng của chúng
+        String jpql = "SELECT o.id, a.street, c.contactPerson, c.phone, o.status, sl.timestamp, sl.note " +
+                "FROM ShippingLog sl " +
+                "JOIN sl.order o " +
+                "JOIN o.deliveryAddress a " +
+                "JOIN o.customer c " +
+                "WHERE o.status IN ('COMPLETED', 'RETURNED', 'CANCELLED') " +
+                "AND sl.id = (SELECT MAX(sl2.id) FROM ShippingLog sl2 WHERE sl2.order.id = o.id)";
+        return em.createQuery(jpql, Object[].class).getResultList();
+    }
 }

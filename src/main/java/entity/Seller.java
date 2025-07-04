@@ -30,6 +30,6 @@ public class Seller extends Account {
     private String status;
 
     @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
-    private List<WholesaleOrder>  wholesaleOrders;
+    private List<WholesaleOrder> wholesaleOrders;
     // Getters & Setters...
 }

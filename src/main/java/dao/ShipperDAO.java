@@ -5,13 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
+
 public class ShipperDAO extends GenericDAO<Shipper> {
     public ShipperDAO(EntityManager em) {
         super(Shipper.class, em);
-    }
-
-    public void createAccount(Shipper shipper) {
-        save(shipper);
     }
 
     public Shipper findByUsername(String username) {
@@ -23,5 +21,10 @@ public class ShipperDAO extends GenericDAO<Shipper> {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<Shipper> getActiveShippers() {
+        String jpql = "SELECT s FROM Shipper s WHERE s.status = 'ACTIVE'";
+        return em.createQuery(jpql, Shipper.class).getResultList();
     }
 }

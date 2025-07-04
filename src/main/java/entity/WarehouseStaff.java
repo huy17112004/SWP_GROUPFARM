@@ -6,14 +6,13 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "WarehouseStaff")
-public class WarehouseStaff extends Account{
+public class WarehouseStaff extends Account {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseID")

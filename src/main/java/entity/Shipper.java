@@ -32,8 +32,8 @@ public class Shipper extends Account {
     @Column(name = "Status", nullable = false, length = 50)
     private String status;
 
-    @OneToOne(mappedBy = "shipper", fetch = FetchType.LAZY)
-    private ShippingLog shippingLog;
+    @OneToMany(mappedBy = "shipper", fetch = FetchType.LAZY)
+    private java.util.List<ShippingLog> shippingLogs;
 
     // Getters & Setters...
 }

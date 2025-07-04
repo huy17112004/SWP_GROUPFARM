@@ -30,16 +30,20 @@ function loadModal(url, selector) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Load header
-    loadComponent('components/header.html', 'header-placeholder', '.page-header')
+    // Lấy phần tử header-placeholder
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    let componentFile = 'components/header.html';
+    if (headerPlaceholder && headerPlaceholder.dataset.component) {
+        componentFile = 'components/' + headerPlaceholder.dataset.component;
+    }
+    loadComponent(componentFile, 'header-placeholder', '.page-header')
         .then(() => {
             if (typeof feather !== 'undefined') {
                 feather.replace();
             }
         });
-    
-    // Load logout modal
-    loadModal('components/header.html', '#staticBackdrop');
+    // Load logout modal tương ứng
+    loadModal(componentFile, '#staticBackdrop');
 });
 
 $(document).on("click", ".mode", function () {

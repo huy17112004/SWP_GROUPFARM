@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-
 @Entity
 @Getter
 @Setter
@@ -40,18 +39,15 @@ public class WholesaleCustomer extends Account {
     @Column(name = "Status", length = 20)
     private String status;
 
-    @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CustomerAddress> customerAddresses;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Contract> contract;
 
-    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Cart> cart;
 
-    @OneToOne(mappedBy = "customer",fetch = FetchType.LAZY)
-    private ShippingLog shippingLog;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<WholesaleOrder> orders;
 }
