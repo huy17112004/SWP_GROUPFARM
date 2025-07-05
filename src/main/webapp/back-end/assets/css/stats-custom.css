@@ -1,0 +1,467 @@
+/* Custom CSS for Statistics Dashboard */
+
+/* Stats Cards */
+.stats-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.stats-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 24px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover .stats-icon {
+    transform: scale(1.1);
+}
+
+/* Dashboard Cards */
+.dash-widget-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.dash-widget-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 20px;
+    color: white;
+}
+
+.dash-count h3 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.dash-widget-info h6 {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Progress Bars */
+.progress {
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+/* Charts */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 20px 0;
+}
+
+/* Tables */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table td {
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Badges */
+.badge {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.badge.bg-primary {
+    background-color: #007bff !important;
+}
+
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.bg-info {
+    background-color: #17a2b8 !important;
+}
+
+/* Activity Timeline */
+.activity-timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.activity-content h6 {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+}
+
+.activity-content p {
+    margin: 5px 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.activity-content small {
+    color: #adb5bd;
+    font-size: 12px;
+}
+
+/* Issue and Improvement Lists */
+.issue-list, .improvement-list {
+    padding: 0;
+}
+
+.issue-item, .improvement-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.issue-item {
+    background: #f8f9fa;
+    border-left: 4px solid #dc3545;
+}
+
+.improvement-item {
+    background: #e8f5e8;
+    border-left: 4px solid #28a745;
+}
+
+.issue-item:hover, .improvement-item:hover {
+    transform: translateX(5px);
+}
+
+.issue-icon {
+    margin-right: 15px;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.issue-content h6, .improvement-item h6 {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+}
+
+.issue-content p, .improvement-item p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Buttons */
+.btn-group .btn {
+    border-radius: 20px;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-block {
+    width: 100%;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Form Controls */
+.form-select, .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 20px;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dash-widget-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .dash-widget-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .activity-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .activity-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .issue-item, .improvement-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .issue-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-group .btn {
+        margin: 2px 0;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-card {
+        margin-bottom: 15px;
+    }
+    
+    .card-header, .card-body {
+        padding: 15px;
+    }
+    
+    .dash-count h3 {
+        font-size: 24px;
+    }
+    
+    .table-responsive {
+        font-size: 14px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background-color: #2d3748;
+        color: #e2e8f0;
+    }
+    
+    .card-header {
+        background-color: #4a5568;
+        border-bottom-color: #718096;
+    }
+    
+    .table th {
+        background-color: #4a5568;
+        color: #e2e8f0;
+        border-bottom-color: #718096;
+    }
+    
+    .table td {
+        border-bottom-color: #718096;
+        color: #e2e8f0;
+    }
+    
+    .activity-item {
+        background-color: #4a5568;
+    }
+    
+    .issue-item {
+        background-color: #4a5568;
+    }
+    
+    .improvement-item {
+        background-color: #2f5a2f;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Print Styles */
+@media print {
+    .btn, .btn-group {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+    }
+    
+    .stats-card {
+        break-inside: avoid;
+    }
+} 

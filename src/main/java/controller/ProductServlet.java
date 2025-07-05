@@ -55,4 +55,5 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(json);
     }
+
 }

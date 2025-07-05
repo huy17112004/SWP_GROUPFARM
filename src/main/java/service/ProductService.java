@@ -1,11 +1,13 @@
 package service;
 
 import dao.ProductDAO;
+import dto.ProductResponseDTO;
 import entity.Product;
 import jakarta.persistence.EntityManager;
 import util.JpaUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductService {
 
@@ -29,4 +31,24 @@ public class ProductService {
         }
     }
 
+    public Product findById(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO productDAO = new ProductDAO(em);
+            return productDAO.findById(id);
+        } finally {
+            em.close();
+        }
+    }
+
+
+    public List<Product> getAllProduct() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO productDAO = new ProductDAO(em);
+            return productDAO.findAll();
+        } finally {
+            em.close();
+        }
+    }
 }

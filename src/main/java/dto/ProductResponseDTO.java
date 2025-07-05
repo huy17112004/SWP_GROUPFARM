@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductResponseDTO {
     private String productName;
-    private int retailPrice;
+//    private int retailPrice;
     private BigDecimal wholesalePrice;
     private String description;
     private String imageUrl;
@@ -23,11 +23,11 @@ public class ProductResponseDTO {
 
     public ProductResponseDTO(Product product) {
         this.productName = product.getProductName();
-        this.retailPrice = product.getRetailPrice();
+//        this.retailPrice = product.getRetailPrice();
         this.wholesalePrice = product.getWholesalePrice();
         this.description = product.getDescription();
 
-        // map hình ảnh (giả sử có thuộc tính getImageUrl() trong ProductImage)
+
         this.imageUrl = product.getImages().get(0).getImageUrl();
 
         this.categoryName = product.getCategory().getCategoryName();
