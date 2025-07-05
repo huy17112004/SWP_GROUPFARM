@@ -49,4 +49,14 @@ public class ProductService {
             em.close();
         }
     }
+
+    public Product findById(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO productDAO = new ProductDAO(em);
+            return productDAO.findById(id);
+        } finally {
+            em.close();
+        }
+    }
 }

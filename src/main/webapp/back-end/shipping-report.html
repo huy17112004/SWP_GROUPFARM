@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo Giao hàng - GroupFarm Admin</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/feather.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/dark.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg header-nav">
+                <div class="navbar-header">
+                    <a id="mobile_btn" href="javascript:void(0);">
+                        <span class="bar-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </a>
+                    <a href="index.html" class="navbar-brand logo">
+                        <img src="assets/images/logo.png" class="img-fluid" alt="Logo">
+                    </a>
+                </div>
+                <div class="main-menu-wrapper">
+                    <div class="menu-header">
+                        <a href="index.html" class="menu-logo">
+                            <img src="assets/images/logo.png" class="img-fluid" alt="Logo">
+                        </a>
+                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    <ul class="main-nav">
+                        <li>
+                            <a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="revenue-stats.html"><i class="fas fa-chart-line"></i> <span>Thống kê Doanh thu</span></a>
+                        </li>
+                        <li>
+                            <a href="order-stats.html"><i class="fas fa-shopping-cart"></i> <span>Thống kê Đơn hàng</span></a>
+                        </li>
+                        <li>
+                            <a href="top-products.html"><i class="fas fa-star"></i> <span>Top Sản phẩm</span></a>
+                        </li>
+                        <li class="active">
+                            <a href="shipping-report.html"><i class="fas fa-truck"></i> <span>Báo cáo Giao hàng</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="nav header-navbar-rht">
+                    <li class="nav-item dropdown has-arrow logged-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                            <span class="user-img">
+                                <img class="rounded-circle" src="assets/images/avatar.jpg" width="31" alt="Admin">
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <div class="user-header">
+                                <div class="avatar avatar-sm">
+                                    <img src="assets/images/avatar.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                </div>
+                                <div class="user-text">
+                                    <h6>Admin</h6>
+                                    <p class="text-muted mb-0">Administrator</p>
+                                </div>
+                            </div>
+                            <a class="dropdown-item" href="profile-setting.html">Hồ sơ</a>
+                            <a class="dropdown-item" href="login.html">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="page-title">Báo cáo Giao hàng</h3>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Báo cáo Giao hàng</li>
+                            </ul>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary" onclick="loadShippingReport('today')">Hôm nay</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loadShippingReport('week')">Tuần này</button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loadShippingReport('month')">Tháng này</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Stats Cards -->
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-success">
+                                        <i class="feather-check-circle"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="successOrders">0</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Giao hàng thành công</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-danger">
+                                        <i class="feather-x-circle"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="failedOrders">0</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Giao hàng thất bại</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-warning">
+                                        <i class="feather-clock"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="avgDeliveryTime">0h</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Thời gian giao trung bình</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-info">
+                                        <i class="feather-percent"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="successRate">0%</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Tỷ lệ thành công</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Tỷ lệ Giao hàng</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="shippingRateChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Thời gian Giao hàng</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="deliveryTimeChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Performance -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Hiệu suất Giao hàng</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Khu vực</th>
+                                                <th>Tổng đơn hàng</th>
+                                                <th>Thành công</th>
+                                                <th>Thất bại</th>
+                                                <th>Tỷ lệ thành công</th>
+                                                <th>Thời gian trung bình</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="deliveryPerformanceTable">
+                                            <!-- Data will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Deliveries -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Giao hàng Gần đây</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã đơn hàng</th>
+                                                <th>Khách hàng</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thời gian giao</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentDeliveriesTable">
+                                            <!-- Data will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Issues -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Vấn đề Giao hàng</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="issue-list">
+                                    <div class="issue-item">
+                                        <div class="issue-icon text-danger">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="issue-content">
+                                            <h6>Địa chỉ không chính xác</h6>
+                                            <p>5 đơn hàng bị ảnh hưởng</p>
+                                        </div>
+                                    </div>
+                                    <div class="issue-item">
+                                        <div class="issue-icon text-warning">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="issue-content">
+                                            <h6>Giao hàng chậm</h6>
+                                            <p>3 đơn hàng bị trễ</p>
+                                        </div>
+                                    </div>
+                                    <div class="issue-item">
+                                        <div class="issue-icon text-info">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="issue-content">
+                                            <h6>Không liên lạc được</h6>
+                                            <p>2 đơn hàng bị ảnh hưởng</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Cải thiện Hiệu suất</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="improvement-list">
+                                    <div class="improvement-item">
+                                        <h6>✅ Tối ưu tuyến đường</h6>
+                                        <p>Giảm 15% thời gian giao hàng</p>
+                                    </div>
+                                    <div class="improvement-item">
+                                        <h6>✅ Cải thiện thông tin địa chỉ</h6>
+                                        <p>Giảm 20% lỗi giao hàng</p>
+                                    </div>
+                                    <div class="improvement-item">
+                                        <h6>✅ Đào tạo nhân viên</h6>
+                                        <p>Tăng 10% tỷ lệ thành công</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/feather.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        let shippingRateChart, deliveryTimeChart;
+
+        $(document).ready(function() {
+            loadShippingReport('today');
+            initCharts();
+        });
+
+        function loadShippingReport(period) {
+            // Update active button
+            $('.btn-group .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+            $(`button[onclick="loadShippingReport('${period}')"]`).removeClass('btn-outline-primary').addClass('btn-primary');
+
+            // Load shipping stats
+            $.ajax({
+                url: '/api/shipping-stats',
+                method: 'GET',
+                success: function(data) {
+                    updateShippingStats(data);
+                    updateCharts(data);
+                    updateDeliveryPerformance();
+                    updateRecentDeliveries();
+                },
+                error: function(xhr) {
+                    console.error('Error loading shipping report:', xhr);
+                }
+            });
+        }
+
+        function updateShippingStats(data) {
+            $('#successOrders').text(data.successOrders);
+            $('#failedOrders').text(data.failedOrders);
+            $('#successRate').text(data.successRate.toFixed(1) + '%');
+            $('#avgDeliveryTime').text('2.5h'); // Simulated data
+        }
+
+        function initCharts() {
+            // Shipping Rate Chart
+            const rateCtx = document.getElementById('shippingRateChart').getContext('2d');
+            shippingRateChart = new Chart(rateCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Thành công', 'Thất bại'],
+                    datasets: [{
+                        data: [0, 0],
+                        backgroundColor: ['#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Delivery Time Chart
+            const timeCtx = document.getElementById('deliveryTimeChart').getContext('2d');
+            deliveryTimeChart = new Chart(timeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                    datasets: [{
+                        label: 'Thời gian giao (giờ)',
+                        data: [2.5, 2.8, 2.3, 2.6, 2.4, 2.7, 2.2, 2.1],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts(data) {
+            // Update shipping rate chart
+            shippingRateChart.data.datasets[0].data = [data.successOrders, data.failedOrders];
+            shippingRateChart.update();
+        }
+
+        function updateDeliveryPerformance() {
+            const tableBody = $('#deliveryPerformanceTable');
+            tableBody.empty();
+
+            const areas = [
+                { name: 'Hà Nội', total: 45, success: 42, failed: 3, rate: 93.3, avgTime: '2.1h' },
+                { name: 'TP.HCM', total: 38, success: 35, failed: 3, rate: 92.1, avgTime: '2.8h' },
+                { name: 'Đà Nẵng', total: 25, success: 23, failed: 2, rate: 92.0, avgTime: '2.3h' },
+                { name: 'Cần Thơ', total: 18, success: 16, failed: 2, rate: 88.9, avgTime: '3.2h' }
+            ];
+
+            areas.forEach(function(area) {
+                const row = `
+                    <tr>
+                        <td>${area.name}</td>
+                        <td>${area.total}</td>
+                        <td><span class="text-success">${area.success}</span></td>
+                        <td><span class="text-danger">${area.failed}</span></td>
+                        <td><span class="text-primary">${area.rate}%</span></td>
+                        <td>${area.avgTime}</td>
+                    </tr>
+                `;
+                tableBody.append(row);
+            });
+        }
+
+        function updateRecentDeliveries() {
+            const tableBody = $('#recentDeliveriesTable');
+            tableBody.empty();
+
+            const deliveries = [
+                { id: '12345', customer: 'Nguyễn Văn A', address: 'Hà Nội', status: 'Thành công', time: '2.1h' },
+                { id: '12344', customer: 'Trần Thị B', address: 'TP.HCM', status: 'Đang giao', time: '1.8h' },
+                { id: '12343', customer: 'Lê Văn C', address: 'Đà Nẵng', status: 'Thất bại', time: '3.2h' },
+                { id: '12342', customer: 'Phạm Thị D', address: 'Cần Thơ', status: 'Thành công', time: '2.9h' }
+            ];
+
+            deliveries.forEach(function(delivery) {
+                const statusClass = delivery.status === 'Thành công' ? 'text-success' : 
+                                  delivery.status === 'Thất bại' ? 'text-danger' : 'text-warning';
+                
+                const row = `
+                    <tr>
+                        <td>#${delivery.id}</td>
+                        <td>${delivery.customer}</td>
+                        <td>${delivery.address}</td>
+                        <td><span class="${statusClass}">${delivery.status}</span></td>
+                        <td>${delivery.time}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye"></i> Xem chi tiết
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.append(row);
+            });
+        }
+
+        // Auto refresh every 5 minutes
+        setInterval(function() {
+            loadShippingReport('today');
+        }, 300000);
+    </script>
+
+    <style>
+        .issue-item, .improvement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .issue-item {
+            background: #f8f9fa;
+        }
+        .improvement-item {
+            background: #e8f5e8;
+        }
+        .issue-icon {
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        .issue-content h6, .improvement-item h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+        .issue-content p, .improvement-item p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</body>
+</html> 

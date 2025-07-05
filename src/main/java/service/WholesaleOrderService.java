@@ -4,7 +4,6 @@ import dao.*;
 import dto.OrderCustomerDTO;
 import dto.OrderItemCustomerDTO;
 import dto.OrderResponseDTO;
-import dto.PlaceOrderRequestDTO;
 import entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
