@@ -39,12 +39,6 @@ public class ShippingService {
 
     public BigDecimal calculateShippingFee(double distanceKm, List<Cart> carts, EntityManager em) {
         ShippingRequirementDAO shippingRequirementDAO = new ShippingRequirementDAO(em);
-//        double shippingFee = 0;
-//        for (Cart cart : carts) {
-//            shippingFee += distanceKm * cart.getQuantity() * (shippingRequirementDAO.findByProductId(cart.getProduct().getId()).getRatePerKmPerKg());
-//        }
-//
-//        return shippingFee;
 
         BigDecimal distance = BigDecimal.valueOf(distanceKm);
 

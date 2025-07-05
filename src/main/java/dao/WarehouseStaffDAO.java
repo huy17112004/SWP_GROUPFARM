@@ -10,6 +10,10 @@ public class WarehouseStaffDAO extends GenericDAO<WarehouseStaff> {
         super(WarehouseStaff.class, em);
     }
 
+    public void createAccount(WarehouseStaff warehouseStaff) {
+        save(warehouseStaff);
+    }
+
     public WarehouseStaff findByUsername(String username) {
         try {
             String jpql = "SELECT w FROM WarehouseStaff w WHERE w.username = :username";

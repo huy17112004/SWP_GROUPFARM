@@ -2,14 +2,17 @@ package service;
 
 import dao.WholesaleCustomerDAO;
 import entity.WholesaleCustomer;
+import util.EmailUtil;
 import validation.AccountValidation;
 import org.mindrot.jbcrypt.BCrypt;
 import jakarta.persistence.EntityManager;
 import util.JpaUtil;
 
+import java.time.LocalDateTime;
+
 public class WholesaleCustomerService {
-
-
+    private final WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(JpaUtil.getEntityManager());
+    // LOGIN
     public WholesaleCustomer login(String username, String password) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -29,20 +32,20 @@ public class WholesaleCustomerService {
     // SIGNUP
     public WholesaleCustomer signup(String username, String email, String password) {
         EntityManager em = JpaUtil.getEntityManager();
-        var tx = em.getTransaction();
-
         try {
-            tx.begin();
+            em.getTransaction().begin(); // Bắt đầu transaction
 
             WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
 
             // Xác thực dữ liệu đầu vào
             AccountValidation.validateAccountCreation(username, email, password, WholesaleCustomer.class);
 
-
+            // Kiểm tra username đã tồn tại chưa
             if (customerDAO.findByUsername(username) != null) {
                 throw new IllegalArgumentException("Username already exists");
             }
+
+            // Kiểm tra email đã tồn tại chưa
             if (customerDAO.findByEmail(email) != null) {
                 throw new IllegalArgumentException("Email already exists");
             }
@@ -56,36 +59,64 @@ public class WholesaleCustomerService {
             customer.setEmail(email);
             customer.setPassword(hashedPassword);
 
+            // Lưu khách hàng vào cơ sở dữ liệu
+            em.persist(customer); // Sử dụng persist của EntityManager
 
-            customerDAO.createAccount(customer);
+            em.getTransaction().commit(); // Commit transaction
 
-            tx.commit();
-
+            // Trả về khách hàng đã tạo
             return customer;
         } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback(); // rollback nếu có lỗi
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback(); // Rollback nếu có lỗi
             }
-            throw new RuntimeException("Signup failed: " + e.getMessage(), e);
+            // Ném lại exception để servlet có thể xử lý
+            throw e;
         } finally {
             em.close();
         }
     }
-    public void updateInfor(){
-        EntityManager em = JpaUtil.getEntityManager();
 
-    }
-    
-    /**
-     * Tìm customer theo email (dùng cho Google OAuth)
-     */
-    public WholesaleCustomer findByEmail(String email) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            WholesaleCustomerDAO customerDAO = new WholesaleCustomerDAO(em);
-            return customerDAO.findByEmail(email);
-        } finally {
-            em.close();
+    public void sendOtp(String email) {
+        WholesaleCustomer customer = customerDAO.findByEmail(email);
+        if (customer == null) {
+            throw new IllegalArgumentException("Email not found");
         }
+
+        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
+        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5);
+
+        customer.setOtp(otp);
+        customer.setOtpExpiredAt(expiryTime);
+        customerDAO.createOrUpdate(customer);
+
+        String subject = "Your OTP Code";
+        String content = "Your OTP code is: " + otp + "\nIt will expire in 5 minutes.";
+        EmailUtil.sendEmail(email, subject, content);
+    }
+
+    public boolean verifyOtp(String email, String otp) {
+        WholesaleCustomer customer = customerDAO.findByEmail(email);
+        if (customer == null || customer.getOtp() == null) {
+            return false;
+        }
+
+        return customer.getOtp().equals(otp)
+                && customer.getOtpExpiredAt().isAfter(LocalDateTime.now());
+    }
+
+    public void resetPassword(String email, String otp, String newPassword) {
+        if (!verifyOtp(email, otp)) {
+            throw new IllegalArgumentException("OTP is invalid or expired");
+        }
+
+        WholesaleCustomer customer = customerDAO.findByEmail(email);
+        String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+
+        customer.setPassword(hashedPassword);
+        customer.setOtp(null);
+        customer.setOtpExpiredAt(null);
+
+        customerDAO.createOrUpdate(customer);
     }
 }

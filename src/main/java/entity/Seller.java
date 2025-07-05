@@ -31,11 +31,5 @@ public class Seller extends Account {
 
     @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
     private List<WholesaleOrder>  wholesaleOrders;
-
-    public void addOrder(WholesaleOrder order) {
-        wholesaleOrders.add(order);
-        order.setSeller(this);
-    }
-
     // Getters & Setters...
 }

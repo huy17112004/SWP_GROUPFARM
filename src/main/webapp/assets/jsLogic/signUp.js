@@ -5,7 +5,7 @@ document.getElementById("signUpForm").addEventListener("submit", function (event
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    fetch("/api/signup/customer", {
+    fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password , email })
@@ -25,3 +25,4 @@ document.getElementById("signUpForm").addEventListener("submit", function (event
             alert("Có lỗi xảy ra, vui lòng thử lại sau.");
         });
 });
+    

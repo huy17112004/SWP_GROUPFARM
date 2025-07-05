@@ -2,6 +2,7 @@ package dao;
 
 import entity.WholesaleOrder;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,5 +29,16 @@ public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
             map.put(sellerId, count);
         }
         return map;
+    }
+
+    public WholesaleOrder findByIdWithItems(int orderId) {
+        TypedQuery<WholesaleOrder> q = em.createQuery(
+                "SELECT o FROM WholesaleOrder o " +
+                        " LEFT JOIN FETCH o.items i" +
+                        " LEFT JOIN FETCH i.product p" +
+                        " WHERE o.id = :id",
+                WholesaleOrder.class);
+        q.setParameter("id", orderId);
+        return q.getSingleResult();
     }
 }
