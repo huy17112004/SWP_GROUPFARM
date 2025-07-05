@@ -30,7 +30,7 @@ public class CategoryDAO {
      * @return list of categories
      */
     public List<Category> findAll() {
-        TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c ORDER BY c.categoryName", Category.class);
+        TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c", Category.class);
         return query.getResultList();
     }
 

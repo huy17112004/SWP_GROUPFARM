@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .page-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Pagination Demo</h1>
+        
+        <!-- Demo 1: Ít trang -->
+        <div class="demo-section">
+            <h3>Demo 1: Ít trang (3 trang)</h3>
+            <div class="page-info">
+                <strong>Trang hiện tại:</strong> <span id="current-page-1">0</span> / <span id="total-pages-1">3</span>
+            </div>
+            <nav aria-label="Pagination demo 1">
+                <ul class="pagination" id="pagination-1">
+                    <!-- Pagination sẽ được render ở đây -->
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Demo 2: Nhiều trang -->
+        <div class="demo-section">
+            <h3>Demo 2: Nhiều trang (15 trang)</h3>
+            <div class="page-info">
+                <strong>Trang hiện tại:</strong> <span id="current-page-2">7</span> / <span id="total-pages-2">15</span>
+            </div>
+            <nav aria-label="Pagination demo 2">
+                <ul class="pagination" id="pagination-2">
+                    <!-- Pagination sẽ được render ở đây -->
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Demo 3: Trang đầu -->
+        <div class="demo-section">
+            <h3>Demo 3: Trang đầu (20 trang)</h3>
+            <div class="page-info">
+                <strong>Trang hiện tại:</strong> <span id="current-page-3">0</span> / <span id="total-pages-3">20</span>
+            </div>
+            <nav aria-label="Pagination demo 3">
+                <ul class="pagination" id="pagination-3">
+                    <!-- Pagination sẽ được render ở đây -->
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Demo 4: Trang cuối -->
+        <div class="demo-section">
+            <h3>Demo 4: Trang cuối (25 trang)</h3>
+            <div class="page-info">
+                <strong>Trang hiện tại:</strong> <span id="current-page-4">24</span> / <span id="total-pages-4">25</span>
+            </div>
+            <nav aria-label="Pagination demo 4">
+                <ul class="pagination" id="pagination-4">
+                    <!-- Pagination sẽ được render ở đây -->
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Demo 5: Chỉ 1 trang -->
+        <div class="demo-section">
+            <h3>Demo 5: Chỉ 1 trang</h3>
+            <div class="page-info">
+                <strong>Trang hiện tại:</strong> <span id="current-page-5">0</span> / <span id="total-pages-5">1</span>
+            </div>
+            <nav aria-label="Pagination demo 5">
+                <ul class="pagination" id="pagination-5">
+                    <!-- Pagination sẽ được render ở đây -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <script type="module">
+        import { renderSmartPagination, attachPaginationEvents } from '../assets/jsLogic/pagination-loader.js';
+
+        // Demo 1: Ít trang
+        let currentPage1 = 0;
+        const totalPages1 = 3;
+        
+        function updateDemo1(page) {
+            currentPage1 = page;
+            document.getElementById('current-page-1').textContent = page;
+            renderSmartPagination('#pagination-1', totalPages1, page, 5);
+        }
+        
+        attachPaginationEvents('#pagination-1', updateDemo1);
+        updateDemo1(currentPage1);
+
+        // Demo 2: Nhiều trang
+        let currentPage2 = 7;
+        const totalPages2 = 15;
+        
+        function updateDemo2(page) {
+            currentPage2 = page;
+            document.getElementById('current-page-2').textContent = page;
+            renderSmartPagination('#pagination-2', totalPages2, page, 5);
+        }
+        
+        attachPaginationEvents('#pagination-2', updateDemo2);
+        updateDemo2(currentPage2);
+
+        // Demo 3: Trang đầu
+        let currentPage3 = 0;
+        const totalPages3 = 20;
+        
+        function updateDemo3(page) {
+            currentPage3 = page;
+            document.getElementById('current-page-3').textContent = page;
+            renderSmartPagination('#pagination-3', totalPages3, page, 5);
+        }
+        
+        attachPaginationEvents('#pagination-3', updateDemo3);
+        updateDemo3(currentPage3);
+
+        // Demo 4: Trang cuối
+        let currentPage4 = 24;
+        const totalPages4 = 25;
+        
+        function updateDemo4(page) {
+            currentPage4 = page;
+            document.getElementById('current-page-4').textContent = page;
+            renderSmartPagination('#pagination-4', totalPages4, page, 5);
+        }
+        
+        attachPaginationEvents('#pagination-4', updateDemo4);
+        updateDemo4(currentPage4);
+
+        // Demo 5: Chỉ 1 trang
+        let currentPage5 = 0;
+        const totalPages5 = 1;
+        
+        function updateDemo5(page) {
+            currentPage5 = page;
+            document.getElementById('current-page-5').textContent = page;
+            renderSmartPagination('#pagination-5', totalPages5, page, 5);
+        }
+        
+        attachPaginationEvents('#pagination-5', updateDemo5);
+        updateDemo5(currentPage5);
+    </script>
+</body>
+</html> 

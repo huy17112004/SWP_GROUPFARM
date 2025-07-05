@@ -51,9 +51,9 @@ public class Product {
 
     /* 1 Category ↔ n Product */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "CategoryID", nullable = false)
     private Category category;
 
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ShippingRequirement shippingRequirement;
 }
