@@ -27,24 +27,24 @@ public class Contract {
     private boolean signedByCustomer;
 
     @Column(name = "SignedAt")
-    private Date signedAt;
+    private LocalDateTime signedAt;
 
     @Column(name = "Log", columnDefinition = "NVARCHAR(MAX)")
     private String log;
 
-    @Column(name = "CreateAt")
-    private Date createAt;
+    @Column(name = "CreatedAt")
+    private LocalDateTime createdAt;
 
     @Column(name = "Status", length = 255)
     private String status;
 
     /* 1 Customer ↔ n Contract */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "CustomerID", nullable = false)
     private WholesaleCustomer customer;
 
     /* 1 Contract ↔ n WholesaleOrder */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wholesaleOrderID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "wholesaleOrderID", nullable = false)
     private WholesaleOrder wholesaleOrder;
 }

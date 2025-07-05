@@ -31,11 +31,11 @@ public class StockLot {
     private Date expiredDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "ProductID", nullable = false)
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WarehouseID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "WarehouseID", nullable = false)
     private Warehouse warehouse;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockLot")

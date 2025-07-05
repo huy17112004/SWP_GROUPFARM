@@ -14,22 +14,34 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponseDTO {
+    private int productId;
     private String productName;
-//    private int retailPrice;
+    private int retailPrice;
     private BigDecimal wholesalePrice;
-    private String description;
     private String imageUrl;
     private String categoryName;
+    private String description;
 
     public ProductResponseDTO(Product product) {
-        this.productName = product.getProductName();
-//        this.retailPrice = product.getRetailPrice();
+        this.productId = product.getId();
+        this.productName = product.getProductName() != null ? product.getProductName() : "";
+        this.retailPrice = product.getRetailPrice();
         this.wholesalePrice = product.getWholesalePrice();
-        this.description = product.getDescription();
 
+        // Lấy image đầu tiên
+        if (product.getImages() != null && !product.getImages().isEmpty()) {
+            this.imageUrl = product.getImages().get(0).getImageUrl();
+        } else {
+            this.imageUrl = "";
+        }
 
-        this.imageUrl = product.getImages().get(0).getImageUrl();
-
-        this.categoryName = product.getCategory().getCategoryName();
+        // Category
+        if (product.getCategory() != null) {
+            this.categoryName = product.getCategory().getCategoryName() != null ?
+                    product.getCategory().getCategoryName() : "";
+        } else {
+            this.categoryName = "";
+        }
+        this.description = product.getDescription() != null ? product.getDescription() : "";
     }
 }

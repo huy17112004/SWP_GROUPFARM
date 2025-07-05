@@ -58,6 +58,6 @@ public class Product {
     @JoinColumn(name = "CategoryID", nullable = false)   //Insertable = false, updatable = false)
     private Category category;
 
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ShippingRequirement shippingRequirement;
 }
