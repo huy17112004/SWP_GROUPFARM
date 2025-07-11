@@ -88,4 +88,15 @@ public class ProductDAO extends GenericDAO<Product> {
             em.close();
         }
     }
+
+    public int totalProducts() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            String jpql = "SELECT COUNT(p.id) FROM Product p";
+            Long result = em.createQuery(jpql, Long.class).getSingleResult();
+            return result != null ? result.intValue() : 0;
+        } finally {
+            em.close();
+        }
+    }
 }

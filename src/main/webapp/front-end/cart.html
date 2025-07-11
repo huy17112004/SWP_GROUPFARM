@@ -2081,22 +2081,22 @@
                     </td>
 
                     <td class="quantity">
-                        <h4 class="table-title text-content">Quantity</h4>
-                        <div class="quantity-price">
-                            <div class="cart_qty">
-                                <div class="input-group">
-                                    <button type="button" class="btn qty-left-minus" data-type="minus">
-                                        <i class="fa fa-minus ms-0"></i>
-                                    </button>
-                                    <input class="form-control input-number qty-input" type="text"
-                                           name="quantity" value="${quantity}">
-                                    <button type="button" class="btn qty-right-plus" data-type="plus">
-                                        <i class="fa fa-plus ms-0"></i>
-                                    </button>
-                                </div>
+                    <h4 class="table-title text-content">Quantity</h4>
+                    <div class="quantity-price">
+                        <div class="cart_qty">
+                            <div class="input-group">
+                                <button type="button" class="btn qty-left-minus" data-product-id="${item.productId}">
+                                    <i class="fa fa-minus ms-0"></i>
+                                </button>
+                                <input id="qty-${item.productId}" class="form-control input-number qty-input" type="text"
+                                       name="quantity" value="${quantity}" readonly>
+                                <button type="button" class="btn qty-right-plus" data-product-id="${item.productId}">
+                                    <i class="fa fa-plus ms-0"></i>
+                                </button>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
                     <td class="subtotal">
                         <h4 class="table-title text-content">Total</h4>
@@ -2108,15 +2108,28 @@
                             Save for later
                         </button>
 
-                        <button class="btn btn-danger btn-sm"onclick="removeFromCart(${item.productId})">
-                            Remove
+                        <button class="btn btn-sm text-white" style="background-color: #e63946;" onclick="removeFromCart(${item.productId})">
+                            <i class="fa fa-trash"></i> Remove
                         </button>
                     </td>
-
                 </tr>
                 `;
 
                         tbody.innerHTML += row;
+                    });
+                    // Gắn lại sự kiện sau khi render
+                    document.querySelectorAll('.qty-left-minus').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const productId = button.getAttribute('data-product-id');
+                            updateQuantity(parseInt(productId), -1);
+                        });
+                    });
+
+                    document.querySelectorAll('.qty-right-plus').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const productId = button.getAttribute('data-product-id');
+                            updateQuantity(parseInt(productId), 1);
+                        });
                     });
                 })
                 .catch(err => {

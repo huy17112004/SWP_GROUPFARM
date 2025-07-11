@@ -99,8 +99,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td><img src="${item.imageUrl || 'default.jpg'}" alt="image" width="60"/></td>
                     <td>${item.productName}</td> 
                     <td>${item.wholesalePrice.toLocaleString('vi-VN')} VND</td>
-                    <td>${item.quantity}</td>
-                    <td> 
+                     <td>
+                        <div class="input-group">
+                            <button type="button" class="btn qty-left-minus" data-type="minus" data-product-id="${item.productId}">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <input id="qty-${item.productId}" class="form-control text-center" 
+                                   type="text" value="${item.quantity}" readonly style="width: 60px;">
+                            <button type="button" class="btn qty-right-plus" data-type="plus" data-product-id="${item.productId}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </td>
                         <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.productId})">Remove</button>
                     </td>
                 </tr>
@@ -129,8 +139,62 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(err => alert("Lỗi khi xóa: " + err.message));
 }
+function updateQuantity(productId, change) {
+    const input = document.getElementById(`qty-${productId}`);
+    let newQty = parseInt(input.value || "0") + change;
 
+    if (newQty <= 0) {
+        if (confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")) {
+            removeFromCart(productId);
+        }
+        return;
+    }
 
+    // Gửi yêu cầu PUT để cập nhật số lượng
+    fetch("/api/cart", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userId: 1, // giả lập userId
+            productId: productId,
+            quantity: newQty
+        })
+    })
+        .then(res => {
+            if (!res.ok) throw new Error("Không thể cập nhật số lượng.");
+            return res.json();
+        })
+        .then(data => {
+            input.value = newQty;
+            loadCart(); // nếu muốn cập nhật toàn bộ
+        })
+        .catch(err => {
+            alert("Lỗi cập nhật số lượng: " + err.message);
+        });
+}
+
+// Bắt sự kiện khi nhấn + hoặc -
+document.addEventListener("DOMContentLoaded", () => {
+    loadCart();
+
+    // Bắt sự kiện động sau khi render xong table
+    document.body.addEventListener("click", function (e) {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        const type = btn.dataset.type;
+        const productId = btn.dataset.productId;
+        if (!type || !productId) return;
+
+        const input = document.getElementById(`qty-${productId}`);
+        if (!input) return;
+
+        const change = type === "plus" ? 1 : -1;
+        updateQuantity(productId, change);
+    });
+});
+
+    
     // Tự động gọi loadCart khi trang giỏ hàng sẵn sàng
     document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("cart-table-body")) {

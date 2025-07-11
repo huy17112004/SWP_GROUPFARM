@@ -1,6 +1,8 @@
+console.log("Revenue.js loaded");
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("revenueForm");
     const resultDiv = document.getElementById("revenueResult");
+    const revenueText = document.getElementById("totalRevenue");
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -10,39 +12,40 @@ document.addEventListener("DOMContentLoaded", function () {
         if (period) {
             url += `?period=${encodeURIComponent(period)}`;
         }
+        console.log("Fetch URL:", url); // 👈 THÊM DÒNG NÀY
+
 
         fetch(url, {
             method: "GET",
             credentials: "include"
         })
-        .then(response => {
-            if (!response.ok) throw new Error("Không thể lấy dữ liệu doanh thu");
-            return response.json();
-        })
-        .then(data => {
-            // Hiển thị dữ liệu doanh thu theo các trường của RevenueDTO
-            let html = "";
-            if (data.period === "today") {
-                html += `<p><strong>Doanh thu hôm nay:</strong> ${data.todayRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-            } else if (data.period === "week") {
-                html += `<p><strong>Doanh thu tuần này:</strong> ${data.weekRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-            } else if (data.period === "month") {
-                html += `<p><strong>Doanh thu tháng này:</strong> ${data.monthRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-            } else if (data.period === "year") {
-                html += `<p><strong>Doanh thu năm nay:</strong> ${data.yearRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-            } else {
-                html += `<p><strong>Doanh thu hôm nay:</strong> ${data.todayRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-                html += `<p><strong>Doanh thu tuần này:</strong> ${data.weekRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-                html += `<p><strong>Doanh thu tháng này:</strong> ${data.monthRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-                html += `<p><strong>Doanh thu năm nay:</strong> ${data.yearRevenue ?? 0} ${data.currency ?? "VND"}</p>`;
-            }
-            resultDiv.innerHTML = html;
-        })
-        .catch(error => {
-            resultDiv.innerHTML = `<span style=\"color:red\">${error.message}</span>`;
-        });
+            .then(response => {
+                if (!response.ok) throw new Error("Không thể lấy dữ liệu doanh thu");
+                return response.json();
+            })
+            .then(data => {
+                let text = "0 VND";
+                if (data.period === "today" && data.todayRevenue) {
+                    text = `${data.todayRevenue} VND`;
+                } else if (data.period === "week" && data.weekRevenue) {
+                    text = `${data.weekRevenue} VND`;
+                } else if (data.period === "month" && data.monthRevenue) {
+                    text = `${data.monthRevenue} VND`;
+                } else if (data.period === "year" && data.yearRevenue) {
+                    text = `${data.yearRevenue} VND`;
+                } else {
+                    const total = (data.todayRevenue || 0) +
+                        (data.weekRevenue || 0) +
+                        (data.monthRevenue || 0) +
+                        (data.yearRevenue || 0);
+                    text = `${total} VND`;
+                }
+
+                revenueText.textContent = text;
+                resultDiv.innerHTML = `<small>(Kỳ: ${data.period ?? "Tất cả"})</small>`;
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<span style="color:red">${error.message}</span>`;
+            });
     });
 });
-
-
-

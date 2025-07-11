@@ -1,10 +1,9 @@
 package dao;
 
-import dto.ShippingStatsDTO;
 import dto.TopProductDTO;
 import entity.WholesaleOrder;
 import jakarta.persistence.EntityManager;
-
+import dto.ShippingOrderDTO;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,30 +37,22 @@ public class StatsDAO  extends GenericDAO{
         return count != null ? count.intValue() : 0;
     }
 
-    public ShippingStatsDTO getShippingStatsToday() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        Date startOfDay = cal.getTime();
-        cal.add(Calendar.DATE, 1);
-        Date endOfDay = cal.getTime();
 
-        String jpqlSuccess = "SELECT COUNT(o.id) FROM WholesaleOrder o WHERE o.createdAt >= :start AND o.createdAt < :end AND o.status = 'COMPLETED'";
-        String jpqlFailed = "SELECT COUNT(o.id) FROM WholesaleOrder o WHERE o.createdAt >= :start AND o.createdAt < :end AND o.status IN ('FAILED', 'CANCELLED')";
+    public List<ShippingOrderDTO> getAllPendingOrShippedOrders() {
+        String jpql = """
+        SELECT new dto.ShippingOrderDTO(
+            o.id,
+            p.productName,
+            o.status,
+            o.totalPrice
+        )
+        FROM WholesaleOrder o
+        JOIN o.items i
+        JOIN i.product p
+        WHERE o.status IN ('SHIPPED', 'PENDING')
+    """;
 
-        int success = ((Long) em.createQuery(jpqlSuccess, Long.class)
-                .setParameter("start", startOfDay)
-                .setParameter("end", endOfDay)
-                .getSingleResult()).intValue();
-
-        int failed = ((Long) em.createQuery(jpqlFailed, Long.class)
-                .setParameter("start", startOfDay)
-                .setParameter("end", endOfDay)
-                .getSingleResult()).intValue();
-
-        return new ShippingStatsDTO(success, failed);
+        return em.createQuery(jpql, ShippingOrderDTO.class).getResultList();
     }
 
 
@@ -80,7 +71,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'COMPLETED'";
+                "AND o.status = 'SHIPPED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfDay)
@@ -107,7 +98,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'COMPLETED'";
+                "AND o.status = 'SHIPPED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfWeek)
@@ -134,7 +125,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'COMPLETED'";
+                "AND o.status = 'SHIPPED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfMonth)
@@ -159,7 +150,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'COMPLETED'";
+                "AND o.status = 'SHIPPED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfYear)
@@ -184,7 +175,7 @@ public class StatsDAO  extends GenericDAO{
                 "JOIN oi.order o " +
                 "WHERE o.createdAt >= :startDate " +
                 "AND o.createdAt < :endDate " +
-                "AND o.status = 'COMPLETED' " +
+                "AND o.status = 'SHIPPED' " +
                 "GROUP BY p.id, p.productName " +
                 "ORDER BY totalQuantity DESC";
 
@@ -269,6 +260,15 @@ public class StatsDAO  extends GenericDAO{
 
         return getTopProducts(limit, startOfMonth, endOfMonth);
     }
+
+    public int getTotalSoldQuantity() {
+        String jpql = "SELECT COALESCE(SUM(oi.quantity), 0) FROM WholesaleOrderItem oi " +
+                "JOIN oi.order o " +
+                "WHERE o.status = 'SHIPPED'";
+        Long totalSold = em.createQuery(jpql, Long.class).getSingleResult();
+        return totalSold != null ? totalSold.intValue() : 0;
+    }
+
 }
 
 

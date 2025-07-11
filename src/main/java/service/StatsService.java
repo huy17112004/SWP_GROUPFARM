@@ -1,18 +1,18 @@
 package service;
 
+import dao.ProductDAO;
 import dao.StatsDAO;
-import dao.WholesaleOrderDAO;
+import dto.ShippingOrderDTO;
 import dto.RevenueDTO;
-import dto.ShippingStatsDTO;
 import dto.StatsDTO;
 import dto.TopProductDTO;
-import entity.WholesaleOrder;
+import entity.Product;
 import jakarta.persistence.EntityManager;
 import util.JpaUtil;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class StatsService {
+public class  StatsService {
 
 
     public RevenueDTO getRevenueStats() {
@@ -79,6 +79,18 @@ public class StatsService {
     }
 
 
+        public List<ShippingOrderDTO> getAllPendingOrShippedOrders() {
+            EntityManager em = JpaUtil.getEntityManager();
+            try {
+                StatsDAO dao = new StatsDAO(em);
+                return dao.getAllPendingOrShippedOrders();
+            } finally {
+                em.close();
+            }
+        }
+
+
+
     public StatsDTO getOrdersToday() {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -95,15 +107,7 @@ public class StatsService {
         }
     }
 
-    public ShippingStatsDTO getShippingStatsToday() { // kiểm tra trạng thái đơn hàng
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            StatsDAO statsDAO = new StatsDAO(em);
-            return statsDAO.getShippingStatsToday();
-        } finally {
-            if (em != null && em.isOpen()) em.close();
-        }
-    }
+
 
     // sản phẩm bán chạy hôm nay
     public List<TopProductDTO> getTopProductsToday(int limit) {
@@ -116,7 +120,7 @@ public class StatsService {
         }
     }
 
-// sản phẩm bán chạy hàng tuần
+    // sản phẩm bán chạy hàng tuần
     public List<TopProductDTO> getTopProductsThisWeek(int limit) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -138,7 +142,7 @@ public class StatsService {
         }
     }
 
-    // lấy sản phẩm bán chạy tuùy chỉnh theo thời gian
+    // lấy sản phẩm bán chạy tùy chỉnh theo thời gian
     public List<TopProductDTO> getTopProductsByPeriod(String period, int limit) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -159,5 +163,35 @@ public class StatsService {
             if (em != null && em.isOpen()) em.close();
         }
     }
+    public List<Product> findAll() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO productDAO = new ProductDAO(em);
+            return productDAO.findAll();
+        } finally {
+            em.close();
+        }
+    }
+
+    public int countAllProducts() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            ProductDAO dao = new ProductDAO(em);
+            return dao.totalProducts();
+        } finally {
+            em.close();
+        }
+    }
+
+    public int getTotalSoldQuantity() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            StatsDAO statsDAO = new StatsDAO(em);
+            return statsDAO.getTotalSoldQuantity();
+        } finally {
+            if (em != null && em.isOpen()) em.close();
+        }
+    }
+
 }
 

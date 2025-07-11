@@ -17,7 +17,7 @@ public class ProductService {
             ProductDAO productDAO = new ProductDAO(em);
             return productDAO.findAll();
         } finally {
-            em.close();
+            em.close(); 
         }
     }
 
@@ -42,13 +42,14 @@ public class ProductService {
     }
 
 
-    public List<Product> getAllProduct() {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            ProductDAO productDAO = new ProductDAO(em);
-            return productDAO.findAll();
-        } finally {
-            em.close();
-        }
-    }
+//    public int countAllProducts() {
+//        EntityManager em = JpaUtil.getEntityManager();
+//        try {
+//            ProductDAO dao = new ProductDAO(em);
+//            return dao.totalProducts();
+//        } finally {
+//            em.close();
+//        }
+//    }
+
 }

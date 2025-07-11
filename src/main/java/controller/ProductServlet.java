@@ -21,6 +21,31 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+//        String action = request.getParameter("action");
+//
+//        // Nếu yêu cầu là đếm số lượng sản phẩm
+//        if ("count".equalsIgnoreCase(action)) {
+//            int total = productService.countAllProducts();
+//            response.setContentType("application/json;charset=UTF-8");
+//            response.getWriter().write("{\"total\":" + total + "}");
+//            return;
+//        }
+//        // Trả về tất cả sản phẩm
+//        if ("all".equalsIgnoreCase(action)) {
+//            List<Product> products = productService.findAll();
+//            List<ProductResponseDTO> dtoList = products.stream()
+//                    .map(ProductResponseDTO::new)
+//                    .collect(Collectors.toList());
+//
+//            String json = new Gson().toJson(dtoList);
+//            response.setContentType("application/json;charset=UTF-8");
+//            response.getWriter().write(json);
+//            return;
+//        }
+
+
         // Lấy tham số tìm kiếm
         String categoryIdsParam = request.getParameter("categoryIds");
         String minPriceParam = request.getParameter("minPrice");

@@ -22,11 +22,12 @@ public class WishListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         Object accountId = (session != null) ? session.getAttribute("accountId") : null;
-        if (accountId == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
-            return;
+
+
+        int userId = 1;
+        if (accountId != null) {
+            userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
         }
-        int userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
 
         String pathInfo = req.getPathInfo();
         resp.setContentType("application/json;charset=UTF-8");
@@ -49,13 +50,14 @@ public class WishListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession(false);
         Object accountId = (session != null) ? session.getAttribute("accountId") : null;
-        if (accountId == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
-            return;
+
+       
+        int userId = 1;
+        if (accountId != null) {
+            userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
         }
-        int userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
 
         try {
             int productId = Integer.parseInt(req.getParameter("productId"));
@@ -72,11 +74,12 @@ public class WishListServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
         Object accountId = (session != null) ? session.getAttribute("accountId") : null;
-        if (accountId == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
-            return;
+
+
+        int userId = 1;
+        if (accountId != null) {
+            userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
         }
-        int userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
 
         String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {

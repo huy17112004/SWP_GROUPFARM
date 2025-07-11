@@ -3,6 +3,7 @@ package service;
 import dao.ProductListDAO;
 import entity.Product;
 import entity.Category;
+import entity.ShippingRequirement;
 import util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -73,6 +74,17 @@ public class ProductListService {
             ProductListDAO dao = new ProductListDAO(em);
             Product p = dao.findById(id);
             if (p == null) return false;
+
+            // Tải ShippingRequirement nếu tồn tại
+            ShippingRequirement sr = p.getShippingRequirement();
+            if (sr != null && !em.contains(sr)) {
+                sr = em.merge(sr); // đảm bảo entity nằm trong persistence context
+            }
+
+            // Xóa shipping requirement trước (nếu có)
+            if (sr != null) {
+                em.remove(sr);
+            }
             dao.delete(p);
             tx.commit();
             return true;

@@ -14,16 +14,20 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponseDTO {
+    private int id; // QHuy thêm
     private String productName;
-//    private int retailPrice;
+    private int retailPrice;
     private BigDecimal wholesalePrice;
     private String description;
     private String imageUrl;
     private String categoryName;
+    private Integer quantity; // Số lượng bán ra
+
 
     public ProductResponseDTO(Product product) {
+        this.id = product.getId(); // Qhuy thêm
         this.productName = product.getProductName();
-//        this.retailPrice = product.getRetailPrice();
+        this.retailPrice = product.getRetailPrice();
         this.wholesalePrice = product.getWholesalePrice();
         this.description = product.getDescription();
 

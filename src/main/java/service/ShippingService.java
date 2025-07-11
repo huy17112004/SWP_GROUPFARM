@@ -1,18 +1,13 @@
 package service;
 
 import dao.ShippingRequirementDAO;
-import dao.StatsDAO;
-import dao.WarehouseDAO;
-import dto.ShippingStatsDTO;
 import entity.Address;
 import entity.Cart;
 import entity.Warehouse;
 import jakarta.persistence.EntityManager;
-import util.JpaUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 
