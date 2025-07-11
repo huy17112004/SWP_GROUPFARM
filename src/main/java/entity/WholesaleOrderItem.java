@@ -40,4 +40,7 @@ public class WholesaleOrderItem {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderItem")
     private List<DealRequest> dealRequests;
+
+    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderItemAllocation>  orderItemAllocations;
 }

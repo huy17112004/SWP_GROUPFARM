@@ -210,5 +210,6 @@ export function attachQuickViewEvents(productsOrObj) {
             const type = modal.querySelector('.brand-list li:nth-child(3) h6');
             if (type) type.textContent = prod.categoryName || '';
         });
+
     });
 }

@@ -137,7 +137,7 @@ public class DealRequestService {
             dr.setRespondedAt(LocalDateTime.now());
             dr.getOrderItem().setPrice(dr.getProposedPrice());
             dr.getOrderItem().setSubTotal(dr.getProposedPrice().multiply(BigDecimal.valueOf(dr.getOrderItem().getQuantity())));
-
+            dr.getOrderItem().getOrder().setTotalPrice();
             em.getTransaction().commit();
 
             // 5. Trả về DTO

@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fastkart">
+    <meta name="keywords" content="Fastkart">
+    <meta name="author" content="Fastkart">
+    <link rel="icon" href="../assets/images/favicon/1.png" type="image/x-icon">
+    <title>Deal - Thương lượng giá</title>
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap">
+
+    <!-- bootstrap css -->
+    <link id="rtl-link" rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
+
+    <!-- Iconly css -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/bulk-style.css">
+
+    <!-- Template css -->
+    <link id="color-link" rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    
+    <!-- Custom CSS for deal page -->
+    <style>
+        .order-info-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .product-item {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .product-image {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .price-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .chat-container {
+            height: 500px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .message.sent {
+            justify-content: flex-end;
+        }
+        
+        .message.received {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+        
+        .message.sent .message-content {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .message.received .message-content {
+            background-color: white;
+            border: 1px solid #dee2e6;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 10px 15px;
+        }
+        
+        .chat-input button {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-badge {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        
+        .seller-info {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .deal-status {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .deal-status.negotiating {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+        
+        .deal-status.accepted {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        
+        .deal-status.rejected {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        
+        .deal-status.none {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 400px;
+                margin-top: 20px;
+            }
+            
+            .product-item .row {
+                flex-direction: column;
+            }
+            
+            .product-item .col-md-2,
+            .product-item .col-md-4,
+            .product-item .col-md-3 {
+                width: 100%;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loader Start -->
+    <div class="fullpage-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <!-- Loader End -->
+
+    <!-- Header Start -->
+    <div id="header-placeholder"></div>
+    <!-- Header End -->
+
+    <!-- Breadcrumb Section Start -->
+    <section class="breadcrumb-section pt-0">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-contain">
+                        <h2>Thương lượng giá</h2>
+                        <nav>
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i class="fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="user-dashboard.html">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item active">Thương lượng giá</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Deal Section Start -->
+    <section class="user-dashboard-section section-b-space">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <!-- Order Information Column -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="fa-solid fa-money-bill-wave me-2"></i>
+                                <span id="pageTitle">Thương lượng giá</span> - Đơn hàng <span id="orderCode"></span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Order Info -->
+                            <div class="order-info-card">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6><i class="fa-solid fa-info-circle me-2"></i>Thông tin đơn hàng</h6>
+                                        <p><strong>Mã đơn hàng:</strong> <span id="orderCodeInfo"></span></p>
+                                        <p><strong>Ngày tạo:</strong> <span id="orderDate"></span></p>
+                                        <p><strong>Trạng thái:</strong> <span id="orderStatus"></span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6><i class="fa-solid fa-calculator me-2"></i>Tổng tiền</h6>
+                                        <p><strong>Tổng tiền hàng:</strong> <span id="subtotal"></span></p>
+                                        <p><strong>Phí vận chuyển:</strong> <span id="shipFee"></span></p>
+                                        <p><strong>Tổng tiền:</strong> <span id="totalPrice" class="fw-bold"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seller Info -->
+                            <div class="seller-info">
+                                <h6><i class="fa-solid fa-store me-2"></i>Thông tin người bán</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Tên cửa hàng:</strong> <span id="sellerName"></span></p>
+                                        <p><strong>Email:</strong> <span id="sellerEmail"></span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Số điện thoại:</strong> <span id="sellerPhone"></span></p>
+                                        <p><strong>Địa chỉ:</strong> <span id="sellerAddress"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Products List -->
+                            <h6><i class="fa-solid fa-shopping-bag me-2"></i>Danh sách sản phẩm</h6>
+                            <div id="productsList">
+                                <!-- Products will be loaded here -->
+                            </div>
+                            
+                            <!-- Confirm Order Button -->
+                            <div class="mt-4" id="confirmOrderSection" style="display: none;">
+                                <div class="alert alert-info">
+                                    <i class="fa-solid fa-info-circle me-2"></i>
+                                    <strong>Lưu ý:</strong> Sau khi xác nhận đơn hàng, bạn sẽ không thể thực hiện deal giá nữa và đơn hàng sẽ chuyển sang giai đoạn cọc.
+                                </div>
+                                <button type="button" id="confirmOrderBtn" class="btn btn-success btn-lg">
+                                    <i class="fa-solid fa-check-circle me-2"></i>
+                                    Xác nhận đơn hàng
+                                </button>
+                            </div>
+                            
+                            <!-- Deposit Phase Notice -->
+                            <div class="mt-4" id="depositPhaseSection" style="display: none;">
+                                <div class="alert alert-success">
+                                    <i class="fa-solid fa-money-bill-wave me-2"></i>
+                                    <strong>Giai đoạn cọc:</strong> Đơn hàng đã được xác nhận và chuyển sang giai đoạn cọc. Bạn có thể chat với seller để thực hiện việc cọc và ký hợp đồng.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Column -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="chat-container">
+                                <div class="chat-header">
+                                    <i class="fa-solid fa-comments me-2"></i>
+                                    <span id="chatTitle">Chat với người bán</span>
+                                </div>
+                                <div class="chat-messages" id="chatMessages">
+                                    <!-- Messages will be loaded here -->
+                                </div>
+                                <div class="chat-input">
+                                    <div class="chat-input-container">
+                                        <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." class="form-control">
+                                        <button type="button" id="sendMessageBtn" class="btn btn-primary">
+                                            <i class="fa-solid fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Deal Section End -->
+
+    <!-- Footer Section Start -->
+    <div id="footer-placeholder"></div>
+    <!-- Footer Section End -->
+
+    <!-- latest jquery-->
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- jquery ui-->
+    <script src="../assets/js/jquery-ui.min.js"></script>
+
+    <!-- Bootstrap js-->
+    <script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/bootstrap/bootstrap-notify.min.js"></script>
+    <script src="../assets/js/bootstrap/popper.min.js"></script>
+
+    <!-- feather icon js-->
+    <script src="../assets/js/feather/feather.min.js"></script>
+    <script src="../assets/js/feather/feather-icon.js"></script>
+
+    <!-- Lazyload Js -->
+    <script src="../assets/js/lazysizes.min.js"></script>
+
+    <!-- Slick js-->
+    <script src="../assets/js/slick/slick.js"></script>
+    <script src="../assets/js/slick/custom_slick.js"></script>
+
+    <!-- Quantity js -->
+    <script src="../assets/js/quantity-2.js"></script>
+
+    <!-- Nav & tab upside js -->
+    <script src="../assets/js/nav-tab.js"></script>
+
+    <!-- script js -->
+    <script src="../assets/js/script.js"></script>
+
+    <!-- theme setting js -->
+    <script src="../assets/js/theme-setting.js"></script>
+
+    <!-- Custom script for deal page -->
+    <script>
+        let currentOrderId = null;
+        let currentOrder = null;
+        let dealRequests = null;
+        let lastMessageTime = null;
+        let refreshInterval = null;
+
+        $(document).ready(function() {
+            // Get orderId from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            currentOrderId = urlParams.get('orderId');
+            
+            if (!currentOrderId) {
+                alert('Không tìm thấy thông tin đơn hàng!');
+                window.location.href = 'user-dashboard.html';
+                return;
+            }
+
+            loadOrderDetails();
+            loadDealRequests();
+            loadChatMessages();
+            
+            // Start auto-refresh for new messages every 3 seconds
+            refreshInterval = setInterval(checkNewMessages, 3000);
+            
+            // Set up message sending
+            $('#sendMessageBtn').click(sendMessage);
+            $('#messageInput').keypress(function(e) {
+                if (e.which === 13) { // Enter key
+                    sendMessage();
+                }
+            });
+            
+            // Set up confirm order button
+            $('#confirmOrderBtn').click(confirmOrder);
+            
+            // Cleanup on page unload
+            $(window).on('beforeunload', function() {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+            });
+        });
+
+        function loadOrderDetails() {
+            $.ajax({
+                url: '/api/orders/' + currentOrderId,
+                method: 'GET',
+                success: function(order) {
+                    currentOrder = order;
+                    if (!currentOrder) {
+                        alert('Không tìm thấy thông tin đơn hàng!');
+                        window.location.href = 'user-dashboard.html';
+                        return;
+                    }
+                    displayOrderDetails();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading order details:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('Có lỗi xảy ra khi tải thông tin đơn hàng!');
+                    }
+                }
+            });
+        }
+
+        function displayOrderDetails() {
+            // Update order info
+            $('#orderCode').text(currentOrder.orderId);
+            $('#orderCodeInfo').text(currentOrder.orderId);
+            $('#orderDate').text(currentOrder.createdAt ? new Date(currentOrder.createdAt).toLocaleDateString('vi-VN') : 'N/A');
+            $('#orderStatus').html(`<span class="badge status-badge ${getStatusClass(currentOrder.status)}">${getStatusText(currentOrder.status)}</span>`);
+            
+            // Calculate and display prices - Fix the calculation logic
+            const totalAmount = parseFloat(currentOrder.totalAmount) || 0;
+            const shippingFee = parseFloat(currentOrder.shippingFee) || 0;
+            const subtotal = totalAmount - shippingFee;
+            
+            $('#subtotal').text(formatVND(Math.max(0, subtotal))); // Ensure subtotal is not negative
+            $('#shipFee').text(formatVND(shippingFee));
+            $('#totalPrice').text(formatVND(totalAmount));
+            
+            // Update seller info (placeholder for now)
+            $('#sellerName').text('Cửa hàng ABC');
+            $('#sellerEmail').text('seller@example.com');
+            $('#sellerPhone').text('0123456789');
+            $('#sellerAddress').text('123 Đường ABC, Quận 1, TP.HCM');
+            
+            // Show/hide sections based on status
+            if (currentOrder.status === 'NEGOTIATING') {
+                $('#pageTitle').text('Thương lượng giá');
+                $('#chatTitle').text('Chat với người bán');
+                $('#confirmOrderSection').show();
+                $('#depositPhaseSection').hide();
+            } else if (currentOrder.status === 'DEPOSIT') {
+                $('#pageTitle').text('Giai đoạn cọc');
+                $('#chatTitle').text('Chat về việc cọc');
+                $('#confirmOrderSection').hide();
+                $('#depositPhaseSection').show();
+            } else {
+                $('#pageTitle').text('Thông tin đơn hàng');
+                $('#chatTitle').text('Chat với người bán');
+                $('#confirmOrderSection').hide();
+                $('#depositPhaseSection').hide();
+            }
+            
+            // Products will be displayed after deal requests are loaded
+        }
+
+        function loadDealRequests() {
+            $.ajax({
+                url: '/deal-requests/orders/' + currentOrderId,
+                method: 'GET',
+                success: function(deals) {
+                    dealRequests = deals;
+                    displayProducts();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading deal requests:', error);
+                    dealRequests = [];
+                    displayProducts();
+                }
+            });
+        }
+
+        function getDealStatusForItem(orderItemId) {
+            if (!dealRequests || dealRequests.length === 0) {
+                return null;
+            }
+            
+            // Tìm deal request mới nhất cho order item này
+            const itemDeals = dealRequests.filter(deal => deal.orderItemId === orderItemId);
+            if (itemDeals.length === 0) {
+                return null;
+            }
+            
+            // Sắp xếp theo thời gian tạo và lấy deal mới nhất
+            itemDeals.sort((a, b) => new Date(b.requestedAt) - new Date(a.requestedAt));
+            return itemDeals[0].status;
+        }
+
+        function displayProducts() {
+            const productsList = $('#productsList');
+            productsList.empty();
+            
+            if (!currentOrder.items || currentOrder.items.length === 0) {
+                productsList.html('<p class="text-muted">Không có sản phẩm nào trong đơn hàng</p>');
+                return;
+            }
+            
+            currentOrder.items.forEach(item => {
+                const itemImage = item.productImage && item.productImage.trim() !== '' ? 
+                    item.productImage : '../assets/images/product/1.png';
+                const itemName = item.productName || 'Sản phẩm không xác định';
+                const itemQuantity = item.quantity || 0;
+                const itemPrice = formatVND(item.unitPrice);
+                const itemSubTotal = formatVND(item.subTotal);
+                
+                // Lấy deal status cho item này
+                const dealStatus = getDealStatusForItem(item.orderItemId);
+                
+                const productHtml = `
+                    <div class="product-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                <img src="${itemImage}" class="product-image" alt="${itemName}">
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="mb-1">${itemName}</h6>
+                                <p class="text-muted mb-0">Số lượng: ${itemQuantity}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="price-info">
+                                    <p class="mb-1"><strong>Giá hiện tại:</strong> ${itemPrice}</p>
+                                    <p class="mb-0"><strong>Tổng:</strong> ${itemSubTotal}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="deal-status ${getDealStatusClass(dealStatus || 'none')}">
+                                    <small><strong>Trạng thái deal:</strong> ${getDealStatusText(dealStatus || 'none')}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productsList.append(productHtml);
+            });
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'CREATED':
+                case 'NEGOTIATING':
+                case 'UNKNOWN':
+                    return 'bg-warning';
+                case 'DEPOSIT':
+                case 'CONFIRMED':
+                case 'SHIPPED':
+                case 'DELIVERED':
+                    return 'bg-success';
+                case 'CANCELLED':
+                    return 'bg-danger';
+                case 'REJECTED':
+                    return 'bg-danger';
+                default:
+                    return 'bg-secondary';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'CREATED':
+                    return 'Đã tạo';
+                case 'NEGOTIATING':
+                    return 'Đang thương lượng';
+                case 'DEPOSIT':
+                    return 'Giai đoạn cọc';
+                case 'CONFIRMED':
+                    return 'Đã xác nhận';
+                case 'SHIPPED':
+                    return 'Đã gửi hàng';
+                case 'DELIVERED':
+                    return 'Đã giao hàng';
+                case 'CANCELLED':
+                    return 'Đã hủy';
+                case 'REJECTED':
+                    return 'Đã từ chối';
+                case 'UNKNOWN':
+                    return 'Không xác định';
+                default:
+                    return status;
+            }
+        }
+
+        function getDealStatusClass(dealStatus) {
+            switch(dealStatus) {
+                case 'PENDING':
+                    return 'negotiating';
+                case 'APPROVED':
+                    return 'accepted';
+                case 'REJECTED':
+                    return 'rejected';
+                case 'none':
+                    return 'none';
+                default:
+                    return 'none';
+            }
+        }
+
+        function getDealStatusText(dealStatus) {
+            switch(dealStatus) {
+                case 'PENDING':
+                    return 'Đang thương lượng';
+                case 'APPROVED':
+                    return 'Đã chấp nhận';
+                case 'REJECTED':
+                    return 'Đã từ chối';
+                default:
+                    return 'Chưa có deal';
+            }
+        }
+
+        function formatVND(amount) {
+            if (!amount) return '0 VNĐ';
+            return Math.floor(parseFloat(amount)).toLocaleString('vi-VN') + ' VNĐ';
+        }
+
+        function loadChatMessages() {
+            $.ajax({
+                url: '/messages',
+                method: 'GET',
+                data: {
+                    orderId: currentOrderId
+                },
+                success: function(messages) {
+                    displayMessages(messages);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading messages:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = 'login.html';
+                    } else {
+                        $('#chatMessages').html('<p class="text-muted text-center">Không thể tải tin nhắn</p>');
+                    }
+                }
+            });
+        }
+
+        function displayMessages(messages) {
+            const chatMessages = $('#chatMessages');
+            chatMessages.empty();
+            
+            if (!messages || messages.length === 0) {
+                chatMessages.html('<p class="text-muted text-center">Chưa có tin nhắn nào</p>');
+                return;
+            }
+            
+            messages.forEach(message => {
+                // Check both isSender and sender properties
+                const isSentByMe = message.isSender || message.sender;
+                const messageClass = isSentByMe ? 'sent' : 'received';
+                const messageTime = new Date(message.createdAt).toLocaleTimeString('vi-VN');
+                
+                const messageHtml = `
+                    <div class="message ${messageClass}" data-message-id="${message.id}">
+                        <div class="message-content">
+                            <div>${message.content}</div>
+                            <div class="message-time">${messageTime}</div>
+                        </div>
+                    </div>
+                `;
+                chatMessages.append(messageHtml);
+            });
+            
+            // Update last message time for auto-refresh
+            if (messages.length > 0) {
+                lastMessageTime = messages[messages.length - 1].createdAt;
+            }
+            
+            // Scroll to bottom
+            const chatMessagesElement = document.getElementById('chatMessages');
+            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+        }
+
+        function sendMessage() {
+            const messageText = $('#messageInput').val().trim();
+            if (!messageText) return;
+            
+            // Disable input and button while sending
+            $('#messageInput').prop('disabled', true);
+            $('#sendMessageBtn').prop('disabled', true);
+            
+            $.ajax({
+                url: '/messages',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    content: messageText,
+                    orderId: parseInt(currentOrderId)
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        // Clear input after successful send
+                        $('#messageInput').val('');
+                        
+                        // Don't add message manually, let auto-refresh handle it
+                        // This prevents duplication
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending message:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('Có lỗi xảy ra khi gửi tin nhắn!');
+                    }
+                },
+                complete: function() {
+                    // Re-enable input and button
+                    $('#messageInput').prop('disabled', false);
+                    $('#sendMessageBtn').prop('disabled', false);
+                    $('#messageInput').focus();
+                }
+            });
+        }
+
+        function confirmOrder() {
+            if (!confirm('Bạn có chắc chắn muốn xác nhận đơn hàng này? Sau khi xác nhận, bạn sẽ không thể thực hiện deal giá nữa.')) {
+                return;
+            }
+            
+            // Disable button to prevent multiple clicks
+            $('#confirmOrderBtn').prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin me-2"></i>Đang xử lý...');
+            
+            $.ajax({
+                url: '/api/orders/' + currentOrderId + '/confirm',
+                method: 'PUT',
+                success: function(response) {
+                    if (response.success) {
+                        alert('Xác nhận đơn hàng thành công! Đơn hàng đã chuyển sang giai đoạn cọc.');
+                        // Reload order details to update status
+                        loadOrderDetails();
+                        // Hide confirm button
+                        $('#confirmOrderSection').hide();
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error confirming order:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = 'login.html';
+                    } else {
+                        let errorMessage = 'Có lỗi xảy ra khi xác nhận đơn hàng!';
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.message) {
+                                errorMessage = response.message;
+                            }
+                        } catch (e) {
+                            // Ignore parsing error
+                        }
+                        alert(errorMessage);
+                    }
+                },
+                complete: function() {
+                    // Re-enable button
+                    $('#confirmOrderBtn').prop('disabled', false).html('<i class="fa-solid fa-check-circle me-2"></i>Xác nhận đơn hàng');
+                }
+            });
+        }
+
+        function checkNewMessages() {
+            if (!lastMessageTime) return;
+            
+            $.ajax({
+                url: '/messages',
+                method: 'GET',
+                data: {
+                    orderId: currentOrderId,
+                    since: lastMessageTime
+                },
+                success: function(newMessages) {
+                    if (newMessages && newMessages.length > 0) {
+                        // Add only new messages to chat
+                        newMessages.forEach(message => {
+                            // Check if message already exists to prevent duplication
+                            const existingMessage = $(`[data-message-id="${message.id}"]`);
+                            if (existingMessage.length > 0) {
+                                return; // Skip if message already exists
+                            }
+                            
+                            // Check both isSender and sender properties
+                            const isSentByMe = message.isSender || message.sender;
+                            const messageClass = isSentByMe ? 'sent' : 'received';
+                            const messageTime = new Date(message.createdAt).toLocaleTimeString('vi-VN');
+                            
+                            const messageHtml = `
+                                <div class="message ${messageClass}" data-message-id="${message.id}">
+                                    <div class="message-content">
+                                        <div>${message.content}</div>
+                                        <div class="message-time">${messageTime}</div>
+                                    </div>
+                                </div>
+                            `;
+                            $('#chatMessages').append(messageHtml);
+                        });
+                        
+                        // Update last message time
+                        lastMessageTime = newMessages[newMessages.length - 1].createdAt;
+                        
+                        // Scroll to bottom if user is near bottom
+                        const chatMessages = document.getElementById('chatMessages');
+                        const isNearBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 100;
+                        if (isNearBottom) {
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error checking new messages:', error);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                feather.replace();
+            });
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+                feather.replace();
+            });
+    </script>
+</body>
+
+</html> 

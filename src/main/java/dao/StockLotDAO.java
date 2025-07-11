@@ -49,7 +49,7 @@ public class StockLotDAO {
         int minDays = req != null ? req.getMinExpiryDaysRequired() : 0;
 
         List<StockLot> allLots = em.createQuery(
-                        "SELECT s FROM StockLot s WHERE s.product.id = :pid", StockLot.class)
+                        "SELECT s FROM StockLot s WHERE s.product.id = :pid ORDER BY s.expiredDate", StockLot.class)
                 .setParameter("pid", productId)
                 .getResultList();
 

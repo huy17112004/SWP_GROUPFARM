@@ -25,7 +25,23 @@ public class OrderServlet extends HttpServlet {
         // Kỳ vọng URL: /api/orders/{orderId}
         String path = req.getPathInfo(); // ví dụ "/123"
         if (path == null || path.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Chưa chỉ định orderId");
+            // Get all orders for current customer
+            HttpSession session = req.getSession(false);
+            Integer customerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+            if (customerId == null) {
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                resp.setContentType("application/json;charset=UTF-8");
+                resp.getWriter().write(gson.toJson(new MessageResponse("Bạn chưa đăng nhập!", false)));
+                return;
+            }
+            try {
+                var orders = wholesaleOrderService.getAllOrdersForCustomer(customerId);
+                resp.setContentType("application/json;charset=UTF-8");
+                resp.getWriter().write(gson.toJson(orders));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi server");
+            }
             return;
         }
 
@@ -105,6 +121,87 @@ public class OrderServlet extends HttpServlet {
             response.getWriter().write(gson.toJson(
                     new OrderResponseDTO(false, "Lỗi hệ thống: " + e.getMessage(), null, null, null)
             ));
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        
+        HttpSession session = req.getSession(false);
+        Integer customerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+        if (customerId == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.getWriter().write(gson.toJson(new MessageResponse("Bạn chưa đăng nhập!", false)));
+            return;
+        }
+
+        // Kỳ vọng URL: /api/orders/{orderId}/confirm
+        String path = req.getPathInfo(); // ví dụ "/123/confirm"
+        if (path == null || path.equals("/")) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL không hợp lệ");
+            return;
+        }
+
+        String[] parts = path.split("/");
+        if (parts.length != 3 || !"confirm".equals(parts[2])) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "URL không hợp lệ");
+            return;
+        }
+
+        int orderId;
+        try {
+            orderId = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "orderId phải là số");
+            return;
+        }
+
+        try {
+            boolean success = wholesaleOrderService.confirmOrder(orderId, customerId);
+            if (success) {
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.getWriter().write(gson.toJson(new MessageResponse("Xác nhận đơn hàng thành công!", true)));
+            } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write(gson.toJson(new MessageResponse("Không thể xác nhận đơn hàng!", false)));
+            }
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson(new MessageResponse(ex.getMessage(), false)));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write(gson.toJson(new MessageResponse("Lỗi server: " + ex.getMessage(), false)));
+        }
+    }
+
+    // Helper class for error messages
+    private static class MessageResponse {
+        private String message;
+        private boolean success;
+
+        public MessageResponse(String message, boolean success) {
+            this.message = message;
+            this.success = success;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setSuccess(boolean success) {
+            this.success = success;
         }
     }
 }
