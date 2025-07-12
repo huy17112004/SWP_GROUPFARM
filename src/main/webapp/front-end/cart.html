@@ -225,56 +225,56 @@
                                             </button>
 
                                             <div class="onhover-div">
-                                                <ul class="cart-list">
-                                                    <li class="product-box-contain">
-                                                        <div class="drop-cart">
-                                                            <a href="product-left-thumbnail.html" class="drop-image">
-                                                                <img src="../assets/images/vegetable/product/1.png"
-                                                                    class="blur-up lazyload" alt="">
-                                                            </a>
+<!--                                                <ul class="cart-list">-->
+<!--                                                    <li class="product-box-contain">-->
+<!--                                                        <div class="drop-cart">-->
+<!--                                                            <a href="product-left-thumbnail.html" class="drop-image">-->
+<!--                                                                <img src="../assets/images/vegetable/product/1.png"-->
+<!--                                                                    class="blur-up lazyload" alt="">-->
+<!--                                                            </a>-->
 
-                                                            <div class="drop-contain">
-                                                                <a href="product-left-thumbnail.html">
-                                                                    <h5>Fantasy Crunchy Choco Chip Cookies</h5>
-                                                                </a>
-                                                                <h6><span>1 x</span> $80.58</h6>
-                                                                <button class="close-button close_button">
-                                                                    <i class="fa-solid fa-xmark"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+<!--                                                            <div class="drop-contain">-->
+<!--                                                                <a href="product-left-thumbnail.html">-->
+<!--                                                                    <h5>Fantasy Crunchy Choco Chip Cookies</h5>-->
+<!--                                                                </a>-->
+<!--                                                                <h6><span>1 x</span> $80.58</h6>-->
+<!--                                                                <button class="close-button close_button">-->
+<!--                                                                    <i class="fa-solid fa-xmark"></i>-->
+<!--                                                                </button>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </li>-->
 
-                                                    <li class="product-box-contain">
-                                                        <div class="drop-cart">
-                                                            <a href="product-left-thumbnail.html" class="drop-image">
-                                                                <img src="../assets/images/vegetable/product/2.png"
-                                                                    class="blur-up lazyload" alt="">
-                                                            </a>
+<!--                                                    <li class="product-box-contain">-->
+<!--                                                        <div class="drop-cart">-->
+<!--                                                            <a href="product-left-thumbnail.html" class="drop-image">-->
+<!--                                                                <img src="../assets/images/vegetable/product/2.png"-->
+<!--                                                                    class="blur-up lazyload" alt="">-->
+<!--                                                            </a>-->
 
-                                                            <div class="drop-contain">
-                                                                <a href="product-left-thumbnail.html">
-                                                                    <h5>Peanut Butter Bite Premium Butter Cookies 600 g
-                                                                    </h5>
-                                                                </a>
-                                                                <h6><span>1 x</span> $25.68</h6>
-                                                                <button class="close-button close_button">
-                                                                    <i class="fa-solid fa-xmark"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+<!--                                                            <div class="drop-contain">-->
+<!--                                                                <a href="product-left-thumbnail.html">-->
+<!--                                                                    <h5>Peanut Butter Bite Premium Butter Cookies 600 g-->
+<!--                                                                    </h5>-->
+<!--                                                                </a>-->
+<!--                                                                <h6><span>1 x</span> $25.68</h6>-->
+<!--                                                                <button class="close-button close_button">-->
+<!--                                                                    <i class="fa-solid fa-xmark"></i>-->
+<!--                                                                </button>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </li>-->
+<!--                                                </ul>-->
 
-                                                <div class="price-box">
-                                                    <h5>Total :</h5>
-                                                    <h4 class="theme-color fw-bold">$106.58</h4>
-                                                </div>
+<!--                                                <div class="price-box">-->
+<!--                                                    <h5>Total :</h5>-->
+<!--                                                    <h4 class="theme-color fw-bold">$106.58</h4>-->
+<!--                                                </div>-->
 
                                                 <div class="button-group">
                                                     <a href="cart.html" class="btn btn-sm cart-button">View Cart</a>
-                                                    <a href="checkout.html" class="btn btn-sm cart-button theme-bg-color
-                                                    text-white">Checkout</a>
+<!--                                                    <a href="checkout.html" class="btn btn-sm cart-button theme-bg-color-->
+<!--                                                    text-white">Checkout</a>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -2104,9 +2104,7 @@
                     </td>
                     <td class="save-remove">
                         <h4 class="table-title text-content">Action</h4>
-                        <button class="btn btn-outline-secondary btn-sm"onclick="saveForLater(${item.productId})">
-                            Save for later
-                        </button>
+
 
                         <button class="btn btn-sm text-white" style="background-color: #e63946;" onclick="removeFromCart(${item.productId})">
                             <i class="fa fa-trash"></i> Remove
@@ -2145,5 +2143,28 @@
         });
     </script>
 </body>
+<!--function loadAllOrders() {-->
+<!--fetch("/api/shipping-stats")-->
+<!--.then(res => res.json())-->
+<!--.then(data => renderAllOrders(data))-->
+<!--.catch(err => console.error("Lỗi khi lấy đơn hàng:", err));-->
+<!--}-->
+
+<!--function renderAllOrders(orders) {-->
+<!--const tbody = document.getElementById("all-order-body");-->
+<!--tbody.innerHTML = "";-->
+
+<!--orders.forEach(order => {-->
+<!--const row = document.createElement("tr");-->
+<!--row.innerHTML = `-->
+<!--<td>#${order.orderId}</td>-->
+<!--<td>${order.productName}</td>-->
+<!--<td>${order.totalPrice ? Number(order.totalPrice).toLocaleString('vi-VN') + '₫' : '0₫'}</td>-->
+<!--<td><span class="${order.status === 'SHIPPED' ? 'badge bg-success' : 'badge bg-warning'}">${order.status}</span></td>-->
+<!--`;-->
+<!--tbody.appendChild(row);-->
+<!--}-->
+<!--)};-->
+
 
 </html>

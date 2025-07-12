@@ -312,8 +312,7 @@ function showEditModal(productId) {
     document.getElementById('editDescription').value = product.description || '';
     document.getElementById('editProductImageUrl').value = product.imageUrl || '';
     document.getElementById('editCategoryName').value = product.categoryName || '';
-
-    // Hiển thị modal
+    document.getElementById('editCategoryId').value = product.categoryId;
     const modal = new bootstrap.Modal(document.getElementById('edit-product'));
     modal.show();
 }
@@ -325,7 +324,8 @@ function saveEdit() {
         productName: document.getElementById('editProductName').value,
         wholesalePrice: parseFloat(document.getElementById('editWholesalePrice').value),
         description: document.getElementById('editDescription').value,
-        imageUrl: document.getElementById('editProductImageUrl').value
+        imageUrl: document.getElementById('editProductImageUrl').value,
+        categoryId: parseInt(document.getElementById('editCategoryId').value)// <-- thêm dòng này
     };
 
     fetch(`/api/products/${productId}`, {
@@ -352,6 +352,7 @@ function saveEdit() {
         });
 }
 
+
 // Khởi tạo khi DOM load xong
 document.addEventListener('DOMContentLoaded', function() {
     // Khởi tạo controls
@@ -359,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load sản phẩm trang đầu tiên
     loadProductsWithPagination(1);
+
 });
 
 // Export functions để sử dụng trong HTML
