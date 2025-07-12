@@ -40,4 +40,10 @@ public class StockLot {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockLot")
     private List<ExportOrderItem> exportOrderItems;
+
+    @OneToMany(mappedBy = "stockLot", fetch = FetchType.LAZY)
+    private List<OrderItemAllocation>  orderItemAllocations;
+
+    @OneToMany(mappedBy = "stockLot", fetch = FetchType.LAZY)
+    private List<StockTransferItem> stockTransferItems;
 }

@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Deal Giá</title>
+
+    <!-- Google font-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+
+    <!-- Linear Icon -->
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+
+    <!-- Feather icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    
+    <!-- Custom CSS for deal price page -->
+    <style>
+        .order-info-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .product-item {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .product-image {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .price-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .chat-container {
+            height: 500px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .message.sent {
+            justify-content: flex-end;
+        }
+        
+        .message.received {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+        
+        .message.sent .message-content {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .message.received .message-content {
+            background-color: white;
+            border: 1px solid #dee2e6;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 10px 15px;
+        }
+        
+        .chat-input button {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-badge {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        
+        .badge.order-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge.order-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .badge.order-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge.order-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .badge.order-cancle {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .badge.order-rejected {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .customer-info {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 400px;
+                margin-top: 20px;
+            }
+            
+            .product-item .row {
+                flex-direction: column;
+            }
+            
+            .product-item .col-md-2,
+            .product-item .col-md-4,
+            .product-item .col-md-3 {
+                width: 100%;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+        }
+        
+        /* Deal Modal Styling */
+        .deal-product-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .deal-product-info img {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .price-comparison {
+            font-size: 14px;
+        }
+        
+        .savings-positive {
+            color: #28a745;
+        }
+        
+        .savings-negative {
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- tap on top start-->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end-->
+
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div id="header-placeholder"></div>
+        <!-- Page Header Ends-->
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="sidebar-shipper.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="sidebar-shipper.html">
+                            <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                            <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png"
+                                alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="sidebar-shipper.html">
+                                        <i class="ri-home-line"></i>
+                                        <span>Dashboard</span>
+                                    </a>
+                                </li>                              
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-archive-line"></i>
+                                        <span>Orders</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="order-list-seller.html">Order List</a>
+                                        </li>
+                                        <li>
+                                            <a href="order-detail.html">Order Detail</a>
+                                        </li>
+                                        <li>
+                                            <a href="order-tracking.html">Order Tracking</a>
+                                        </li>
+                                    </ul>
+                                </li>                         
+
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+
+            <!-- Deal Price section Start -->
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Order Information Column -->
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">
+                                        <i class="ri-money-dollar-circle-line me-2"></i>
+                                        Deal Giá - Đơn hàng <span id="orderCode"></span>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Order Info -->
+                                    <div class="order-info-card">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6><i class="ri-information-line me-2"></i>Thông tin đơn hàng</h6>
+                                                <p><strong>Mã đơn hàng:</strong> <span id="orderCodeInfo"></span></p>
+                                                <p><strong>Ngày tạo:</strong> <span id="orderDate"></span></p>
+                                                <p><strong>Trạng thái:</strong> <span id="orderStatus"></span></p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6><i class="ri-calculator-line me-2"></i>Tổng tiền</h6>
+                                                <p><strong>Tổng tiền hàng:</strong> <span id="subtotal"></span></p>
+                                                <p><strong>Phí vận chuyển:</strong> <span id="shipFee"></span></p>
+                                                <p><strong>Tổng tiền:</strong> <span id="totalPrice" class="fw-bold"></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Customer Info -->
+                                    <div class="customer-info">
+                                        <h6><i class="ri-user-line me-2"></i>Thông tin khách hàng</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>Tên:</strong> <span id="customerName"></span></p>
+                                                <p><strong>Email:</strong> <span id="customerEmail"></span></p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>Số điện thoại:</strong> <span id="customerPhone"></span></p>
+                                                <p><strong>Địa chỉ giao hàng:</strong> <span id="deliveryAddress"></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Products List -->
+                                    <h6><i class="ri-shopping-bag-line me-2"></i>Danh sách sản phẩm</h6>
+                                    <div id="productsList">
+                                        <!-- Products will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Column -->
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body p-0">
+                                    <div class="chat-container">
+                                        <div class="chat-header">
+                                            <i class="ri-message-3-line me-2"></i>
+                                            Chat với khách hàng
+                                        </div>
+                                        <div class="chat-messages" id="chatMessages">
+                                            <!-- Messages will be loaded here -->
+                                        </div>
+                                        <div class="chat-input">
+                                            <div class="chat-input-container">
+                                                <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." class="form-control">
+                                                <button type="button" id="sendMessageBtn" class="btn btn-primary">
+                                                    <i class="ri-send-plane-fill"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- footer start-->
+                <div class="container-fluid">
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- Deal Price section End -->
+        </div>
+        <!-- Page Body End-->
+    </div>
+    <!-- page-wrapper End -->
+
+    <!-- Deal Modal Start -->
+    <div class="modal fade" id="dealModal" tabindex="-1" aria-labelledby="dealModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dealModalLabel">
+                        <i class="ri-money-dollar-circle-line me-2"></i>Đề xuất giá mới
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Thông tin sản phẩm</h6>
+                            <div id="dealProductInfo">
+                                <!-- Product info will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Đề xuất giá</h6>
+                            <form id="dealForm">
+                                <div class="mb-3">
+                                    <label for="proposedPrice" class="form-label">Giá đề xuất (VNĐ)</label>
+                                    <input type="number" class="form-control" id="proposedPrice" 
+                                           placeholder="Nhập giá đề xuất" min="0" step="1000" required>
+                                    <div class="form-text">Giá hiện tại: <span id="currentPrice"></span></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dealMessage" class="form-label">Ghi chú</label>
+                                    <textarea class="form-control" id="dealMessage" rows="3" 
+                                              placeholder="Nhập lý do đề xuất giá này..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="alert alert-info">
+                                        <strong>Tiết kiệm:</strong> <span id="savingsAmount">0 VNĐ</span><br>
+                                        <strong>Tỷ lệ giảm:</strong> <span id="discountRate">0%</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="submitDealBtn">
+                        <i class="ri-send-plane-line me-1"></i>Gửi đề xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Deal Modal End -->
+
+    <!-- latest js -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap js -->
+    <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- feather icon js -->
+    <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+
+    <!-- customizer js -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
+
+    <!-- Sidebar js -->
+    <script src="assets/js/config.js"></script>
+
+    <!-- Plugins js -->
+    <script src="assets/js/sidebar-menu.js"></script>
+    <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="assets/js/notify/index.js"></script>
+
+    <!-- sidebar effect -->
+    <script src="assets/js/sidebareffect.js"></script>
+
+    <!-- Theme js -->
+    <script src="assets/js/script.js"></script>
+
+    <!-- component-loader js -->
+    <script src="components/component-loader.js"></script>
+
+    <!-- Custom script for deal price page -->
+    <script>
+        let currentOrderId = null;
+        let currentOrder = null;
+        let lastMessageTime = null;
+        let refreshInterval = null;
+        let currentDealItem = null;
+
+        $(document).ready(function() {
+            // Get orderId from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            currentOrderId = urlParams.get('orderId');
+            
+            if (!currentOrderId) {
+                alert('Không tìm thấy thông tin đơn hàng!');
+                window.location.href = 'order-list-seller.html';
+                return;
+            }
+
+            loadOrderDetails();
+            loadChatMessages();
+            
+            // Start auto-refresh for new messages every 3 seconds
+            refreshInterval = setInterval(checkNewMessages, 3000);
+            
+            // Set up message sending
+            $('#sendMessageBtn').click(sendMessage);
+            $('#messageInput').keypress(function(e) {
+                if (e.which === 13) { // Enter key
+                    sendMessage();
+                }
+            });
+            
+            // Cleanup on page unload
+            $(window).on('beforeunload', function() {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+            });
+            
+            // Deal modal event handlers
+            $('#proposedPrice').on('input', calculateSavings);
+            $('#submitDealBtn').click(submitDeal);
+        });
+
+        function loadOrderDetails() {
+            $.ajax({
+                url: '../api/seller/orders',
+                method: 'GET',
+                success: function(orders) {
+                    currentOrder = orders.find(o => o.orderId === parseInt(currentOrderId));
+                    if (!currentOrder) {
+                        alert('Không tìm thấy thông tin đơn hàng!');
+                        window.location.href = 'order-list-seller.html';
+                        return;
+                    }
+                    displayOrderDetails();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading order details:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = '../login';
+                    } else {
+                        alert('Có lỗi xảy ra khi tải thông tin đơn hàng!');
+                    }
+                }
+            });
+        }
+
+        function displayOrderDetails() {
+            // Update order info
+            $('#orderCode').text(currentOrder.orderCode);
+            $('#orderCodeInfo').text(currentOrder.orderCode);
+            $('#orderDate').text(currentOrder.createdAt ? new Date(currentOrder.createdAt).toLocaleDateString('vi-VN') : 'N/A');
+            $('#orderStatus').html(`<span class="badge status-badge ${getStatusClass(currentOrder.status)}">${getStatusText(currentOrder.status)}</span>`);
+            
+            // Calculate and display prices
+            const subtotal = currentOrder.totalPrice && currentOrder.estimatedShipFee ? 
+                currentOrder.totalPrice - currentOrder.estimatedShipFee : 
+                (currentOrder.totalPrice || 0);
+            
+            $('#subtotal').text(formatVND(subtotal));
+            $('#shipFee').text(formatVND(currentOrder.estimatedShipFee));
+            $('#totalPrice').text(formatVND(currentOrder.totalPrice));
+            
+            // Update customer info
+            $('#customerName').text(currentOrder.customerName || 'N/A');
+            $('#customerEmail').text(currentOrder.customerEmail || 'N/A');
+            $('#customerPhone').text(currentOrder.customerPhone || 'N/A');
+            $('#deliveryAddress').text(currentOrder.deliveryAddress || 'N/A');
+            
+            // Display products
+            displayProducts();
+        }
+
+        function displayProducts() {
+            const productsList = $('#productsList');
+            productsList.empty();
+            
+            if (!currentOrder.items || currentOrder.items.length === 0) {
+                productsList.html('<p class="text-muted">Không có sản phẩm nào trong đơn hàng</p>');
+                return;
+            }
+            
+            currentOrder.items.forEach(item => {
+                const itemImage = item.productImage && item.productImage.trim() !== '' ? 
+                    item.productImage : 'assets/images/product/1.png';
+                const itemName = item.productName || 'Sản phẩm không xác định';
+                const itemQuantity = item.quantity || 0;
+                const itemPrice = formatVND(item.price);
+                const itemSubTotal = formatVND(item.subTotal);
+                
+                const productHtml = `
+                    <div class="product-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                <img src="${itemImage}" class="product-image" alt="${itemName}">
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="mb-1">${itemName}</h6>
+                                <p class="text-muted mb-0">Số lượng: ${itemQuantity}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="price-info">
+                                    <p class="mb-1"><strong>Giá hiện tại:</strong> ${itemPrice}</p>
+                                    <p class="mb-0"><strong>Tổng:</strong> ${itemSubTotal}</p>
+                                </div>
+                            </div>
+                                                            <div class="col-md-3">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="openDealModal(${item.itemId})">
+                                        <i class="ri-edit-line me-1"></i>Đề xuất giá
+                                    </button>
+                                </div>
+                        </div>
+                    </div>
+                `;
+                productsList.append(productHtml);
+            });
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'CREATED':
+                case 'NEGOTIATING':
+                case 'UNKNOWN':
+                    return 'order-pending';
+                case 'DEPOSIT':
+                    return 'order-info';
+                case 'CONFIRMED':
+                    return 'order-warning';
+                case 'SHIPPED':
+                case 'DELIVERED':
+                    return 'order-success';
+                case 'CANCELLED':
+                    return 'order-cancle';
+                case 'REJECTED':
+                    return 'order-rejected';
+                default:
+                    return 'order-pending';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'CREATED':
+                    return 'Đã tạo';
+                case 'NEGOTIATING':
+                    return 'Đang thương lượng';
+                case 'DEPOSIT':
+                    return 'Giai đoạn cọc';
+                case 'CONFIRMED':
+                    return 'Chờ manager xử lý';
+                case 'SHIPPED':
+                    return 'Đã gửi hàng';
+                case 'DELIVERED':
+                    return 'Đã giao hàng';
+                case 'CANCELLED':
+                    return 'Đã hủy';
+                case 'REJECTED':
+                    return 'Đã từ chối';
+                case 'UNKNOWN':
+                    return 'Không xác định';
+                default:
+                    return status;
+            }
+        }
+
+        function formatVND(amount) {
+            if (!amount) return '0 VNĐ';
+            return Math.floor(parseFloat(amount)).toLocaleString('vi-VN') + ' VNĐ';
+        }
+
+        function loadChatMessages() {
+            $.ajax({
+                url: '../messages',
+                method: 'GET',
+                data: {
+                    orderId: currentOrderId
+                },
+                success: function(messages) {
+                    displayMessages(messages);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading messages:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = '../login';
+                    } else {
+                        $('#chatMessages').html('<p class="text-muted text-center">Không thể tải tin nhắn</p>');
+                    }
+                }
+            });
+        }
+
+        function displayMessages(messages) {
+            const chatMessages = $('#chatMessages');
+            chatMessages.empty();
+            
+            if (!messages || messages.length === 0) {
+                chatMessages.html('<p class="text-muted text-center">Chưa có tin nhắn nào</p>');
+                return;
+            }
+            
+            messages.forEach(message => {
+                const messageClass = message.isSender ? 'sent' : 'received';
+                const messageTime = new Date(message.createdAt).toLocaleTimeString('vi-VN');
+                
+                const messageHtml = `
+                    <div class="message ${messageClass}" data-message-id="${message.id}">
+                        <div class="message-content">
+                            <div>${message.content}</div>
+                            <div class="message-time">${messageTime}</div>
+                        </div>
+                    </div>
+                `;
+                chatMessages.append(messageHtml);
+            });
+            
+            // Update last message time for auto-refresh
+            if (messages.length > 0) {
+                lastMessageTime = messages[messages.length - 1].createdAt;
+            }
+            
+            // Scroll to bottom
+            const chatMessagesElement = document.getElementById('chatMessages');
+            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+        }
+
+        function sendMessage() {
+            const messageText = $('#messageInput').val().trim();
+            if (!messageText) return;
+            
+            // Disable input and button while sending
+            $('#messageInput').prop('disabled', true);
+            $('#sendMessageBtn').prop('disabled', true);
+            
+            $.ajax({
+                url: '../messages',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    content: messageText,
+                    orderId: parseInt(currentOrderId)
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        // Clear input after successful send
+                        $('#messageInput').val('');
+                        
+                        // Don't add message manually, let auto-refresh handle it
+                        // This prevents duplication
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending message:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = '../login';
+                    } else {
+                        alert('Có lỗi xảy ra khi gửi tin nhắn!');
+                    }
+                },
+                complete: function() {
+                    // Re-enable input and button
+                    $('#messageInput').prop('disabled', false);
+                    $('#sendMessageBtn').prop('disabled', false);
+                    $('#messageInput').focus();
+                }
+            });
+        }
+
+        function checkNewMessages() {
+            if (!lastMessageTime) return;
+            
+            $.ajax({
+                url: '../messages',
+                method: 'GET',
+                data: {
+                    orderId: currentOrderId,
+                    since: lastMessageTime
+                },
+                success: function(newMessages) {
+                    if (newMessages && newMessages.length > 0) {
+                        // Add only new messages to chat
+                        newMessages.forEach(message => {
+                            // Check if message already exists to prevent duplication
+                            const existingMessage = $(`[data-message-id="${message.id}"]`);
+                            if (existingMessage.length > 0) {
+                                return; // Skip if message already exists
+                            }
+                            
+                            const messageClass = message.isSender ? 'sent' : 'received';
+                            const messageTime = new Date(message.createdAt).toLocaleTimeString('vi-VN');
+                            
+                            const messageHtml = `
+                                <div class="message ${messageClass}" data-message-id="${message.id}">
+                                    <div class="message-content">
+                                        <div>${message.content}</div>
+                                        <div class="message-time">${messageTime}</div>
+                                    </div>
+                                </div>
+                            `;
+                            $('#chatMessages').append(messageHtml);
+                        });
+                        
+                        // Update last message time
+                        lastMessageTime = newMessages[newMessages.length - 1].createdAt;
+                        
+                        // Scroll to bottom if user is near bottom
+                        const chatMessages = document.getElementById('chatMessages');
+                        const isNearBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 100;
+                        if (isNearBottom) {
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error checking new messages:', error);
+                }
+            });
+        }
+
+        function openDealModal(itemId) {
+            // Find the item in current order
+            currentDealItem = currentOrder.items.find(item => item.itemId === itemId);
+            if (!currentDealItem) {
+                alert('Không tìm thấy thông tin sản phẩm!');
+                return;
+            }
+            
+            console.log('Current deal item:', currentDealItem);
+            
+            // Load product info into modal
+            const productImage = currentDealItem.productImage && currentDealItem.productImage.trim() !== '' ? 
+                currentDealItem.productImage : 'assets/images/product/1.png';
+            
+            $('#dealProductInfo').html(`
+                <div class="deal-product-info">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <img src="${productImage}" alt="${currentDealItem.productName}" class="img-fluid">
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="mb-1">${currentDealItem.productName}</h6>
+                            <p class="text-muted mb-1">Số lượng: ${currentDealItem.quantity}</p>
+                            <p class="mb-0"><strong>Giá hiện tại:</strong> ${formatVND(currentDealItem.price)}</p>
+                        </div>
+                    </div>
+                </div>
+            `);
+            
+            // Set current price
+            $('#currentPrice').text(formatVND(currentDealItem.price));
+            
+            // Reset form
+            $('#proposedPrice').val('');
+            $('#dealMessage').val('');
+            $('#savingsAmount').text('0 VNĐ');
+            $('#discountRate').text('0%');
+            
+            // Show modal
+            $('#dealModal').modal('show');
+        }
+        
+        function calculateSavings() {
+            if (!currentDealItem) return;
+            
+            const currentPrice = parseFloat(currentDealItem.price);
+            const proposedPrice = parseFloat($('#proposedPrice').val()) || 0;
+            const quantity = currentDealItem.quantity;
+            
+            const currentTotal = currentPrice * quantity;
+            const proposedTotal = proposedPrice * quantity;
+            const savings = currentTotal - proposedTotal;
+            const discountRate = currentTotal > 0 ? (savings / currentTotal) * 100 : 0;
+            
+            const savingsClass = savings >= 0 ? 'savings-positive' : 'savings-negative';
+            const savingsText = savings >= 0 ? `Tiết kiệm: ${formatVND(savings)}` : `Tăng: ${formatVND(Math.abs(savings))}`;
+            
+            $('#savingsAmount').removeClass('savings-positive savings-negative').addClass(savingsClass).text(formatVND(savings));
+            $('#discountRate').removeClass('savings-positive savings-negative').addClass(savingsClass).text(discountRate.toFixed(1) + '%');
+        }
+        
+        function submitDeal() {
+            if (!currentDealItem) return;
+            
+            const proposedPrice = parseFloat($('#proposedPrice').val());
+            const message = $('#dealMessage').val().trim();
+            
+            if (!proposedPrice || proposedPrice <= 0) {
+                alert('Vui lòng nhập giá đề xuất hợp lệ!');
+                return;
+            }
+            
+            // Disable submit button
+            $('#submitDealBtn').prop('disabled', true).html('<i class="ri-loader-4-line me-1"></i>Đang gửi...');
+            
+            // Create request data
+            const requestData = {
+                orderItemId: currentDealItem.itemId,
+                proposedPrice: proposedPrice,
+                message: message || null
+            };
+            
+            console.log('Sending deal request:', requestData);
+            
+            $.ajax({
+                url: '../deal-requests',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+                    console.log('Deal response:', response);
+                    if (response.success) {
+                        alert('Đã gửi đề xuất giá thành công!');
+                        $('#dealModal').modal('hide');
+                        
+                        // Send a message to chat about the deal
+                        const dealMessage = `Đã gửi đề xuất giá mới cho ${currentDealItem.productName}: ${formatVND(proposedPrice)}`;
+                        $('#messageInput').val(dealMessage);
+                        sendMessage();
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error submitting deal:', error);
+                    console.error('Response text:', xhr.responseText);
+                    console.error('Status:', xhr.status);
+                    
+                    let errorMessage = 'Có lỗi xảy ra khi gửi đề xuất giá!';
+                    
+                    try {
+                        const errorResponse = JSON.parse(xhr.responseText);
+                        if (errorResponse.message) {
+                            errorMessage = errorResponse.message;
+                        } else if (errorResponse.error) {
+                            errorMessage = errorResponse.error;
+                        }
+                    } catch (e) {
+                        // Nếu không parse được JSON, thử đọc response text trực tiếp
+                        if (xhr.responseText && xhr.responseText.trim()) {
+                            errorMessage = xhr.responseText.trim();
+                        }
+                    }
+                    
+                    alert(errorMessage);
+                },
+                complete: function() {
+                    // Re-enable submit button
+                    $('#submitDealBtn').prop('disabled', false).html('<i class="ri-send-plane-line me-1"></i>Gửi đề xuất');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html> 

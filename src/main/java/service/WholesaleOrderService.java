@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class WholesaleOrderService {
 
     public OrderResponseDTO placeOrder(
@@ -65,7 +66,12 @@ public class WholesaleOrderService {
             Date deliveryDateSql = java.sql.Timestamp.valueOf(deliveryDate);
             for (Cart c : carts) {
                 List<StockLot> lots = stockLotDAO.findEligibleStockLotsJava(c.getProduct().getId(), deliveryDateSql);
-                int total = lots.stream().mapToInt(StockLot::getQuantity).sum();
+                int total = lots.stream().mapToInt(lot -> {
+                    int allocated = lot.getOrderItemAllocations() == null ? 0 :
+                            lot.getOrderItemAllocations().stream().filter(l -> "RESERVED".equals(l.getStatus()))
+                                    .mapToInt(OrderItemAllocation::getQuantity).sum();
+                    return lot.getQuantity() - allocated;
+                }).sum();
                 if (total < c.getQuantity()) {
                     OrderResponseDTO.ProductStockInfo info = new OrderResponseDTO.ProductStockInfo();
                     info.setProductId(c.getProduct().getId());
@@ -96,9 +102,12 @@ public class WholesaleOrderService {
             wholesaleOrder.setCustomer(customerDAO.findById(customerId));
             wholesaleOrder.setDeliveryDate(deliveryDate);
 
+
             // set ship
             wholesaleOrder.setEstimatedShipFee(
                     shippingService.calculateShippingFee(distanceKm, carts, em));
+
+            wholesaleOrder.setItemsTotal(cartService.calculateCartTotal(carts, em));
 
             // set total price before deal
             wholesaleOrder.setTotalPrice(
@@ -116,6 +125,24 @@ public class WholesaleOrderService {
                 wholesaleOrderItem.setSubTotal(
                         wholesaleOrderItem.getPrice().multiply(BigDecimal.valueOf(wholesaleOrderItem.getQuantity())));
                 wholesaleOrderItem.setOrder(wholesaleOrder);
+                int quantityNeeded = c.getQuantity();
+                List<StockLot> lots = stockLotDAO.findEligibleStockLotsJava(c.getProduct().getId(), deliveryDateSql);
+                List<OrderItemAllocation> orderItemAllocations = new ArrayList<>();
+                for (StockLot lot : lots) {
+                        OrderItemAllocation allocation = new OrderItemAllocation();
+                        allocation.setQuantity(Math.min(quantityNeeded, lot.getQuantity()));
+                        allocation.setStockLot(lot);
+                        allocation.setOrderItem(wholesaleOrderItem);
+                        allocation.setStatus("RESERVED");
+                        orderItemAllocations.add(allocation);
+                        if (quantityNeeded > lot.getQuantity()) {
+                            quantityNeeded -= lot.getQuantity();
+                        } else {
+                            quantityNeeded = 0;
+                            break;
+                        }
+                }
+                wholesaleOrderItem.setOrderItemAllocations(orderItemAllocations);
                 wholesaleOrderItems.add(wholesaleOrderItem);
             }
             wholesaleOrder.setItems(wholesaleOrderItems);
@@ -187,4 +214,87 @@ public class WholesaleOrderService {
                 item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))
         );
     }
+
+    public List<OrderCustomerDTO> getAllOrdersForCustomer(int customerId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleOrderDAO orderDao = new WholesaleOrderDAO(em);
+            List<WholesaleOrder> orders = orderDao.findAllByCustomerIdWithItems(customerId);
+            return orders.stream().map(order -> {
+                List<OrderItemCustomerDTO> items = order.getItems().stream()
+                        .map(this::mapItem)
+                        .collect(Collectors.toList());
+                BigDecimal total = items.stream()
+                        .map(OrderItemCustomerDTO::getSubTotal)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                return new OrderCustomerDTO(
+                        order.getId(),
+                        items,
+                        total,
+                        order.getEstimatedShipFee(),
+                        order.getStatus()
+                );
+            }).collect(Collectors.toList());
+        } finally {
+            em.close();
+        }
+    }
+
+    public boolean confirmOrder(int orderId, int customerId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            
+            WholesaleOrderDAO orderDao = new WholesaleOrderDAO(em);
+            DealRequestDAO dealDao = new DealRequestDAO(em);
+            
+            WholesaleOrder order = orderDao.findById(orderId);
+            if (order == null) {
+                throw new IllegalArgumentException("Đơn hàng không tồn tại");
+            }
+            
+            // Kiểm tra xem order có thuộc về customer này không
+            if (order.getCustomer().getId() != customerId) {
+                throw new IllegalArgumentException("Bạn không có quyền xác nhận đơn hàng này");
+            }
+            
+            // Kiểm tra xem order có status NEGOTIATING không
+            if (!"NEGOTIATING".equals(order.getStatus())) {
+                throw new IllegalStateException("Chỉ có thể xác nhận đơn hàng đang trong giai đoạn thương lượng");
+            }
+            
+            // Kiểm tra xem có deal nào đang PENDING không
+            List<DealRequest> pendingDeals = new ArrayList<>();
+            for (WholesaleOrderItem item : order.getItems()) {
+                List<DealRequest> itemDeals = dealDao.findByOrderItemId(item.getId());
+                for (DealRequest deal : itemDeals) {
+                    if ("PENDING".equals(deal.getStatus())) {
+                        pendingDeals.add(deal);
+                    }
+                }
+            }
+            
+            if (!pendingDeals.isEmpty()) {
+                throw new IllegalStateException("Có " + pendingDeals.size() + " deal đang chờ xử lý. Vui lòng xử lý hết các deal trước khi xác nhận đơn hàng.");
+            }
+            
+            // Cập nhật status thành DEPOSIT
+            order.setStatus("DEPOSIT");
+            order.setDealCompletedAt(new Date());
+            
+            orderDao.update(order);
+            tx.commit();
+            return true;
+            
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
 }

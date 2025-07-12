@@ -15,10 +15,10 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
             // Xử lý chuyển hướng dựa vào loại tài khoản
             switch(data.accountType) {
                 case "ADMIN":
-                    window.location.href = "/back-end/index.html"; 
+                    window.location.href = "/back-end/index-7.html";
                     break;
                 case "SALER":
-                    window.location.href = "/back-end/saler/dashboard.html";
+                    window.location.href = "/back-end/order-list-seller.html";
                     break;
                 case "MANAGER":
                     window.location.href = "/back-end/sidebar-system-admin.html"; //-done
@@ -33,7 +33,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
                     window.location.href = "/back-end/sidebar-WarehouseStaff.html"; //-done
                     break;
                 case "WHOLESALE_CUSTOMER":
-                    window.location.href = "/front-end/index.html"; //-done
+                    window.location.href = "/front-end/index-7.html"; //-done
                     break;
                 default:
                     alert("Unknown account type");
