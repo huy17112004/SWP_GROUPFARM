@@ -16,13 +16,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service layer for StockLot operations, handling conversion between LocalDate and Date.
- */
+
 public class StockLotService {
-    /**
-     * Get all stock lots as DTOs.
-     */
+
     public List<StockLotResponseDTO> getAllStockLots() {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -36,9 +32,7 @@ public class StockLotService {
         }
     }
 
-    /**
-     * Get a single stock lot by ID.
-     */
+
     public StockLotResponseDTO getStockLotById(int id) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -49,9 +43,7 @@ public class StockLotService {
         }
     }
 
-    /**
-     * Create a new stock lot from request DTO, converting LocalDate to Date.
-     */
+
     public StockLotResponseDTO createStockLot(StockLotRequestDTO req) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -83,9 +75,7 @@ public class StockLotService {
         }
     }
 
-    /**
-     * Update an existing stock lot, converting LocalDate to Date.
-     */
+
     public StockLotResponseDTO updateStockLot(int id, StockLotRequestDTO req) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -120,9 +110,6 @@ public class StockLotService {
         }
     }
 
-    /**
-     * Delete a stock lot by ID.
-     */
     public boolean deleteStockLot(int id) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -144,9 +131,6 @@ public class StockLotService {
         }
     }
 
-    /**
-     * Calculate inventory by warehouse: sum quantities grouped by product.
-     */
     public List<InventoryResponseDTO> getInventoryByWarehouse(int warehouseId) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -164,9 +148,6 @@ public class StockLotService {
         }
     }
 
-    /**
-     * Convert entity to response DTO, converting Date to LocalDate.
-     */
     private StockLotResponseDTO toDTO(StockLot s) {
         LocalDate importLd = s.getImportDate()
                 .toInstant()

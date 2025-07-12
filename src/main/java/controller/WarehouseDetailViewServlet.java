@@ -22,10 +22,9 @@ public class WarehouseDetailViewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String pathInfo = request.getPathInfo(); // null hoặc "/id"
+        String pathInfo = request.getPathInfo();
 
         if (pathInfo != null && pathInfo.length() > 1) {
-            // /{id} -> chi tiết một kho
             try {
                 int id = Integer.parseInt(pathInfo.substring(1));
                 WarehouseDetailViewDTO dto = warehouseService.getDetailViewById(id);
@@ -42,7 +41,6 @@ public class WarehouseDetailViewServlet extends HttpServlet {
             }
             return;
         }
-        // Không có id -> trả về list
         List<WarehouseDetailViewDTO> list = warehouseService.getAllDetailView();
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(gson.toJson(list));
@@ -59,7 +57,6 @@ public class WarehouseDetailViewServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // Cập nhật: URL /api/warehouses-detail/{id}
         resp.setContentType("application/json");
         String path = req.getPathInfo();
         if (path == null || path.length()<=1) {
@@ -76,7 +73,6 @@ public class WarehouseDetailViewServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // Xóa: URL /api/warehouses-detail/{id}
         resp.setContentType("application/json");
         String path = req.getPathInfo();
         if (path==null || path.length()<=1) {

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Product</title>
+
+    <!-- Google font-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="assets/css/linearicon.css">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+
+    <!-- Feather icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+
+    <!-- Data Table css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/datatables.css">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+    <!-- tap on top start-->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end-->
+
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div id="header-placeholder"></div>
+        <!-- Page Header Ends-->
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="sidebar-WarehouseStaff.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="sidebar-WarehouseStaff.html">
+                            <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                            <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png"
+                                alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="sidebar-WarehouseStaff.html">
+                                        <i class="ri-home-line"></i>
+                                        <span>Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Product</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="product.html">Sản phẩm</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-product-wearhouse.html">Thêm sản phẩm vào kho</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-product.html">Thêm Sản Phẩm mới</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="media.html">
+                                        <i class="ri-price-tag-3-line"></i>
+                                        <span>Media</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+
+            <!-- Container-fluid starts-->
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-table">
+                                <div class="card-body">
+                                    <div class="title-header option-title d-sm-flex d-block">
+                                        <h5>Danh sách sản phẩm tồn kho</h5>
+                                        <div class="right-options">
+                                            <ul>
+                                                <li>
+                                                    <a class="btn btn-solid" href="add-new-product-wearhouse.html">Thêm sản
+                                                        phẩm vào kho</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 d-flex flex-wrap gap-2 align-items-end">
+                                        <div>
+                                            <label for="searchName" class="form-label mb-1">Tên sản phẩm</label>
+                                            <input type="text" id="searchName" class="form-control"
+                                                placeholder="Nhập tên...">
+                                        </div>
+                                        <div>
+                                            <label for="searchCategory" class="form-label mb-1">Loại</label>
+                                            <input type="text" id="searchCategory" class="form-control"
+                                                placeholder="Nhập loại...">
+                                        </div>
+                                        <div>
+                                            <label for="searchDate" class="form-label mb-1">Ngày nằm giữa (ngày nhập &
+                                                hạn)
+                                            </label>
+                                            <input type="date" id="searchDate" class="form-control">
+                                        </div>
+                                        <button id="btnReset" class="btn btn-secondary">Đặt lại</button>
+                                    </div>
+                                    <div>
+                                        <div class="table-responsive">
+                                            <table class="table all-package theme-table table-product" id="table_id">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ảnh</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Loại</th>
+                                                        <th>Kho</th>
+                                                        <th>ID lô hàng</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Giá</th>
+                                                        <th>Hạn</th>
+                                                        <th>Ngày nhập</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Container-fluid Ends-->
+
+                <div class="container-fluid">
+                    <!-- footer start-->
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Bản quyền 2022 © Fastkart theme by pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-wrapper End-->
+
+    <!-- Delete Modal Box Start -->
+    <div class="modal fade theme-modal remove-coupon" id="exampleModalToggle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-block text-center">
+                    <h5 class="modal-title w-100" id="exampleModalLabel22">Are You Sure ?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="remove-box">
+                        <p>The permission for the use/group, preview is inherited from the object, object will create a
+                            new permission for this object</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-target="#exampleModalToggle2"
+                        data-bs-toggle="modal" data-bs-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade theme-modal remove-coupon" id="exampleModalToggle2" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel12">Done!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="remove-box text-center">
+                        <div class="wrapper">
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                        </div>
+                        <h4 class="text-content">It's Removed.</h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal Box End -->
+
+    <!-- latest js -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap js -->
+    <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- feather icon js -->
+    <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
+
+    <!-- Sidebar js -->
+    <script src="assets/js/config.js"></script>
+
+    <!-- customizer js -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Plugins js -->
+    <script src="assets/js/sidebar-menu.js"></script>
+    <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="assets/js/notify/index.js"></script>
+
+    <!-- Data table js -->
+    <!--<script src="assets/js/jquery.dataTables.js"></script>-->
+    <!--<script src="assets/js/custom-data-table.js"></script>-->
+
+    <!-- sidebar effect -->
+    <script src="assets/js/sidebareffect.js"></script>
+
+    <!-- Theme js -->
+    <script src="assets/js/script.js"></script>
+
+    <!-- component-loader js -->
+    <script src="components/component-loader.js"></script>
+
+    <script src="assets/js/photoswipe-ui-default.min.js"></script>
+    <script src="assets/js/photoswipe.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tbody = document.querySelector('#table_id tbody');
+            let allProducts = [];
+
+            function renderTable(list) {
+                tbody.innerHTML = '';
+                (Array.isArray(list) ? list : [list]).forEach(item => {
+                    const dExp = new Date(item.expiredDate).toLocaleDateString();
+                    const dImp = new Date(item.importDate).toLocaleDateString();
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                  <td><img src="${item.imageUrl}" class="img-fluid" alt=""></td>
+                  <td>${item.name}</td>
+                  <td>${item.categoryName}</td>
+                  <td>${item.warehouseName}</td> 
+                  <td>${item.lotId}</td> 
+                  <td>${item.quantity}</td>
+                  <td class="td-price">${item.retailPrice.toLocaleString()}₫</td>
+                  <td>${dExp}</td>
+                  <td>${dImp}</td>
+                `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            fetch('http://localhost:8080/api/products-list')
+                .then(res => {
+                    if (!res.ok) return Promise.reject(res.status);
+                    return res.json();
+                })
+                .then(list => {
+                    allProducts = Array.isArray(list) ? list : [list];
+                    renderTable(allProducts);
+                })
+                .catch(err => {
+                    console.error('Không thể tải sản phẩm:', err);
+                    tbody.innerHTML = '<tr><td colspan="7" style="color:red">Không thể tải dữ liệu</td></tr>';
+                });
+
+            function filterProducts() {
+                const name = document.getElementById('searchName').value.trim().toLowerCase();
+                const category = document.getElementById('searchCategory').value.trim().toLowerCase();
+                const dateStr = document.getElementById('searchDate').value;
+                let filtered = allProducts.filter(item => {
+                    let match = true;
+                    if (name && !item.name.toLowerCase().includes(name)) match = false;
+                    if (category && !item.categoryName.toLowerCase().includes(category)) match = false;
+                    if (dateStr) {
+                        const date = new Date(dateStr);
+                        const importDate = new Date(item.importDate);
+                        const expiredDate = new Date(item.expiredDate);
+                        if (!(date >= importDate && date <= expiredDate)) match = false;
+                    }
+                    return match;
+                });
+                renderTable(filtered);
+            }
+
+            document.getElementById('btnReset').addEventListener('click', function () {
+                document.getElementById('searchName').value = '';
+                document.getElementById('searchCategory').value = '';
+                document.getElementById('searchDate').value = '';
+                renderTable(allProducts);
+            });
+            document.getElementById('searchName').addEventListener('input', filterProducts);
+            document.getElementById('searchCategory').addEventListener('input', filterProducts);
+            document.getElementById('searchDate').addEventListener('input', filterProducts);
+        });
+    </script>
+
+
+</body>
+
+</html>
