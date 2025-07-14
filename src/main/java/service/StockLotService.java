@@ -64,7 +64,7 @@ public class StockLotService {
             s.setImportDate(importDate);
             s.setExpiredDate(expiredDate);
 
-            new StockLotDAO(em).create(s);
+            new StockLotDAO(em).save(s);
             tx.commit();
             return toDTO(s);
         } catch (Exception e) {
