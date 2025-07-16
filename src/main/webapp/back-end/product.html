@@ -161,6 +161,11 @@
                                                 placeholder="Nhập loại...">
                                         </div>
                                         <div>
+                                            <label for="searchWarehouse" class="form-label mb-1">Kho</label>
+                                            <input type="text" id="searchWarehouse" class="form-control"
+                                                placeholder="Nhập tên kho...">
+                                        </div>
+                                        <div>
                                             <label for="searchDate" class="form-label mb-1">Ngày nằm giữa (ngày nhập &
                                                 hạn)
                                             </label>
@@ -349,11 +354,13 @@
             function filterProducts() {
                 const name = document.getElementById('searchName').value.trim().toLowerCase();
                 const category = document.getElementById('searchCategory').value.trim().toLowerCase();
+                const warehouse = document.getElementById('searchWarehouse').value.trim().toLowerCase();
                 const dateStr = document.getElementById('searchDate').value;
                 let filtered = allProducts.filter(item => {
                     let match = true;
                     if (name && !item.name.toLowerCase().includes(name)) match = false;
                     if (category && !item.categoryName.toLowerCase().includes(category)) match = false;
+                    if (warehouse && !(item.warehouseName && item.warehouseName.toLowerCase().includes(warehouse))) match = false;
                     if (dateStr) {
                         const date = new Date(dateStr);
                         const importDate = new Date(item.importDate);
@@ -368,11 +375,13 @@
             document.getElementById('btnReset').addEventListener('click', function () {
                 document.getElementById('searchName').value = '';
                 document.getElementById('searchCategory').value = '';
+                document.getElementById('searchWarehouse').value = '';
                 document.getElementById('searchDate').value = '';
                 renderTable(allProducts);
             });
             document.getElementById('searchName').addEventListener('input', filterProducts);
             document.getElementById('searchCategory').addEventListener('input', filterProducts);
+            document.getElementById('searchWarehouse').addEventListener('input', filterProducts);
             document.getElementById('searchDate').addEventListener('input', filterProducts);
         });
     </script>

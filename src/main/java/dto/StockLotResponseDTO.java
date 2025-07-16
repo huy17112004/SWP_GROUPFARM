@@ -2,6 +2,7 @@ package dto;
 
 import lombok.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class StockLotResponseDTO {
@@ -10,6 +11,6 @@ public class StockLotResponseDTO {
     private String productName;
     private int warehouseId;
     private int quantity;
-    private LocalDate importDate;
-    private LocalDate expiredDate;
+    private Date importDate;
+    private Date expiredDate;
 }

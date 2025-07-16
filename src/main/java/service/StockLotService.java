@@ -55,16 +55,10 @@ public class StockLotService {
             s.setWarehouse(em.getReference(entity.Warehouse.class, req.getWarehouseId()));
             s.setQuantity(req.getQuantity());
             // Convert LocalDate to java.util.Date
-            Date importDate = Date.from(req.getImportDate()
-                    .atStartOfDay(ZoneId.systemDefault())
-                    .toInstant());
-            Date expiredDate = Date.from(req.getExpiredDate()
-                    .atStartOfDay(ZoneId.systemDefault())
-                    .toInstant());
-            s.setImportDate(importDate);
-            s.setExpiredDate(expiredDate);
+            s.setImportDate(req.getImportDate());
+            s.setExpiredDate(req.getExpiredDate());
 
-            new StockLotDAO(em).save(s);
+            new StockLotDAO(em).create(s);
             tx.commit();
             return toDTO(s);
         } catch (Exception e) {
@@ -90,14 +84,9 @@ public class StockLotService {
             s.setWarehouse(em.getReference(entity.Warehouse.class, req.getWarehouseId()));
             s.setQuantity(req.getQuantity());
             // Convert LocalDate to java.util.Date
-            Date importDate = Date.from(req.getImportDate()
-                    .atStartOfDay(ZoneId.systemDefault())
-                    .toInstant());
-            Date expiredDate = Date.from(req.getExpiredDate()
-                    .atStartOfDay(ZoneId.systemDefault())
-                    .toInstant());
-            s.setImportDate(importDate);
-            s.setExpiredDate(expiredDate);
+
+            s.setImportDate(req.getImportDate());
+            s.setExpiredDate(req.getExpiredDate());
 
             dao.update(s);
             tx.commit();
@@ -149,22 +138,14 @@ public class StockLotService {
     }
 
     private StockLotResponseDTO toDTO(StockLot s) {
-        LocalDate importLd = s.getImportDate()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        LocalDate expiredLd = s.getExpiredDate()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
         return new StockLotResponseDTO(
                 s.getId(),
                 s.getProduct().getId(),
                 s.getProduct().getProductName(),
                 s.getWarehouse().getId(),
                 s.getQuantity(),
-                importLd,
-                expiredLd
+                s.getImportDate(),
+                s.getExpiredDate()
         );
     }
 }

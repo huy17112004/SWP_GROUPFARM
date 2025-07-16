@@ -1,6 +1,8 @@
 package dto;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,4 +14,5 @@ public class ProductCreateDTO {
     private BigDecimal wholesalePrice;
     private String description;
     private int categoryId;
+    private List<String> imageUrls;
 }

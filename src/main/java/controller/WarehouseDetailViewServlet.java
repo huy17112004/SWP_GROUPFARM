@@ -19,7 +19,16 @@ public class WarehouseDetailViewServlet extends HttpServlet {
     private final Gson gson = new Gson();
 
     @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET ,POST, DELETE, PUT, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         String pathInfo = request.getPathInfo();
@@ -47,7 +56,7 @@ public class WarehouseDetailViewServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // Tạo mới
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setContentType("application/json");
         WarehouseDetailRequestDTO dto = gson.fromJson(req.getReader(), WarehouseDetailRequestDTO.class);
         boolean ok = warehouseService.createDetail(dto);
@@ -57,6 +66,7 @@ public class WarehouseDetailViewServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setContentType("application/json");
         String path = req.getPathInfo();
         if (path == null || path.length()<=1) {
@@ -73,6 +83,7 @@ public class WarehouseDetailViewServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setContentType("application/json");
         String path = req.getPathInfo();
         if (path==null || path.length()<=1) {

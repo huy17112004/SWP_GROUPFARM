@@ -11,16 +11,22 @@ public class ProductListDAO {
     public ProductListDAO(EntityManager em) { this.em = em; }
 
     // 1) List tất cả
-    public List<ProductListResponseDTO> findAllProductList() {
+    public List<ProductListResponseDTO> findAllProductLots() {
         String jpql =
                 "SELECT new dto.ProductListResponseDTO(" +
-                        "   pi.imageUrl, p.productName, p.retailPrice, c.categoryName, w.warehouseName,s.id ,s.quantity, s.expiredDate, s.importDate" +
-                        ") FROM Product p " +
-                        " LEFT JOIN p.category c" +
-                        " LEFT JOIN p.images pi" +
-                        " LEFT JOIN p.stockLots s" +
-                        " LEFT JOIN s.warehouse w" +          // ← join kho
-                        " ORDER BY p.productName";
+                        "   (SELECT pi.imageUrl FROM ProductImage pi " +
+                        "     WHERE pi.product.id = s.product.id " +
+                        "       AND pi.id = (SELECT MIN(pi2.id) FROM ProductImage pi2 WHERE pi2.product.id = s.product.id)" +
+                        "   ), " +
+                        "   p.productName, p.retailPrice, c.categoryName, w.warehouseName, " +
+                        "   s.id, s.quantity, s.expiredDate, s.importDate" +
+                        ") " +
+                        "FROM StockLot s " +
+                        "LEFT JOIN s.product p " +
+                        "LEFT JOIN p.category c " +
+                        "LEFT JOIN s.warehouse w " +
+                        "ORDER BY s.importDate DESC";
+
         return em.createQuery(jpql, ProductListResponseDTO.class)
                 .getResultList();
     }
@@ -43,48 +49,6 @@ public class ProductListDAO {
         return em.createQuery(jpql, ProductListResponseDTO.class)
                 .setParameter("id", id)
                 .getSingleResult();
-    }
-
-    // 3) Search theo tên
-    public List<ProductListResponseDTO> searchProductListByName(String keyword) {
-        String jpql =
-                "SELECT new dto.ProductListResponseDTO(" +
-                        "  (SELECT pi.imageUrl FROM ProductImage pi " +
-                        "     WHERE pi.product.id = p.id " +
-                        "       AND pi.id = (SELECT MIN(pi2.id) FROM ProductImage pi2 WHERE pi2.product.id = p.id)" +
-                        "  ), " +
-                        "  p.productName, p.retailPrice, c.categoryName, s.quantity, s.expiredDate, s.importDate" +
-                        ") " +
-                        "FROM Product p " +
-                        "LEFT JOIN p.category c " +
-                        "LEFT JOIN p.stockLots s " +
-                        "WHERE LOWER(p.productName) LIKE :kw " +
-                        "ORDER BY p.productName";
-
-        return em.createQuery(jpql, ProductListResponseDTO.class)
-                .setParameter("kw", "%" + keyword.toLowerCase() + "%")
-                .getResultList();
-    }
-
-    // 4) Lọc theo category
-    public List<ProductListResponseDTO> findProductListByCategory(int categoryId) {
-        String jpql =
-                "SELECT new dto.ProductListResponseDTO(" +
-                        "  (SELECT pi.imageUrl FROM ProductImage pi " +
-                        "     WHERE pi.product.id = p.id " +
-                        "       AND pi.id = (SELECT MIN(pi2.id) FROM ProductImage pi2 WHERE pi2.product.id = p.id)" +
-                        "  ), " +
-                        "  p.productName, p.retailPrice, c.categoryName, s.quantity, s.expiredDate, s.importDate" +
-                        ") " +
-                        "FROM Product p " +
-                        "LEFT JOIN p.category c " +
-                        "LEFT JOIN p.stockLots s " +
-                        "WHERE c.id = :cid " +
-                        "ORDER BY p.productName";
-
-        return em.createQuery(jpql, ProductListResponseDTO.class)
-                .setParameter("cid", categoryId)
-                .getResultList();
     }
 
     // 5) CRUD cho entity Product (Service sẽ dùng)

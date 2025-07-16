@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,7 +37,7 @@ public class Product {
 
     /* 1 Product ↔ n ProductImage */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ProductImage> images;
+    private List<ProductImage> images = new ArrayList<>();;
 
     /* 1 Product ↔ n Cart */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -51,7 +52,7 @@ public class Product {
 
     /* 1 Category ↔ n Product */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "CategoryID", nullable = false)
     private Category category;
 
     @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)

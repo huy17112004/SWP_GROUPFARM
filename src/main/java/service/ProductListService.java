@@ -20,13 +20,7 @@ public class ProductListService {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             ProductListDAO dao = new ProductListDAO(em);
-            if (search != null && !search.isEmpty()) {
-                return dao.searchProductListByName(search);
-            }
-            if (categoryId != null) {
-                return dao.findProductListByCategory(categoryId);
-            }
-            return dao.findAllProductList();
+            return dao.findAllProductLots();
         } finally {
             em.close();
         }

@@ -1,6 +1,5 @@
 package dto;
 
-import entity.Category;
 import entity.Product;
 import entity.ProductImage;
 import lombok.*;
@@ -9,27 +8,38 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class ProductResponseDTO {
+    private int productId;
     private String productName;
+    private int entryPrice;
     private int retailPrice;
     private BigDecimal wholesalePrice;
-    private String description;
     private String imageUrl;
     private String categoryName;
+    private String description;
 
     public ProductResponseDTO(Product product) {
-        this.productName = product.getProductName();
+        this.productId = product.getId();
+        this.productName = product.getProductName() != null ? product.getProductName() : "";
         this.retailPrice = product.getRetailPrice();
         this.wholesalePrice = product.getWholesalePrice();
-        this.description = product.getDescription();
 
-        // map hình ảnh (giả sử có thuộc tính getImageUrl() trong ProductImage)
-        this.imageUrl = product.getImages().get(0).getImageUrl();
+        // Lấy image đầu tiên
+        if (product.getImages() != null && !product.getImages().isEmpty()) {
+            this.imageUrl = product.getImages().get(0).getImageUrl();
+        } else {
+            this.imageUrl = "";
+        }
 
-        this.categoryName = product.getCategory().getCategoryName();
+        // Category
+        if (product.getCategory() != null) {
+            this.categoryName = product.getCategory().getCategoryName() != null ?
+                    product.getCategory().getCategoryName() : "";
+        } else {
+            this.categoryName = "";
+        }
+        this.description = product.getDescription() != null ? product.getDescription() : "";
     }
 }

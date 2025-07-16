@@ -16,11 +16,11 @@ import java.util.Date;
 public class ProductListResponseDTO {
     private String imageUrl;
     private String name;
-    private int retailPrice;
+    private Integer retailPrice;
     private String categoryName;
     private String warehouseName;
-    private int  lotId;
-    private int quantity;
+    private Integer  lotId;
+    private Integer quantity;
     private Date expiredDate;   // đổi từ LocalDateTime → Date
     private Date importDate;
 }
