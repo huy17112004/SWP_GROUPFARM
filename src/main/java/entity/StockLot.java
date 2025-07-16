@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-
 @Entity
 @Getter
 @Setter
@@ -34,10 +33,15 @@ public class StockLot {
     @JoinColumn(name = "ProductID", nullable = false)
     private Product product;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseID", nullable = false)
     private Warehouse warehouse;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockLot")
+    private List<ExportOrderItem> exportOrderItems;
+
+    @OneToMany(mappedBy = "stockLot", fetch = FetchType.LAZY)
+    private List<OrderItemAllocation>  orderItemAllocations;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockLot")
     private List<ExportOrderItem> exportOrderItems;

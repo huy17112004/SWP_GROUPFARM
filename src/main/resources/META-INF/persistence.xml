@@ -32,10 +32,15 @@
         <class>entity.StockLotAudit</class>
         <class>entity.Message</class>
         <class>entity.DealRequest</class>
+        <class>entity.OrderItemAllocation</class>
+        <class>entity.StockTransferItem</class>
+        <class>entity.StockTransfer</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=ASSSWP8;encrypt=true;trustServerCertificate=true"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:sqlserver://localhost:1433;databaseName=ASSSWP8;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8"/>
+
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value="123"/>
 

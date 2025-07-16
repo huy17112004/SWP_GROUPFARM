@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
     public WholesaleOrderDAO(EntityManager entityManager) {
+
         super(WholesaleOrder.class, entityManager);
     }
 
@@ -39,5 +40,28 @@ public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
                 WholesaleOrder.class);
         q.setParameter("id", orderId);
         return q.getSingleResult();
+    }
+
+    public List<WholesaleOrder> findAllByCustomerIdWithItems(int customerId) {
+        TypedQuery<WholesaleOrder> q = em.createQuery(
+                "SELECT DISTINCT o FROM WholesaleOrder o " +
+                        " LEFT JOIN FETCH o.items i" +
+                        " LEFT JOIN FETCH i.product p" +
+                        " WHERE o.customer.id = :customerId ORDER BY o.createdAt DESC",
+                WholesaleOrder.class);
+        q.setParameter("customerId", customerId);
+        return q.getResultList();
+    }
+
+    public List<WholesaleOrder> findAllBySellerIdWithItems(int sellerId) {
+        TypedQuery<WholesaleOrder> q = em.createQuery(
+                "SELECT DISTINCT o FROM WholesaleOrder o " +
+                        " LEFT JOIN FETCH o.items i" +
+                        " LEFT JOIN FETCH i.product p" +
+                        " LEFT JOIN FETCH o.customer c" +
+                        " WHERE o.seller.id = :sellerId ORDER BY o.createdAt DESC",
+                WholesaleOrder.class);
+        q.setParameter("sellerId", sellerId);
+        return q.getResultList();
     }
 }

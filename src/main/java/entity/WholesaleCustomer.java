@@ -54,4 +54,7 @@ public class WholesaleCustomer extends Account {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<WholesaleOrder> orders;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Wishlist> wishlists;
 }

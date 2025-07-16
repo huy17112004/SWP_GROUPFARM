@@ -1,11 +1,19 @@
 package entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "StockTransferItem")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StockTransferItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +30,9 @@ public class StockTransferItem {
     @Column(name = "Quantity", nullable = false)
     private int quantity;
 
-    @OneToMany(mappedBy = "stockTransferItem", fetch = FetchType.LAZY)
-    private List<OrderItemAllocation> orderItemAllocations;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OrderItemAllocationID")
+    private OrderItemAllocation orderItemAllocation;
 
 }
+

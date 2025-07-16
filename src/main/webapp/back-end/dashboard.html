@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GroupFarm Admin</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/feather.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/dark.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg header-nav">
+                <div class="navbar-header">
+                    <a id="mobile_btn" href="javascript:void(0);">
+                        <span class="bar-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </a>
+                    <a href="index.html" class="navbar-brand logo">
+                        <img src="assets/images/logo.png" class="img-fluid" alt="Logo">
+                    </a>
+                </div>
+                <div class="main-menu-wrapper">
+                    <div class="menu-header">
+                        <a href="index.html" class="menu-logo">
+                            <img src="assets/images/logo.png" class="img-fluid" alt="Logo">
+                        </a>
+                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    <ul class="main-nav">
+                        <li class="active">
+                            <a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="revenue-stats.html"><i class="fas fa-chart-line"></i> <span>Thống kê Doanh thu</span></a>
+                        </li>
+                        <li>
+                            <a href="order-stats.html"><i class="fas fa-shopping-cart"></i> <span>Thống kê Đơn hàng</span></a>
+                        </li>
+                        <li>
+                            <a href="top-products.html"><i class="fas fa-star"></i> <span>Top Sản phẩm</span></a>
+                        </li>
+                        <li>
+                            <a href="shipping-report.html"><i class="fas fa-truck"></i> <span>Báo cáo Giao hàng</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="nav header-navbar-rht">
+                    <li class="nav-item dropdown has-arrow logged-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                            <span class="user-img">
+                                <img class="rounded-circle" src="assets/images/avatar.jpg" width="31" alt="Admin">
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <div class="user-header">
+                                <div class="avatar avatar-sm">
+                                    <img src="assets/images/avatar.jpg" alt="User Image" class="avatar-img rounded-circle">
+                                </div>
+                                <div class="user-text">
+                                    <h6>Admin</h6>
+                                    <p class="text-muted mb-0">Administrator</p>
+                                </div>
+                            </div>
+                            <a class="dropdown-item" href="profile-setting.html">Hồ sơ</a>
+                            <a class="dropdown-item" href="login.html">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h3 class="page-title">Dashboard</h3>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-primary">
+                                        <i class="feather-shopping-cart"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="todayOrders">0</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Đơn hàng hôm nay</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-primary" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-success">
+                                        <i class="feather-dollar-sign"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="todayRevenue">0 VNĐ</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Doanh thu hôm nay</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-success" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-warning">
+                                        <i class="feather-truck"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="successRate">0%</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Tỷ lệ giao hàng thành công</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-warning" id="successProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dash-widget-header">
+                                    <span class="dash-widget-icon text-info">
+                                        <i class="feather-users"></i>
+                                    </span>
+                                    <div class="dash-count">
+                                        <h3 id="totalCustomers">0</h3>
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <h6 class="text-muted">Tổng khách hàng</h6>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-info" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Products Section -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Top 5 Sản phẩm bán chạy hôm nay</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Thứ hạng</th>
+                                                <th>Sản phẩm</th>
+                                                <th>Số lượng bán</th>
+                                                <th>Doanh thu</th>
+                                                <th>Hình ảnh</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topProductsTable">
+                                            <!-- Data will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Thống kê nhanh</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="stats-info">
+                                            <h6>Đơn hàng thành công</h6>
+                                            <h4 id="successOrders">0</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="stats-info">
+                                            <h6>Đơn hàng thất bại</h6>
+                                            <h4 id="failedOrders">0</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Liên kết nhanh</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="revenue-stats.html" class="btn btn-primary btn-block">
+                                            <i class="fas fa-chart-line"></i> Xem doanh thu
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="top-products.html" class="btn btn-success btn-block">
+                                            <i class="fas fa-star"></i> Top sản phẩm
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/feather.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Load dashboard data
+        $(document).ready(function() {
+            loadDashboardData();
+        });
+
+        function loadDashboardData() {
+            // Load today's orders
+            $.ajax({
+                url: '/api/stats',
+                method: 'GET',
+                success: function(data) {
+                    $('#todayOrders').text(data.totalOrders);
+                },
+                error: function(xhr) {
+                    console.error('Error loading orders:', xhr);
+                }
+            });
+
+            // Load today's revenue
+            $.ajax({
+                url: '/api/revenue?period=today',
+                method: 'GET',
+                success: function(data) {
+                    $('#todayRevenue').text(formatCurrency(data.todayRevenue));
+                },
+                error: function(xhr) {
+                    console.error('Error loading revenue:', xhr);
+                }
+            });
+
+            // Load shipping stats
+            $.ajax({
+                url: '/api/shipping-stats',
+                method: 'GET',
+                success: function(data) {
+                    $('#successRate').text(data.successRate.toFixed(1) + '%');
+                    $('#successProgress').css('width', data.successRate + '%');
+                    $('#successOrders').text(data.successOrders);
+                    $('#failedOrders').text(data.failedOrders);
+                },
+                error: function(xhr) {
+                    console.error('Error loading shipping stats:', xhr);
+                }
+            });
+
+            // Load top products
+            $.ajax({
+                url: '/api/top-products?period=today&limit=5',
+                method: 'GET',
+                success: function(data) {
+                    displayTopProducts(data);
+                },
+                error: function(xhr) {
+                    console.error('Error loading top products:', xhr);
+                }
+            });
+        }
+
+        function displayTopProducts(products) {
+            const tableBody = $('#topProductsTable');
+            tableBody.empty();
+
+            products.forEach(function(product, index) {
+                const row = `
+                    <tr>
+                        <td>
+                            <span class="badge bg-primary">#${product.rank}</span>
+                        </td>
+                        <td>${product.productName}</td>
+                        <td>${product.totalQuantitySold}</td>
+                        <td>${formatCurrency(product.totalRevenue)}</td>
+                        <td>
+                            <img src="${product.imageUrl || 'assets/images/product-placeholder.jpg'}" 
+                                 alt="${product.productName}" 
+                                 class="img-fluid" 
+                                 style="width: 50px; height: 50px; object-fit: cover;">
+                        </td>
+                    </tr>
+                `;
+                tableBody.append(row);
+            });
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Auto refresh every 5 minutes
+        setInterval(loadDashboardData, 300000);
+    </script>
+</body>
+</html> 

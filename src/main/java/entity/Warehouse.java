@@ -24,7 +24,6 @@ public class Warehouse {
     @Column(name = "WarehousePhone", columnDefinition = "NVARCHAR(15)", nullable = false, length = 12)
     private String warehousePhone;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseManagerID")
     private WarehouseManager warehouseManager;
@@ -41,4 +40,10 @@ public class Warehouse {
 
     @OneToMany(mappedBy = "sourceWarehouse", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<WholesaleOrder> orders;
+
+    @OneToMany(mappedBy = "sourceWarehouse", fetch = FetchType.LAZY)
+    private List<StockTransfer> stockTransfersAsSource;
+
+    @OneToMany(mappedBy = "destinationWarehouse", fetch = FetchType.LAZY)
+    private List<StockTransfer> stockTransfersAsDestination;
 }

@@ -1,7 +1,6 @@
 package controller;
 
 import com.google.gson.Gson;
-import com.google.gson.Gson;
 import dto.ProductCreateDTO;
 import dto.ProductResponseDTO;
 import entity.Product;
@@ -15,6 +14,7 @@ import service.ProductService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,40 +32,49 @@ public class ProductServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
         resp.setStatus(HttpServletResponse.SC_OK);
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
         // Lấy tham số tìm kiếm
-        String categoryIdsParam = request.getParameter("categoryIds");
-        String minPriceParam = request.getParameter("minPrice");
-        String maxPriceParam = request.getParameter("maxPrice");
+        String categoryIdParam = request.getParameter("categoryId");
         String nameParam = request.getParameter("name");
+        String sortType = request.getParameter("sortType");
+        String pageParam = request.getParameter("page");
+        String sizeParam = request.getParameter("size");
 
-        List<Integer> categoryIds = null;
-        if (categoryIdsParam != null && !categoryIdsParam.isEmpty()) {
-            categoryIds = java.util.Arrays.stream(categoryIdsParam.split(","))
-                    .map(String::trim)
-                    .map(Integer::parseInt)
-                    .collect(java.util.stream.Collectors.toList());
+        Integer categoryId = null;
+        if (categoryIdParam != null && !categoryIdParam.isEmpty()) {
+            categoryId = Integer.parseInt(categoryIdParam);
         }
 
-        Double minPrice = null;
-        if (minPriceParam != null && !minPriceParam.isEmpty()) {
-            minPrice = Double.parseDouble(minPriceParam);
+        int page = 0;   // mặc định trang 0 (trang đầu)
+        int size = 10;  // mặc định 10 sản phẩm mỗi trang
+
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+                if (page < 0) page = 0; // tránh số âm
+            } catch (NumberFormatException ignored) {}
         }
 
-        Double maxPrice = null;
-        if (maxPriceParam != null && !maxPriceParam.isEmpty()) {
-            maxPrice = Double.parseDouble(maxPriceParam);
+        if (sizeParam != null && !sizeParam.isEmpty()) {
+            try {
+                size = Integer.parseInt(sizeParam);
+                if (size <= 0) size = 10; // tránh size <= 0
+            } catch (NumberFormatException ignored) {}
         }
 
-        List<Product> products = productService.searchProducts(categoryIds, minPrice, maxPrice, nameParam);
-        List<ProductResponseDTO> dtoList = products.stream()
-                .map(ProductResponseDTO::new)
-                .collect(Collectors.toList());
+        List<ProductResponseDTO> dtoList = productService.searchProducts(categoryId, nameParam, sortType, page, size);
+
+        long totalItems = productService.countProducts(categoryId, nameParam);
+        int totalPages = (int) Math.ceil((double) totalItems / size);
 
         Gson gson = new Gson();
-        String json = gson.toJson(dtoList);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("products", dtoList);
+        map.put("totalPages", totalPages);
+        map.put("totalItems", totalItems);
+        String json = gson.toJson(map);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(json);
     }
@@ -113,7 +122,4 @@ public class ProductServlet extends HttpServlet {
             )));
         }
     }
-
-
-
 }

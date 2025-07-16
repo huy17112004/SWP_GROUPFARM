@@ -31,7 +31,6 @@ public class OrderItemAllocation {
     @Column(name = "Status", length = 16)
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "StockTransferItemID")
+    @OneToOne(fetch = FetchType.LAZY)
     private StockTransferItem stockTransferItem;
 }

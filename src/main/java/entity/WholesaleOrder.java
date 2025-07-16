@@ -27,6 +27,9 @@ public class WholesaleOrder {
     @Column(name = "EstimatedShipFee", precision = 18, scale = 2)
     private BigDecimal estimatedShipFee;
 
+    @Column(name = "ItemsTotal", precision = 18, scale = 2)
+    private BigDecimal itemsTotal;
+
     @Column(name = "TotalPrice", precision = 18, scale = 2)
     private BigDecimal totalPrice;
 
@@ -47,6 +50,9 @@ public class WholesaleOrder {
 
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
+
+    @Column(name = "DeliveryDate")
+    private LocalDateTime deliveryDate;
 
     /* 1 WholesaleOrder ↔ 1 Contract */
     @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -79,4 +85,29 @@ public class WholesaleOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID", nullable = false)
     private WholesaleCustomer customer;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<StockTransfer> stockTransfers;
+    
+    /**
+     * Tính lại tổng tiền đơn hàng dựa trên các order items
+     */
+    public void setTotalPrice() {
+        if (this.items == null || this.items.isEmpty()) {
+            this.totalPrice = this.estimatedShipFee != null ? this.estimatedShipFee : BigDecimal.ZERO;
+            return;
+        }
+        
+        // Tính tổng tiền hàng từ các order items
+        BigDecimal itemsTotal = this.items.stream()
+                .map(item -> item.getSubTotal() != null ? item.getSubTotal() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        this.itemsTotal = itemsTotal;
+        
+        // Tổng tiền = tổng tiền hàng + phí vận chuyển
+        this.totalPrice = itemsTotal.add(
+                this.estimatedShipFee != null ? this.estimatedShipFee : BigDecimal.ZERO
+        );
+    }
 }

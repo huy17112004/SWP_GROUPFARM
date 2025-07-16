@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,7 +36,7 @@ public class Product {
 
     /* 1 Product ↔ n ProductImage */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ProductImage> images = new ArrayList<>();;
+    private List<ProductImage> images;
 
     /* 1 Product ↔ n Cart */
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -50,11 +49,15 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<StockLot> stockLots;
 
+    /* 1 Product ↔ n Wishlist */
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Wishlist> wishlists;
+
     /* 1 Category ↔ n Product */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryID", nullable = false)
+    @JoinColumn(name = "CategoryID", nullable = false)   //Insertable = false, updatable = false)
     private Category category;
 
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ShippingRequirement shippingRequirement;
 }
