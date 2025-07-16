@@ -44,19 +44,6 @@ public class StockLotDAO {
         em.remove(managed);
     }
 
-    public List<StockLot> findAll() {
-        TypedQuery<StockLot> q = em.createQuery(
-                "SELECT s FROM StockLot s JOIN FETCH s.product p ORDER BY s.importDate DESC", StockLot.class);
-        return q.getResultList();
-    }
-
-    public List<StockLot> findByWarehouse(int warehouseId) {
-        TypedQuery<StockLot> q = em.createQuery(
-                "SELECT s FROM StockLot s JOIN FETCH s.product p WHERE s.warehouse.id = :wid ORDER BY s.importDate DESC", StockLot.class);
-        q.setParameter("wid", warehouseId);
-        return q.getResultList();
-    }
-
     public List<StockLot> findEligibleStockLotsJava(int productId, Date deliveryDate) {
         ShippingRequirement req = em.find(ShippingRequirement.class, productId);
         int minDays = req != null ? req.getMinExpiryDaysRequired() : 0;
