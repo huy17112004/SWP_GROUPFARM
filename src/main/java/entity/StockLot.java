@@ -44,6 +44,4 @@ public class StockLot {
     @OneToMany(mappedBy = "stockLot", fetch = FetchType.LAZY)
     private List<OrderItemAllocation>  orderItemAllocations;
 
-    @OneToMany(mappedBy = "stockLot", fetch = FetchType.LAZY)
-    private List<StockTransferItem> stockTransferItems;
 }

@@ -4,6 +4,7 @@ import dao.DistrictDAO;
 import dao.ProvinceDAO;
 import dao.WardDAO;
 import dto.DistrictExternalDTO;
+import dto.LocationDTO;
 import dto.ProvinceExternalDTO;
 import dto.WardExternalDTO;
 import entity.District;
@@ -14,6 +15,7 @@ import jakarta.persistence.EntityTransaction;
 import util.JpaUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LocationService {
     public void importFullLocation(List<ProvinceExternalDTO> provinceExternalList) {
@@ -66,5 +68,42 @@ public class LocationService {
         } finally {
             em.close();
         }
+    }
+
+    public List<LocationDTO> getProvinces() {
+        EntityManager em = JpaUtil.getEntityManager();
+        ProvinceDAO  provinceDAO = new ProvinceDAO(em);
+        return provinceDAO.findAll().stream()
+                .map(p -> new LocationDTO(p.getId(), p.getName()))
+                .collect(Collectors.toList());
+    }
+
+    public List<LocationDTO> getDistricts(int provinceId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        DistrictDAO districtDAO = new DistrictDAO(em);
+        return districtDAO.getDistrictsByProvinceId(provinceId).stream()
+                .map(d -> new LocationDTO(d.getId(), d.getName()))
+                .collect(Collectors.toList());
+    }
+
+    public List<LocationDTO> getWards(int districtId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        WardDAO wardDAO = new WardDAO(em);
+        return wardDAO.findWardsByDistrictId(districtId).stream()
+                .map(w -> new LocationDTO(w.getId(), w.getName()))
+                .collect(Collectors.toList());
+    }
+
+    public String getAddressForAPI(int districtId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        DistrictDAO districtDAO = new DistrictDAO(em);
+        District district = districtDAO.findById(districtId);
+        return district.getName() + ", " + district.getProvince().getName() + ", Vietnam";
+    }
+    public String getOnlyProvinceForAPI(int districtId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        DistrictDAO districtDAO = new DistrictDAO(em);
+        District district = districtDAO.findById(districtId);
+        return district.getProvince().getName() + ", Vietnam";
     }
 }
