@@ -85,6 +85,9 @@ public class WholesaleOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID", nullable = false)
     private WholesaleCustomer customer;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<StockTransfer> stockTransfers;
     
     /**
      * Tính lại tổng tiền đơn hàng dựa trên các order items

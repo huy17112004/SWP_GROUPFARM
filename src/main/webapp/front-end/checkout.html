@@ -27,6 +27,8 @@
 
     <!-- Template css -->
     <link id="color-link" rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <!-- Nhúng Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 
 <body>
@@ -127,8 +129,11 @@
                                         </lord-icon>
                                     </div>
                                     <div class="checkout-box">
-                                        <div class="checkout-title">
+                                        <div class="checkout-title d-flex align-items-center justify-content-between">
                                             <h4>Delivery Address</h4>
+                                            <button class="btn btn-sm btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#add-address">
+                                                <i class="fa fa-plus"></i> Thêm địa chỉ
+                                            </button>
                                         </div>
 
                                         <div class="checkout-detail">
@@ -462,46 +467,48 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="text" class="form-control" id="fname" placeholder="Enter First Name">
-                            <label for="fname">First Name</label>
+                    <form id="addAddressForm">
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="province" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                            </select>
+                            <label for="province">Tỉnh/Thành phố</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="text" class="form-control" id="lname" placeholder="Enter Last Name">
-                            <label for="lname">Last Name</label>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="district" required disabled>
+                                <option value="">Chọn quận/huyện</option>
+                            </select>
+                            <label for="district">Quận/Huyện</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="email" class="form-control" id="email" placeholder="Enter Email Address">
-                            <label for="email">Email Address</label>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="ward" required disabled>
+                                <option value="">Chọn phường/xã</option>
+                            </select>
+                            <label for="ward">Phường/Xã</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="address"
-                                style="height: 100px"></textarea>
-                            <label for="address">Enter Address</label>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <input type="text" class="form-control" placeholder="Địa chỉ cụ thể" id="address" required>
+                            <label for="address">Địa chỉ cụ thể</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="email" class="form-control" id="pin" placeholder="Enter Pin Code">
-                            <label for="pin">Pin Code</label>
+                        <div class="mb-3">
+                            <label class="form-label">Chọn vị trí trên bản đồ</label>
+                            <div id="map" style="height: 300px; width: 100%;"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input type="text" class="form-control" id="latitude" name="latitude" readonly required>
+                            </div>
+                            <div class="col">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input type="text" class="form-control" id="longitude" name="longitude" readonly required>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal">Save
-                        changes</button>
+                    <button type="button" class="btn theme-bg-color btn-md text-white" id="saveAddressBtn">Save changes</button>
                 </div>
             </div>
         </div>
@@ -683,6 +690,9 @@
     <!-- theme setting js -->
     <script src="../assets/js/theme-setting.js"></script>
 
+    <!-- Nhúng Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <script>
         fetch('header.html')
             .then(response => response.text())
@@ -788,6 +798,99 @@
                     placeOrderBtn.textContent = 'Place Order';
                 }
             });
+        });
+    </script>
+
+    <!-- Khởi tạo bản đồ khi modal mở -->
+    <script>
+        let map, marker;
+        $('#add-address').on('shown.bs.modal', function () {
+            setTimeout(function() {
+                if (!map) {
+                    map = L.map('map').setView([21.0285, 105.8542], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                    marker = L.marker([21.0285, 105.8542], {draggable:true}).addTo(map);
+                    function updateLatLng(lat, lng) {
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+                    }
+                    map.on('click', function(e) {
+                        marker.setLatLng(e.latlng);
+                        updateLatLng(e.latlng.lat, e.latlng.lng);
+                    });
+                    marker.on('dragend', function(e) {
+                        var pos = marker.getLatLng();
+                        updateLatLng(pos.lat, pos.lng);
+                    });
+                    // Set initial values
+                    updateLatLng(marker.getLatLng().lat, marker.getLatLng().lng);
+                } else {
+                    map.invalidateSize();
+                }
+            }, 300);
+        });
+
+        // Bổ sung: Khi chọn huyện, cập nhật lại map theo lat/lon của huyện
+        document.getElementById('district').addEventListener('change', async function() {
+            const districtId = this.value;
+            if (districtId && map && marker) {
+                try {
+                    const res = await fetch(`/api/geo/district?districtId=${districtId}`);
+                    const data = await res.json();
+                    if (data.lat && data.lon && data.lat !== "not_found" && data.lon !== "not_found") {
+                        const lat = parseFloat(data.lat);
+                        const lon = parseFloat(data.lon);
+                        map.setView([lat, lon], 13);
+                        marker.setLatLng([lat, lon]);
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lon;
+                    }
+                } catch (e) {
+                    // Có thể báo lỗi nếu muốn
+                }
+            }
+        });
+
+        // Xử lý lưu địa chỉ
+        $('#saveAddressBtn').on('click', async function() {
+            const form = document.getElementById('addAddressForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            const data = {
+                street: document.getElementById('address').value,
+                wardID: document.getElementById('ward').value,
+                latitude: document.getElementById('latitude').value,
+                longitude: document.getElementById('longitude').value
+            };
+            try {
+                const response = await fetch('/api/customer-addresses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    alert('Thêm địa chỉ thành công!');
+                    $('#add-address').modal('hide');
+                    // TODO: reload address list nếu cần
+                } else {
+                    alert(result.message || 'Có lỗi xảy ra khi thêm địa chỉ!');
+                }
+            } catch (e) {
+                alert('Có lỗi xảy ra khi thêm địa chỉ!');
+            }
+        });
+    </script>
+    <script type="module">
+        import { setupLocationDropdown } from '../assets/jsLogic/location-dropdown-loader.js';
+        // Luôn load lại danh sách tỉnh mỗi lần mở modal
+        $('#add-address').on('shown.bs.modal', function () {
+            const locationDropdown = setupLocationDropdown();
+            locationDropdown.loadProvinces();
         });
     </script>
 </body>
