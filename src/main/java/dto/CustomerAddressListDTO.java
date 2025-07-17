@@ -11,4 +11,6 @@ public class CustomerAddressListDTO {
     private String wardName;
     private String districtName;
     private String provinceName;
+    private float latitude;
+    private float longitude;
 }

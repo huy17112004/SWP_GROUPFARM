@@ -50,6 +50,8 @@ public class CustomerAddressService {
             dto.setWardName(ca.getAddress().getWard().getName());
             dto.setDistrictName(ca.getAddress().getWard().getDistrict().getName());
             dto.setProvinceName(ca.getAddress().getWard().getDistrict().getProvince().getName());
+            dto.setLatitude(ca.getAddress().getLatitude());
+            dto.setLongitude(ca.getAddress().getLongitude());
             return dto;
         }).collect(Collectors.toList());
         return dtos;
