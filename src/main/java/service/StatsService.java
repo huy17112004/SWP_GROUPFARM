@@ -10,6 +10,7 @@ import entity.Product;
 import jakarta.persistence.EntityManager;
 import util.JpaUtil;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 public class  StatsService {
@@ -52,10 +53,12 @@ public class  StatsService {
                     dto.setWeekRevenue(statsDAO.getWeekRevenue());
                     dto.setPeriod("week");
                     break;
+
                 case "month":
                     dto.setMonthRevenue(statsDAO.getMonthRevenue());
                     dto.setPeriod("month");
                     break;
+
                 case "year":
                     dto.setYearRevenue(statsDAO.getYearRevenue());
                     dto.setPeriod("year");

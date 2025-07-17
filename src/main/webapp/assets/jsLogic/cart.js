@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cartItems.forEach(item => {
                 const row = `
                 <tr>
-                    <td><img src="${item.imageUrl || 'default.jpg'}" alt="image" width="60"/></td>
+                    <td><img src="${item.productImage || 'default.jpg'}" alt="image" width="60"/></td>
                     <td>${item.productName}</td> 
                     <td>${item.wholesalePrice.toLocaleString('vi-VN')} VND</td>
                      <td>
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             </button>
                         </div>
                     </td>
-                        <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.productId})">Remove</button>
+                        <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.productId})">Xóa</button>
                     </td>
                 </tr>
             `;

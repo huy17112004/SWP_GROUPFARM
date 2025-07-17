@@ -42,10 +42,13 @@ public class RevenueServlet extends HttpServlet {
                 // Lấy tất cả doanh thu
                 dto = statsService.getRevenueStats();
             }
-            
+
+            String json = gson.toJson(dto);
+            System.out.println("JSON Trả về: " + json); // Log để xem JSON có labels không
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write(gson.toJson(dto));
-            
+            resp.getWriter().write(json);
+
+
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");

@@ -5,10 +5,12 @@ import entity.WholesaleOrder;
 import jakarta.persistence.EntityManager;
 import dto.ShippingOrderDTO;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StatsDAO  extends GenericDAO{
 
@@ -107,8 +109,6 @@ public class StatsDAO  extends GenericDAO{
 
         return result != null ? result : BigDecimal.ZERO;
     }
-
-
     // Tính doanh thu tháng này
 
     public BigDecimal getMonthRevenue() {
@@ -135,6 +135,8 @@ public class StatsDAO  extends GenericDAO{
         return result != null ? result : BigDecimal.ZERO;
     }
 
+
+
     //Tính doanh thu năm này
     public BigDecimal getYearRevenue() {
         Calendar cal = Calendar.getInstance();
@@ -159,6 +161,35 @@ public class StatsDAO  extends GenericDAO{
 
         return result != null ? result : BigDecimal.ZERO;
     }
+
+    public List<Object[]> getWeeklyRevenueByDay() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date startOfWeek = cal.getTime();
+
+        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        Date startOfNextWeek = cal.getTime();
+
+        String sql = """
+        SELECT FORMAT(createdAt, 'yyyy-MM-dd') AS day,
+               SUM(totalPrice) AS revenue
+        FROM WholesaleOrder
+        WHERE createdAt >= ? AND createdAt < ? AND status = 'SHIPPED'
+        GROUP BY FORMAT(createdAt, 'yyyy-MM-dd')
+        ORDER BY day
+    """;
+
+        return em.createNativeQuery(sql)
+                .setParameter(1, startOfWeek)
+                .setParameter(2, startOfNextWeek)
+                .getResultList();
+    }
+
+
     /**
      * Lấy top sản phẩm bán chạy
      * @param limit Số lượng sản phẩm muốn lấy (top N)

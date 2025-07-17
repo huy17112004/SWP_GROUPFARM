@@ -1,0 +1,59 @@
+/* Căn giữa tiêu đề cột */
+th, td {
+    vertical-align: middle !important;
+}
+
+th.text-center {
+    text-align: center !important;
+}
+
+/* Căn phải cột thao tác */
+td.text-end {
+    text-align: right !important;
+}
+
+/* Flex cho các nút thao tác */
+.wishlist-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Nút nhỏ, đều, bo tròn */
+.action-btn {
+    min-width: 90px;
+    max-width: 130px;
+    padding: 0.18rem 0.7rem;
+    font-size: 0.92rem;
+    border-radius: 6px;
+    text-align: center;
+    white-space: nowrap;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    font-weight: 500;
+}
+
+.text-center {
+    text-align: right !important;
+}
+.btn-info { background-color: #0dcaf0 !important; color: #fff !important; }
+.btn-success { background-color: #198754 !important; color: #fff !important; }
+.btn-danger { background-color: #dc3545 !important; color: #fff !important; }
+
+.btn-info:hover, .btn-success:hover, .btn-danger:hover {
+    opacity: 0.9 !important;
+    filter: none !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Căn giữa ảnh và nội dung */
+td, th {
+    vertical-align: middle !important;
+}
+
+/* Giảm chiều cao dòng nếu muốn bảng gọn hơn */
+.table tr, .table td, .table th {
+    height: 48px;
+}

@@ -117,7 +117,7 @@ public class CartServlet extends HttpServlet {
             cartService.removeFromCart(productId, 1L);
 //            cartService.removeFromCart(productId, userId);
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write("{\"message\":\"Item removed from cart successfully\",\"success\":true}");
+            resp.getWriter().write("{\"message\":\"Sản phẩm được xóa thành công\",\"success\":true}");
 
         } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");

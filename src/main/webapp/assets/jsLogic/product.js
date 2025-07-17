@@ -55,7 +55,44 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(err => {
             console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
         });
-}
+        //  Gọi thêm API load danh sách ảnh theo productId
+        fetch(`/api/product-images?productId=${productId}`)
+            .then(res => res.json())
+            .then(images => {
+                const mainSlider = document.getElementById("main-slider");
+                const thumbSlider = document.getElementById("thumb-slider");
+
+                if (!mainSlider || !thumbSlider || images.length === 0) return;
+
+                mainSlider.innerHTML = "";
+                thumbSlider.innerHTML = "";
+
+                images.forEach((url, index) => {
+                    mainSlider.innerHTML += `
+                        <div>
+                            <div class="slider-image">
+                                <img src="${url}" data-zoom-image="${url}"
+                                     class="img-fluid image_zoom_cls-${index} blur-up lazyload" alt="Ảnh sản phẩm">
+                            </div>
+                        </div>
+                    `;
+
+                    thumbSlider.innerHTML += `
+                        <div>
+                            <div class="sidebar-image">
+                                <img src="${url}" class="img-fluid blur-up lazyload" alt="thumb">
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // (Tùy bạn: nếu dùng slick slider thì gọi lại .slick() ở đây)
+            })
+            .catch(err => {
+                console.error("Lỗi khi tải ảnh sản phẩm:", err);
+            });
+    }
+
 
 
         function loadTotalProducts() {
@@ -79,8 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-        // Gọi tự động khi trang tải xong
-    // document.addEventListener('DOMContentLoaded', loadTotalProducts);
 
     function loadAdminProductList() {
         fetch('/api/stats')

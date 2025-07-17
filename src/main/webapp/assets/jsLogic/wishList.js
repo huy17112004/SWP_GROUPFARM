@@ -1,103 +1,112 @@
-// ===== WISHLIST API UTILITIES =====
 
 //  Lấy danh sách wishlist của user hiện tại
-async function fetchWishlist() {
-    const res = await fetch("/api/wishlist");
-    if (!res.ok) throw new Error("Không thể lấy danh sách wishlist");
-    return await res.json();
+function loadWishlist() {
+    fetch("/api/wishlist", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => {
+            if (!res.ok) throw new Error("Không thể lấy dữ liệu wishlist.");
+            return res.json();
+        })
+        .then(wishlistItems => {
+            const tbody = document.getElementById("wishlist-table-body");
+            if (!tbody) return;
+
+            tbody.innerHTML = "";
+
+            if (wishlistItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center">Danh sách yêu thích trống.</td></tr>`;
+                return;
+            }
+
+            wishlistItems.forEach(item => {
+                const row = `
+                <tr>
+                    <td><img src="${item.productImage || 'default.jpg'}" alt="image" width="200"/></td>
+                    <td>${item.productName}</td>
+                    <td>${Number(item.productPrice).toLocaleString('vi-VN')} VND</td>
+                    <td>
+                        <a href="product-image.html?productId=${item.productId}" class="btn btn-info btn-sm" target="_blank">Xem chi tiết</a>
+                        <button class="btn btn-success" onclick="addToCartFromWishlist(${item.productId})">Thêm vào giỏ hàng</button>
+                        <button class="btn btn-danger" onclick="removeFromWishlist(${item.productId})">Xóa</button>
+                    </td>
+                </tr>
+            `;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Lỗi khi tải wishlist: " + err.message);
+        });
 }
 
-//  Kiểm tra sản phẩm có trong wishlist không
-async function isInWishlist(productId) {
-    const res = await fetch(`/api/wishlist/check/${productId}`);
-    if (!res.ok) throw new Error("Lỗi khi kiểm tra wishlist");
-    const json = await res.json();
-    return json.inWishlist === true;
-}
+
 
 //  Thêm sản phẩm vào wishlist
-async function addToWishlist(productId) {
-    const formData = new URLSearchParams();
-    formData.append("productId", productId);
+// Hàm lấy productId từ URL
+function getProductIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('productId');
+}
 
-    const res = await fetch("/api/wishlist", {
-        method: "POST",
+// Gửi yêu cầu thêm sản phẩm vào wishlist
+function addToWishlist() {
+    const productId = getProductIdFromURL();
+
+    if (!productId) {
+        alert('Không tìm thấy productId!');
+        return;
+    }
+
+    // Nếu backend nhận JSON:
+    const wishlistItem = {
+        productId: parseInt(productId)
+        // Nếu backend cần userId, có thể thêm userId: 1 (giả lập)
+    };
+
+    fetch('/api/wishlist', {
+        method: 'POST',
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            'Content-Type': 'application/json'
         },
-        body: formData.toString()
-    });
-
-    if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Thêm sản phẩm vào wishlist thất bại");
-    }
-
-    const json = await res.json();
-    return json.message;
-}
-
-//  Xoá sản phẩm khỏi wishlist
-async function removeFromWishlist(productId) {
-    const res = await fetch(`/api/wishlist/${productId}`, {
-        method: "DELETE"
-    });
-
-    if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Xoá sản phẩm khỏi wishlist thất bại");
-    }
-
-    const json = await res.json();
-    return json.message;
-}
-
-//  Toggle thêm / xoá wishlist (sử dụng trong button yêu thích)
-async function toggleWishlist(productId, onToggleCallback) {
-    try {
-        const inList = await isInWishlist(productId);
-        if (inList) {
-            await removeFromWishlist(productId);
-            alert("🗑 Đã xoá khỏi wishlist");
-        } else {
-            await addToWishlist(productId);
-            alert("❤️ Đã thêm vào wishlist");
-        }
-        if (onToggleCallback) onToggleCallback(); // callback để render lại giao diện nếu cần
-    } catch (e) {
-        alert("Lỗi xử lý wishlist: " + e.message);
-    }
-}
-
-//  Hiển thị danh sách wishlist ra HTML
-async function renderWishlist(containerId = "wishlist-container") {
-    try {
-        const wishlist = await fetchWishlist();
-        const container = document.getElementById(containerId);
-        container.innerHTML = "";
-
-        if (wishlist.length === 0) {
-            container.innerHTML = "<p>Danh sách yêu thích trống.</p>";
-            return;
-        }
-
-        wishlist.forEach(item => {
-            const html = `
-                <div class="wishlist-item">
-                    <img src="${item.productImage}" alt="${item.productName}" width="100">
-                    <h4>${item.productName}</h4>
-                    <p>${item.productPrice.toLocaleString("vi-VN")} đ</p>
-                    <small>Thêm lúc: ${new Date(item.createdAt).toLocaleString("vi-VN")}</small><br>
-                    <button onclick="removeFromWishlist(${item.productId}).then(() => renderWishlist('${containerId}'))">
-                        🗑 Xoá
-                    </button>
-                </div>
-                <hr>
-            `;
-            container.insertAdjacentHTML("beforeend", html);
+        body: JSON.stringify(wishlistItem)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Lỗi khi thêm vào wishlist');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('❤️ Đã thêm vào wishlist!');
+            window.location.href = 'wishlist.html';
+        })
+        .catch(error => {
+            alert('Lỗi: ' + error.message);
         });
-    } catch (e) {
-        console.error("Lỗi hiển thị wishlist:", e);
-        document.getElementById(containerId).innerHTML = `<p class="text-danger">${e.message}</p>`;
-    }
+}
+    // Gửi yêu cầu xóa sản phẩm khỏi wishlist
+    function removeFromWishlist(productId) {
+        fetch(`/api/wishlist/${productId}`, {
+            method: 'DELETE'
+        })
+
+            .then(async res => {
+                // Lấy nội dung trả về (dù là lỗi hay thành công)
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    // Nếu backend trả về lỗi, hiển thị chi tiết
+                    throw new Error(data.error || "Không thể xóa sản phẩm khỏi wishlist.");
+                }
+                // Thành công
+                alert(data.message || "Xóa thành công");
+                loadWishlist();
+            })
+            .catch(err => {
+                alert("Lỗi khi xóa: " + err.message);
+            });
 }
