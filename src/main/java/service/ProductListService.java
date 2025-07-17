@@ -17,13 +17,18 @@ public class ProductListService {
             if (search != null && !search.isEmpty()) return dao.searchByName(search);
             if (categoryId != null) return dao.findByCategory(categoryId);
             return dao.findAll();
-        } finally { em.close(); }
+        } finally {
+            em.close();
+        }
     }
 
     public Product getProductById(int id) {
         EntityManager em = JpaUtil.getEntityManager();
-        try { return new ProductListDAO(em).findById(id); }
-        finally { em.close(); }
+        try {
+            return new ProductListDAO(em).findById(id);
+        } finally {
+            em.close();
+        }
     }
 
     public Product createProduct(Product p, int categoryId) {
@@ -39,7 +44,9 @@ public class ProductListService {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
-        } finally { em.close(); }
+        } finally {
+            em.close();
+        }
     }
 
     public Product updateProduct(int id, Product newData, int categoryId) {
@@ -63,7 +70,9 @@ public class ProductListService {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
-        } finally { em.close(); }
+        } finally {
+            em.close();
+        }
     }
 
     public boolean deleteProduct(int id) {
@@ -91,6 +100,8 @@ public class ProductListService {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
-        } finally { em.close(); }
+        } finally {
+            em.close();
+        }
     }
 }
