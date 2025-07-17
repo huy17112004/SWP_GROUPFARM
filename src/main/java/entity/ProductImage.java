@@ -16,11 +16,11 @@ public class ProductImage {
     @Column(name = "ProductImageID")
     private int id;
 
-    @Column(name = "ImageUrl", length = 50, nullable = false)
+    @Column(name = "ImageUrl", length = 150, nullable = false)
     private String imageUrl;
 
     /* n ProductImage ↔ 1 Product */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "ProductID", nullable = false)
     private Product product;
 }

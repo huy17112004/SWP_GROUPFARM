@@ -5,10 +5,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * Nhật ký thay đổi số lượng của lô hàng.
+ * Nhật ký thay đổi số lượng lô.
  */
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 @Table(name = "StockLotAudit")
 public class StockLotAudit {
 
@@ -33,7 +34,6 @@ public class StockLotAudit {
     @Column(name = "ActionType", length = 20, nullable = false)
     private String actionType;
 
-    // Nhân viên thực hiện thay đổi
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WarehouseStaffID", nullable = false)
     private WarehouseStaff performedBy;

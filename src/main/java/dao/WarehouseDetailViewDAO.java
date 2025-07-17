@@ -106,7 +106,6 @@ public class WarehouseDetailViewDAO {
     public boolean delete(int id) {
         Warehouse w = em.find(Warehouse.class, id);
         if (w == null) return false;
-        // Nếu cascade REMOVE cho Address, Manager, Staff thì chỉ cần remove Warehouse.
         em.remove(w);
         return true;
     }

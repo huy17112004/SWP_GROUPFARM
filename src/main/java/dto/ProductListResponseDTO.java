@@ -1,16 +1,26 @@
 package dto;
 
-import lombok.*;
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductListResponseDTO {
-    private int id;
-    private String productName;
-    private int entryPrice;
-    private int retailPrice;
-    private BigDecimal wholesalePrice;
-    private String description;
-    private int categoryId;
+    private String imageUrl;
+    private String name;
+    private Integer retailPrice;
     private String categoryName;
+    private String warehouseName;
+    private Integer  lotId;
+    private Integer quantity;
+    private Date expiredDate;   // đổi từ LocalDateTime → Date
+    private Date importDate;
 }

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class ProductResponseDTO {
+public class ProductViewDTO {
     private int productId;
     private String productName;
     private int entryPrice;
@@ -20,9 +20,10 @@ public class ProductResponseDTO {
     private String categoryName;
     private String description;
 
-    public ProductResponseDTO(Product product) {
+    public ProductViewDTO(Product product) {
         this.productId = product.getId();
         this.productName = product.getProductName() != null ? product.getProductName() : "";
+        this.entryPrice     = product.getEntryPrice();
         this.retailPrice = product.getRetailPrice();
         this.wholesalePrice = product.getWholesalePrice();
 
