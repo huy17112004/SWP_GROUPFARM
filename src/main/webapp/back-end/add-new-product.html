@@ -46,7 +46,6 @@
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/chartist.css">
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/date-picker.css">
-
     <!-- Bootstrap css -->
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
 
@@ -114,10 +113,13 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="product.html">Products</a>
+                                            <a href="product.html">Tồn kho</a>
                                         </li>
                                         <li>
-                                            <a href="add-new-product.html">Add New Products</a>
+                                            <a href="view-product.html">Quản lí sản phẩm</a>
+                                        </li>
+                                        <li>
+                                            <a href="view-category.html">Quản lí danh mục sản phẩm</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -227,7 +229,8 @@
 
                                                 <!-- Submit -->
                                                 <div class="card-submit-button text-end">
-                                                    <button type="submit" class="btn btn-primary ms-auto">Thêm sản phẩm</button>
+                                                    <button type="submit" class="btn btn-primary ms-auto">Thêm sản
+                                                        phẩm</button>
                                                 </div>
                                             </form>
                                             <div class="modal fade" id="addCategoryModal" tabindex="-1"
@@ -382,6 +385,29 @@
             // 3. Submit form
             form.addEventListener('submit', async e => {
                 e.preventDefault();
+                // Nếu còn ảnh trong input, tự động add luôn vào mảng
+                const pendingUrl = newImageInput.value.trim();
+                if (pendingUrl && !imageUrls.includes(pendingUrl)) {
+                    imageUrls.push(pendingUrl);
+
+                    // Optionally, thêm ảnh vào UI (hiện lên list)
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.textContent = pendingUrl;
+
+                    const rm = document.createElement('button');
+                    rm.type = 'button';
+                    rm.className = 'btn btn-sm btn-outline-danger';
+                    rm.textContent = '×';
+                    rm.onclick = () => {
+                        imageUrls = imageUrls.filter(u => u !== pendingUrl);
+                        li.remove();
+                    };
+
+                    li.appendChild(rm);
+                    imageList.appendChild(li);
+                    newImageInput.value = '';
+                }
 
                 const payload = {
                     productName: document.getElementById('productName').value.trim(),
@@ -397,6 +423,22 @@
                 if (!payload.productName || !payload.categoryId || payload.imageUrls.length === 0) {
                     alert('Vui lòng điền đầy đủ tên, category và ít nhất 1 ảnh.');
                     return;
+                }
+
+                // Kiểm tra trùng tên sản phẩm (không phân biệt hoa thường)
+                try {
+                    const res = await fetch('http://localhost:8080/api/product-view');
+                    if (res.ok) {
+                        const products = await res.json();
+                        const exists = products.some(p => (p.productName || p.name || '').trim().toLowerCase() === payload.productName.toLowerCase());
+                        if (exists) {
+                            alert('Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác!');
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    // Nếu lỗi API, vẫn cho phép submit (có thể backend sẽ kiểm tra tiếp)
+                    console.warn('Không kiểm tra được trùng tên:', err);
                 }
 
                 try {

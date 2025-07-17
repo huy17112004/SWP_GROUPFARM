@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@WebServlet("/api/product")
+@WebServlet("/api/product/*")
 public class ProductServlet extends HttpServlet {
 
     private final ProductService productService = new ProductService();
@@ -122,4 +122,5 @@ public class ProductServlet extends HttpServlet {
             )));
         }
     }
+
 }

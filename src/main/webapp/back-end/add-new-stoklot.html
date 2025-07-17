@@ -114,10 +114,13 @@
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
-                                            <a href="product.html">Products</a>
+                                            <a href="product.html">Tồn kho</a>
                                         </li>
                                         <li>
-                                            <a href="add-new-product.html">Add New Products</a>
+                                            <a href="view-product.html">Quản lí sản phẩm</a>
+                                        </li>
+                                        <li>
+                                            <a href="view-category.html">Quản lí danh mục sản phẩm</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -266,7 +269,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const apiStockLot = 'http://localhost:8080/api/stocklots';
-            const apiProducts = 'http://localhost:8080/api/product';
+            const apiProducts = 'http://localhost:8080/api/product-view';
             const apiWarehouses = 'http://localhost:8080/api/warehouses-detail';
 
             // 1) Load sản phẩm
