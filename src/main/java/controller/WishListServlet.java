@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import dto.WishListDTO;
 import entity.Wishlist;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import service.WishlistService;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,77 +22,59 @@ public class WishListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        Object accountId = (session != null) ? session.getAttribute("accountId") : null;
-        if (accountId == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
-            return;
-        }
-        int userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
+        Long userId = 1L; // giả định hoặc thay bằng session nếu mở
 
-        String pathInfo = req.getPathInfo();
-        resp.setContentType("application/json;charset=UTF-8");
         try {
-            if (pathInfo == null || pathInfo.equals("/")) {
-                // Lấy toàn bộ wishlist
-                List<Wishlist> wishlist = wishlistService.getWishlistByCustomerId(userId);
-                resp.getWriter().write(gson.toJson(wishlist));
-            } else if (pathInfo.startsWith("/check/")) {
-                // Kiểm tra sản phẩm có trong wishlist
-                int productId = Integer.parseInt(pathInfo.substring(7));
-                boolean inWishlist = wishlistService.isInWishlist(userId, productId);
-                resp.getWriter().write("{\"inWishlist\":" + inWishlist + "}");
-            }
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            List<WishListDTO> wishList = wishlistService.getWishlistByCustomerId(userId.intValue());
+
+            resp.setContentType("application/json;charset=UTF-8");
+            new Gson().toJson(wishList, resp.getWriter());
+
+        } catch (RuntimeException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    HttpSession session = req.getSession(false);
-        Object accountId = (session != null) ? session.getAttribute("accountId") : null;
-        if (accountId == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
-            return;
-        }
-        int userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
+        Gson gson = new Gson();
+        BufferedReader reader = req.getReader();
+        WishListDTO dto = gson.fromJson(reader, WishListDTO.class);
+
+        dto.setCustomerId(1L);
 
         try {
-            int productId = Integer.parseInt(req.getParameter("productId"));
-            wishlistService.addToWishlist(userId, productId);
+            wishlistService.addToWishlist(dto);
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write("{\"message\":\"Added to wishlist\"}");
-        } catch (Exception e) {
+            resp.getWriter().write("{\"message\":\"Sản phẩm đã được thêm vào wishlist\",\"success\":true}");
+
+        } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\",\"success\":false}");
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        Object accountId = (session != null) ? session.getAttribute("accountId") : null;
-        if (accountId == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
-            return;
-        }
-        int userId = (accountId instanceof Integer) ? (Integer) accountId : ((Long) accountId).intValue();
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
+
         if (pathInfo == null || pathInfo.equals("/")) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is required");
             return;
         }
         try {
             int productId = Integer.parseInt(pathInfo.substring(1));
-            wishlistService.removeFromWishlist(userId, productId);
+
+            wishlistService.removeFromWishlist(1, productId);
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write("{\"message\":\"Removed from wishlist\"}");
-        } catch (Exception e) {
+            resp.getWriter().write("{\"message\":\"Sản phẩm được xóa thành công\",\"success\":true}");
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");
+        } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\",\"success\":false}");
         }
     }
 }
