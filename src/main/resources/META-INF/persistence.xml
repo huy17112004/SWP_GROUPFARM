@@ -39,7 +39,7 @@
                       value="jdbc:sqlserver://localhost:1433;databaseName=ASSSWP1;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8"/>
 
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
-            <property name="jakarta.persistence.jdbc.password" value="123"/>
+            <property name="jakarta.persistence.jdbc.password" value="1234"/>
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
