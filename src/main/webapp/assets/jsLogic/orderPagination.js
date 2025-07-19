@@ -1,6 +1,7 @@
 let orderCurrentPage = 1;
 const orderItemsPerPage = 10; // Cố định 10 đơn hàng/trang
 let allOrders = [];
+let orderStatusFilter = 'ALL'; // Thêm biến filter trạng thái
 
 function loadOrdersWithPagination(page = 1) {
     orderCurrentPage = page;
@@ -12,7 +13,7 @@ function loadOrdersWithPagination(page = 1) {
 
             allOrders = data;
             displayOrdersForPage(orderCurrentPage);
-            updateOrderPagination(allOrders.length);
+            updateOrderPagination(getFilteredOrders().length);
         })
         .catch(err => {
             document.getElementById('all-order-body').innerHTML =
@@ -20,11 +21,18 @@ function loadOrdersWithPagination(page = 1) {
         });
 }
 
+// Hàm lọc đơn hàng theo trạng thái
+function getFilteredOrders() {
+    if (orderStatusFilter === 'ALL') return allOrders;
+    return allOrders.filter(o => o.status === orderStatusFilter);
+}
+
 function displayOrdersForPage(page) {
     const container = document.getElementById('all-order-body');
+    const filteredOrders = getFilteredOrders();
     const startIndex = (page - 1) * orderItemsPerPage;
     const endIndex = startIndex + orderItemsPerPage;
-    const ordersForPage = allOrders.slice(startIndex, endIndex);
+    const ordersForPage = filteredOrders.slice(startIndex, endIndex);
 
     container.innerHTML = '';
     if (ordersForPage.length === 0) {
@@ -39,7 +47,6 @@ function displayOrdersForPage(page) {
                 <td>${o.productName}</td>
                 <td>${Number(o.totalPrice).toLocaleString('vi-VN')}₫</td>
                 <td class="${o.status === 'SHIPPED' ? 'text-success' : 'text-danger'} fw-bold">${o.status}</td>
-
             </tr>`;
     });
 }
@@ -85,17 +92,34 @@ function updateOrderPagination(totalItems) {
 }
 
 function changeOrderPage(page) {
-    const totalPages = Math.ceil(allOrders.length / orderItemsPerPage);
+    const totalPages = Math.ceil(getFilteredOrders().length / orderItemsPerPage);
     if (page < 1 || page > totalPages) return;
 
     orderCurrentPage = page;
     displayOrdersForPage(orderCurrentPage);
-    updateOrderPagination(allOrders.length);
+    updateOrderPagination(getFilteredOrders().length);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-     loadOrdersWithPagination(1);
+// Hàm set filter trạng thái và cập nhật lại bảng
+function setOrderStatusFilter(status) {
+    orderStatusFilter = status;
+    orderCurrentPage = 1;
+    displayOrdersForPage(orderCurrentPage);
+    updateOrderPagination(getFilteredOrders().length);
+}
 
+// Để gọi từ HTML
+window.setOrderStatusFilter = setOrderStatusFilter;
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadOrdersWithPagination(1);
+// Lắng nghe sự kiện thay đổi của select filter nếu có
+    const filterSelect = document.getElementById('order-status-filter-select');
+    if (filterSelect) {
+        filterSelect.addEventListener('change', function(e) {
+            setOrderStatusFilter(e.target.value);
+        });
+    }
 });
 
 window.changeOrderPage = changeOrderPage;

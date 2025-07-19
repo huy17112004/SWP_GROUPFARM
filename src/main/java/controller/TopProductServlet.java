@@ -27,7 +27,7 @@ public class TopProductServlet extends HttpServlet {
 //            return;
 //        }
 
-        // ✅ Giả lập đăng nhập admin với accountId = 1
+        //  Giả lập đăng nhập admin với accountId = 1
         HttpSession session = req.getSession(true); // true = tạo session nếu chưa có
         session.setAttribute("accountId", 1);
         session.setAttribute("role", "admin");

@@ -71,10 +71,12 @@ function displayFilteredProducts(filteredProducts) {
     }
 
     productsForPage.forEach(p => {
+        // Lấy ảnh đầu tiên nếu imageUrl là mảng, nếu không thì để rỗng
+        let imgSrc = Array.isArray(p.imageUrl) && p.imageUrl.length > 0 ? p.imageUrl[0] : '';
         container.innerHTML += `
             <tr>
                 <td class="product-image">
-                    <img src="${p.imageUrl}" class="img-fluid" alt="">
+                    <img src="${imgSrc}" class="img-fluid" alt="">
                 </td>
                 <td><h6>${p.productName}</h6></td>
                 <td>${p.description}</td>
@@ -98,7 +100,7 @@ function displayFilteredProducts(filteredProducts) {
 function loadProductsWithPagination(page = 1) {
     currentPage = page;
 
-    fetch('/api/products')
+    fetch('/api/products-dashboard')
         .then(res => res.json())
         .then(data => {
             allProducts = data;
@@ -110,6 +112,7 @@ function loadProductsWithPagination(page = 1) {
             document.getElementById('productList').innerHTML =
                 '<tr><td colspan="6" class="text-center text-danger">Không thể tải dữ liệu sản phẩm</td></tr>';
         });
+
 }
 
 // Hiển thị sản phẩm cho trang cụ thể
@@ -128,10 +131,12 @@ function displayProductsForPage(page) {
     }
 
     productsForPage.forEach(p => {
+        // Lấy ảnh đầu tiên nếu imageUrl là mảng, nếu không thì để rỗng
+        let imgSrc = Array.isArray(p.imageUrl) && p.imageUrl.length > 0 ? p.imageUrl[0] : '';
         container.innerHTML += `
             <tr>
                 <td class="product-image">
-                    <img src="${p.imageUrl}" class="img-fluid" alt="">
+                    <img src="${imgSrc}" class="img-fluid" alt="">
                 </td>
                 <td><h6>${p.productName}</h6></td>
                 <td>${p.description}</td>
@@ -282,7 +287,7 @@ function changePage(page) {
 function deleteProduct(productId) {
     if (!confirm("Bạn có chắc chắn muốn xoá sản phẩm này không?")) return;
 
-    fetch(`/api/products/${productId}`, {
+    fetch(`/api/products-dashboard/${productId}`, {
         method: 'DELETE'
     })
         .then(res => {
