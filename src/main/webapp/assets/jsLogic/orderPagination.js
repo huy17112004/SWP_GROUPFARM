@@ -55,7 +55,10 @@ function updateOrderPagination(totalItems) {
     const totalPages = Math.ceil(totalItems / orderItemsPerPage);
     const paginationContainer = document.querySelector('#pills-order .custom-pagination ul');
 
-    if (!paginationContainer) return;
+    if (!paginationContainer) {
+        console.warn('Pagination container not found for orders');
+        return;
+    }
 
     if (totalPages <= 1) {
         paginationContainer.innerHTML = '';

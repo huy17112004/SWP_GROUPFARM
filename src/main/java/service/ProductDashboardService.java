@@ -46,37 +46,39 @@ public class ProductDashboardService {
         }
     }
 
-//    public ProductDashboardDTO updateProduct(int id, ProductDashboardDTO rq) {
-//        EntityManager em = JpaUtil.getEntityManager();
-//        EntityTransaction tx = em.getTransaction();
-//
-//        try {
-//            tx.begin();
-//            ProductDashboardDTO dao = new ProductDashboardDTO(em);
-//            Product p = dao.findByIdEntity(id);
-//            if (p == null) {
-//                tx.rollback();
-//                return null;
-//            }
-//
-//            p.setProductName(rq.getProductName());
-//            p.setWholesalePrice(rq.getWholesalePrice());
-//            p.setDescription(rq.getDescription());
-//
-//            Category c = em.find(Category.class, rq.getCategoryId());
-//            p.setCategory(c);
-//
-//            // TODO: xử lý ảnh nếu cần
-//
-//            tx.commit();
-//            // 👉 Trả về đúng kiểu DTO bạn đang dùng
-//            return new ProductDashboardDAO(em).findDashboardById(id);
-//        } catch (RuntimeException e) {
-//            if (tx.isActive()) tx.rollback();
-//            throw e;
-//        } finally {
-//            em.close();
-//        }
-//    }
+    public ProductDashboardDTO updateProduct(int id, ProductDashboardDTO rq) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            ProductDashboardDAO dao = new ProductDashboardDAO(em);
+            Product p = dao.findByIdEntity((long) id);
+            if (p == null) {
+                tx.rollback();
+                return null;
+            }
+
+            p.setProductName(rq.getProductName());
+            p.setWholesalePrice(rq.getWholesalePrice());
+            p.setDescription(rq.getDescription());
+
+            Category category = em.find(Category.class, rq.getCategoryId());
+            p.setCategory(category);
+
+            dao.updateEntity(p); // merge
+
+            tx.commit();
+
+            return dao.findDashboardById(id); // trả về DTO sau cập nhật
+        } catch (RuntimeException e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
 
 }

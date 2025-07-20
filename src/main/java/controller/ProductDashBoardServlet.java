@@ -1,5 +1,5 @@
 package controller;
-import jakarta.servlet.http.HttpServlet;
+
 import com.google.gson.Gson;
 import dto.ProductDashboardDTO;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +15,7 @@ import java.util.List;
 @WebServlet("/api/products-dashboard/*")
 public class ProductDashBoardServlet extends HttpServlet {
 
-    private final ProductDashboardService productService = new ProductDashboardService(); // tự khởi tạo
+    private final ProductDashboardService productService = new ProductDashboardService();
     private final Gson gson = new Gson();
 
     @Override
@@ -43,13 +43,13 @@ public class ProductDashBoardServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // ✅ Giả lập đăng nhập nếu chưa có
+        //  Giả lập đăng nhập nếu chưa có
         HttpSession session = req.getSession(true);
         session.setAttribute("accountId", 1); // giả lập user ID = 1
 
         String pathInfo = req.getPathInfo(); // "/5"
 
-        // ✅ Kiểm tra đường dẫn có chứa ID không
+        //  Kiểm tra đường dẫn có chứa ID không
         if (pathInfo == null || pathInfo.equals("/")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.setContentType("application/json;charset=UTF-8");
@@ -74,29 +74,28 @@ public class ProductDashBoardServlet extends HttpServlet {
             resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\", \"success\": false}");
         }
     }
-//
-//    @Override
-//    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        resp.setContentType("application/json;charset=UTF-8");
-//        String pathInfo = req.getPathInfo(); // ví dụ "/5"
-//
-//
-//        try {
-//            int id = Integer.parseInt(pathInfo.substring(1));
-//            ProductDashboardDTO requestDTO = gson.fromJson(req.getReader(), ProductDashboardDTO.class);
-//            ProductDashboardDTO updated = productService.updateProduct(id, requestDTO);
-//
-//            if (updated == null) {
-//                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//                resp.getWriter().write("{\"error\": \"Không tìm thấy sản phẩm\"}");
-//            } else {
-//                gson.toJson(updated, resp.getWriter());
-//            }
-//
-//        } catch (Exception e) {
-//            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
-//        }
-//    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json;charset=UTF-8");
+        String pathInfo = req.getPathInfo(); // ví dụ "/5"
+
+        try {
+            int id = Integer.parseInt(pathInfo.substring(1));
+            ProductDashboardDTO requestDTO = gson.fromJson(req.getReader(), ProductDashboardDTO.class);
+            ProductDashboardDTO updated = productService.updateProduct(id, requestDTO);
+
+            if (updated == null) {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("{\"error\": \"Không tìm thấy sản phẩm\"}");
+            } else {
+                gson.toJson(updated, resp.getWriter());
+            }
+
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
+        }
+    }
 
 }

@@ -98,6 +98,142 @@
             border-radius: 6px;
         }
 
+        /* Edit Modal Styles */
+        #edit-product .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        #edit-product .modal-header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            border-bottom: none;
+        }
+
+        #edit-product .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        #edit-product .form-label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        #edit-product .form-control,
+        #edit-product .form-select {
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        #edit-product .form-control:focus,
+        #edit-product .form-select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        }
+
+        #edit-product .form-control[readonly] {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+
+        #edit-product .btn {
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        #edit-product .btn-theme-bg-color {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: none;
+        }
+
+        #edit-product .btn-theme-bg-color:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-1px);
+        }
+
+        #edit-product .btn-animation {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            color: #6c757d;
+        }
+
+        #edit-product .btn-animation:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            z-index: 9999;
+        }
+
+        .toast {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Edit/Delete Icons */
+        .edit-delete {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .edit-delete i {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-delete .edit {
+            color: #4CAF50;
+        }
+
+        .edit-delete .edit:hover {
+            background-color: #e8f5e9;
+            transform: scale(1.1);
+        }
+
+        .edit-delete .delete {
+            color: #f44336;
+        }
+
+        .edit-delete .delete:hover {
+            background-color: #ffebee;
+            transform: scale(1.1);
+        }
+
+        /* Loading State */
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #edit-product .modal-dialog {
+                margin: 1rem;
+            }
+            
+            #edit-product .row {
+                margin: 0;
+            }
+            
+            #edit-product .col-md-6 {
+                padding: 0;
+                margin-bottom: 1rem;
+            }
+        }
 
     </style>
 
@@ -2534,54 +2670,64 @@
 
     <!-- Edit Product Information Start -->
     <div class="modal fade theme-modal" id="edit-product" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Chỉnh sửa sản phẩm</h5>
+                    <h5 class="modal-title">Chỉnh sửa thông tin sản phẩm</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-
                 <div class="modal-body">
                     <form id="editProductForm">
                         <input type="hidden" id="productId">
-
-                        <div class="mb-3">
-                            <label for="editProductName" class="form-label">Tên sản phẩm</label>
-                            <input type="text" class="form-control" id="editProductName" required>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editProductName" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="editProductName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editWholesalePrice" class="form-label">Giá bán buôn <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="editWholesalePrice" step="0.01" min="0" required>
+                                </div>
+                            </div>
                         </div>
-
+                        
                         <div class="mb-3">
-                            <label for="editWholesalePrice" class="form-label">Giá bán buôn</label>
-                            <input type="number" class="form-control" id="editWholesalePrice" min="0" required>
+                            <label for="editDescription" class="form-label">Mô tả sản phẩm</label>
+                            <textarea class="form-control" id="editDescription" rows="3" maxlength="50" placeholder="Nhập mô tả sản phẩm (tối đa 50 ký tự)"></textarea>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="editDescription" class="form-label">Mô tả</label>
-                            <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editCategoryId" class="form-label">Loại sản phẩm <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="editCategoryId" required>
+                                        <option value="">Chọn loại sản phẩm</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editProductImageUrl" class="form-label">URL ảnh sản phẩm</label>
+                                    <input type="text" class="form-control" id="editProductImageUrl" placeholder="Nhập URL ảnh, phân cách bằng dấu phẩy">
+                                </div>
+                            </div>
                         </div>
-
+                        
                         <div class="mb-3">
-                            <label for="editProductImageUrl" class="form-label">Hình ảnh URL</label>
-                            <input type="text" class="form-control" id="editProductImageUrl">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editCategoryId" class="form-label"></label>
-                            <input type="hidden" class="form-control" id="editCategoryId">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Loại</label>
+                            <label for="editCategoryName" class="form-label">Tên loại hiện tại</label>
                             <input type="text" class="form-control" id="editCategoryName" readonly>
                         </div>
                     </form>
                 </div>
-
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
-                    <button type="button" class="btn btn-primary" onclick="saveEdit()">Lưu</button>
+                    <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn theme-bg-color btn-md fw-bold text-light" onclick="saveEdit()">Lưu thay đổi</button>
                 </div>
             </div>
         </div>

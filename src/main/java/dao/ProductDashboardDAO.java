@@ -18,17 +18,20 @@ public class ProductDashboardDAO {
         List<Product> products = em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
 
         return products.stream().map(p -> {
-            List<String> imageUrls = p.getImages().stream()
+            String imageUrl = p.getImages().stream()
+                    .findFirst()
                     .map(ProductImage::getImageUrl)
-                    .collect(Collectors.toList());
+                    .orElse(null);
+
 
             return new ProductDashboardDTO(
                     p.getId(),
                     p.getProductName(),
                     p.getWholesalePrice(),
                     p.getDescription(),
-                    imageUrls,
-                    p.getCategory().getCategoryName()
+                    imageUrl,
+                    p.getCategory().getCategoryName(),
+                    p.getCategory().getId()
             );
         }).collect(Collectors.toList());
     }
@@ -43,22 +46,28 @@ public class ProductDashboardDAO {
         }
         em.remove(p);
     }
-//    public ProductDashboardDTO findDashboardById(int id) {
-//        Product p = em.find(Product.class, id);
-//        if (p == null) return null;
-//
-//        List<String> imageUrls = p.getImages().stream()
-//                .map(ProductImage::getImageUrl)
-//                .collect(Collectors.toList());
-//
-//        return new ProductDashboardDTO(
-//                p.getId(),
-//                p.getProductName(),
-//                p.getWholesalePrice(),
-//                p.getDescription(),
-//                imageUrls,
-//                p.getCategory().getCategoryName()
-//        );
-//    }
+    public ProductDashboardDTO findDashboardById(int id) {
+        Product p = em.find(Product.class, id);
+        if (p == null) return null;
+
+        String imageUrl = p.getImages().stream()
+                .findFirst()
+                .map(ProductImage::getImageUrl)
+                .orElse(null);
+
+
+        return new ProductDashboardDTO(
+                p.getId(),
+                p.getProductName(),
+                p.getWholesalePrice(),
+                p.getDescription(),
+                imageUrl,
+                p.getCategory().getCategoryName(),
+                p.getCategory().getId()
+        );
+    }
+    public Product updateEntity(Product p) {
+        return em.merge(p);
+    }
 
 }

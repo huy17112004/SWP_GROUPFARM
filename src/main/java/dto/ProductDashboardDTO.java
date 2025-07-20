@@ -8,15 +8,21 @@ public class ProductDashboardDTO {
     private String productName;
     private BigDecimal wholesalePrice;
     private String description;
-    private List<String> imageUrl;
+    private String imageUrl;
+    private int categoryId;
     private String categoryName;
 
-    public ProductDashboardDTO(int id, String productName, BigDecimal wholesalePrice,String description, List<String> imageUrl, String categoryName) {
+    // Default constructor for Gson deserialization
+    public ProductDashboardDTO() {
+    }
+
+    public ProductDashboardDTO(int id, String productName, BigDecimal wholesalePrice, String description, String imageUrl, String categoryName, int categoryId ) {
         this.id = id;
         this.productName = productName;
         this.wholesalePrice = wholesalePrice;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.categoryId = categoryId;
         this.categoryName = categoryName;
     }
 
@@ -52,12 +58,20 @@ public class ProductDashboardDTO {
         this.description = description;
     }
 
-    public List<String> getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(List<String> imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getCategoryName() {
