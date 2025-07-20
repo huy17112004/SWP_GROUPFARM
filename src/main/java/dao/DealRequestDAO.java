@@ -1,7 +1,7 @@
 package dao;
 
 import dto.DealRequestDTO;
-import dto.DealRequestFilterDTO;
+//import dto.DealRequestFilterDTO;
 import dto.OrderItemDTO;
 import entity.DealRequest;
 import jakarta.persistence.EntityManager;
@@ -21,11 +21,17 @@ public class DealRequestDAO extends GenericDAO<DealRequest> {
         super(DealRequest.class, entityManager);
     }
 
-    public List<DealRequest> findByOrderItemId(int orderItemId) {
-        return em.createQuery(
-                        "SELECT d FROM DealRequest d WHERE d.orderItem.id = :itemId", DealRequest.class)
-                .setParameter("itemId", orderItemId)
+    public DealRequest findLastByOrderItemId(int orderItemId) {
+        List<DealRequest> results = em.createQuery(
+                        "SELECT d FROM DealRequest d " +
+                                "WHERE d.orderItem.id = :itemId " +
+                                "ORDER BY d.requestedAt DESC",
+                        DealRequest.class
+                ).setParameter("itemId", orderItemId)
+                .setMaxResults(1)
                 .getResultList();
+
+        return results.isEmpty() ? null : results.get(0);
     }
 
     // 1. Check tồn tại deal với status cho trước
@@ -49,118 +55,6 @@ public class DealRequestDAO extends GenericDAO<DealRequest> {
                 .setParameter("itemId", orderItemId)
                 .getSingleResult();
     }
-
-    public List<DealRequestDTO> findByFilter(DealRequestFilterDTO f) {
-        StringBuilder jpql = new StringBuilder();
-        jpql.append("SELECT d FROM DealRequest d ")
-                .append(" JOIN d.orderItem oi")
-                .append(" JOIN oi.product p")
-                .append(" JOIN oi.order o")
-                .append(" JOIN o.customer c")
-                .append(" WHERE 1=1");
-
-        Map<String,Object> params = new HashMap<>();
-
-        // 1. status IN (…)
-        if (f.getStatuses() != null && !f.getStatuses().isEmpty()) {
-            jpql.append(" AND d.status IN :statuses");
-            params.put("statuses", f.getStatuses());
-        }
-
-        // 2. customerName LIKE …
-        if (f.getCustomerName() != null && !f.getCustomerName().isBlank()) {
-            jpql.append(" AND LOWER(c.companyName) LIKE :custName");
-            params.put("custName", "%" + f.getCustomerName().toLowerCase() + "%");
-        }
-
-        // 3. productId, productName
-        if (f.getProductId() != null) {
-            jpql.append(" AND p.id = :prodId");
-            params.put("prodId", f.getProductId());
-        }
-        if (f.getProductName() != null && !f.getProductName().isBlank()) {
-            jpql.append(" AND LOWER(p.productName) LIKE :prodName");
-            params.put("prodName", "%" + f.getProductName().toLowerCase() + "%");
-        }
-
-        // 4. totalOriginalPrice = oi.subTotal
-        if (f.getMinTotalOriginalPrice() != null) {
-            jpql.append(" AND oi.subTotal >= :minOrig");
-            params.put("minOrig", f.getMinTotalOriginalPrice());
-        }
-        if (f.getMaxTotalOriginalPrice() != null) {
-            jpql.append(" AND oi.subTotal <= :maxOrig");
-            params.put("maxOrig", f.getMaxTotalOriginalPrice());
-        }
-
-        // 5. totalProposedPrice = d.proposedPrice * oi.quantity
-        if (f.getMinTotalProposedPrice() != null) {
-            jpql.append(" AND (d.proposedPrice * oi.quantity) >= :minProp");
-            params.put("minProp", f.getMinTotalProposedPrice());
-        }
-        if (f.getMaxTotalProposedPrice() != null) {
-            jpql.append(" AND (d.proposedPrice * oi.quantity) <= :maxProp");
-            params.put("maxProp", f.getMaxTotalProposedPrice());
-        }
-
-        // 6. discountRate = (oi.subTotal - d.proposedPrice * oi.quantity) / oi.subTotal
-        if (f.getMinDiscountRate() != null) {
-            jpql.append(" AND ((oi.subTotal - (d.proposedPrice * oi.quantity)) / oi.subTotal) >= :minRate");
-            params.put("minRate", f.getMinDiscountRate());
-        }
-        if (f.getMaxDiscountRate() != null) {
-            jpql.append(" AND ((oi.subTotal - (d.proposedPrice * oi.quantity)) / oi.subTotal) <= :maxRate");
-            params.put("maxRate", f.getMaxDiscountRate());
-        }
-
-        // 7. quantity
-        if (f.getMinQuantity() != null) {
-            jpql.append(" AND oi.quantity >= :minQty");
-            params.put("minQty", f.getMinQuantity());
-        }
-        if (f.getMaxQuantity() != null) {
-            jpql.append(" AND oi.quantity <= :maxQty");
-            params.put("maxQty", f.getMaxQuantity());
-        }
-
-        // 9. Sort
-        if (f.getSortField() != null) {
-            String dir = f.isSortAsc() ? "ASC" : "DESC";
-            String sortClause = null;
-            switch (f.getSortField()) {
-                case "requestedAt":
-                    sortClause = "d.requestedAt";
-                    break;
-                case "totalOriginalPrice":
-                    // totalOriginalPrice = oi.subTotal
-                    sortClause = "oi.subTotal";
-                    break;
-                case "totalProposedPrice":
-                    // totalProposedPrice = d.proposedPrice * oi.quantity
-                    sortClause = "(d.proposedPrice * oi.quantity)";
-                    break;
-                case "discountRate":
-                    // discountRate = (oi.subTotal - (d.proposedPrice * oi.quantity)) / oi.subTotal
-                    sortClause = "((oi.subTotal - (d.proposedPrice * oi.quantity)) / oi.subTotal)";
-                    break;
-                default:
-                    // không có sort
-            }
-            if (sortClause != null) {
-                jpql.append(" ORDER BY ").append(sortClause).append(" ").append(dir);
-            }
-        }
-
-        TypedQuery<DealRequest> q = em.createQuery(jpql.toString(), DealRequest.class);
-        params.forEach(q::setParameter);
-        List<DealRequest> entities = q.getResultList();
-        // map sang DTO
-        List<DealRequestDTO> dtos = new ArrayList<>();
-        for (DealRequest d : entities) {
-            dtos.add(mapToDTO(d));
-        }
-        return dtos;
-    }
     public DealRequestDTO mapToDTO(DealRequest dr) {
         DealRequestDTO drDTO = new DealRequestDTO();
         OrderItemDTO orderItemDTO = new OrderItemDTO();
@@ -183,21 +77,6 @@ public class DealRequestDAO extends GenericDAO<DealRequest> {
         drDTO.setDiscountAmount(drDTO.getTotalOriginalPrice().subtract(drDTO.getTotalProposedPrice()));
         drDTO.setDiscountRate(drDTO.getDiscountAmount().divide(drDTO.getTotalOriginalPrice(), 2, BigDecimal.ROUND_HALF_UP));
         return drDTO;
-    }
-
-    public List<DealRequest> findByOrderAndCustomer(int orderId, int customerId) {
-        TypedQuery<DealRequest> q = em.createQuery(
-                "SELECT d FROM DealRequest d " +
-                        " JOIN FETCH d.orderItem oi " +
-                        " JOIN FETCH oi.product p " +
-                        " JOIN FETCH oi.order o " +
-                        " WHERE o.id = :orderId " +
-                        "   AND o.customer.id = :custId",
-                DealRequest.class
-        );
-        q.setParameter("orderId", orderId);
-        q.setParameter("custId", customerId);
-        return q.getResultList();
     }
 
 }

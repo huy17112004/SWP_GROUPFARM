@@ -287,7 +287,6 @@
                                             <table class="table all-package order-table theme-table" id="table_id">
                                                 <thead>
                                                     <tr>
-                                                        <th>Order Image</th>
                                                         <th>Order Code</th>
                                                         <th>Date</th>
                                                         <th>Customer</th>
@@ -472,29 +471,19 @@
             if (orders.length === 0) {
                 tbody.append(`
                     <tr>
-                        <td colspan="7" class="text-center">Không có đơn hàng nào</td>
+                        <td colspan="6" class="text-center">Không có đơn hàng nào</td>
                     </tr>
                 `);
                 return;
             }
 
             orders.forEach(order => {
-                const firstItem = order.items && order.items.length > 0 ? order.items[0] : null;
-                const orderImage = firstItem && firstItem.productImage && firstItem.productImage.trim() !== '' ? 
-                    firstItem.productImage : 'assets/images/product/1.png';
                 const orderDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('vi-VN') : 'N/A';
                 const statusClass = getStatusClass(order.status);
                 const statusText = getStatusText(order.status);
 
                 const row = `
                     <tr data-bs-toggle="offcanvas" href="#order-details" onclick="showOrderDetails(${order.orderId})">
-                        <td>
-                            <a class="d-block">
-                                <span class="order-image">
-                                    <img src="${orderImage}" class="img-fluid" alt="product">
-                                </span>
-                            </a>
-                        </td>
                         <td>${order.orderCode}</td>
                         <td>${orderDate}</td>
                         <td>${order.customerName || 'N/A'}</td>
