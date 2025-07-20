@@ -333,12 +333,12 @@ function showEditModal(productId) {
         const productNameField = document.getElementById('editProductName');
         const wholesalePriceField = document.getElementById('editWholesalePrice');
         const descriptionField = document.getElementById('editDescription');
-        const imageUrlField = document.getElementById('editProductImageUrl');
+        // const imageUrlField = document.getElementById('editProductImageUrl');
         const categoryNameField = document.getElementById('editCategoryName');
         const categoryIdField = document.getElementById('editCategoryId');
         
         if (!productIdField || !productNameField || !wholesalePriceField || 
-            !descriptionField || !imageUrlField || !categoryNameField || !categoryIdField) {
+            !descriptionField ||!categoryNameField || !categoryIdField) {
             throw new Error('Không tìm thấy các trường input trong modal');
         }
         
@@ -346,7 +346,7 @@ function showEditModal(productId) {
         productNameField.value = product.productName;
         wholesalePriceField.value = product.wholesalePrice;
         descriptionField.value = product.description || '';
-        imageUrlField.value = Array.isArray(product.imageUrl) ? product.imageUrl.join(", ") : '';
+        // imageUrlField.value = Array.isArray(product.imageUrl) ? product.imageUrl.join(", ") : '';
         categoryNameField.value = product.categoryName || '';
         categoryIdField.value = product.categoryId;
         
@@ -355,7 +355,7 @@ function showEditModal(productId) {
             name: productNameField.value,
             price: wholesalePriceField.value,
             description: descriptionField.value,
-            imageUrl: imageUrlField.value,
+            // imageUrl: imageUrlField.value,
             categoryName: categoryNameField.value,
             categoryId: categoryIdField.value
         }); // Debug log
@@ -413,48 +413,17 @@ function loadCategories() {
 
 // Lưu thay đổi edit
 function saveEdit() {
-    // Validate form
-    const form = document.getElementById('editProductForm');
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
-
     const productId = document.getElementById('productId').value;
     const productName = document.getElementById('editProductName').value.trim();
     const wholesalePrice = parseFloat(document.getElementById('editWholesalePrice').value);
     const description = document.getElementById('editDescription').value.trim();
     const categoryId = parseInt(document.getElementById('editCategoryId').value);
-    const imageUrlText = document.getElementById('editProductImageUrl').value.trim();
-
-    // Validate dữ liệu
-    if (!productName) {
-        alert("Vui lòng nhập tên sản phẩm");
-        return;
-    }
-
-    if (isNaN(wholesalePrice) || wholesalePrice <= 0) {
-        alert("Vui lòng nhập giá bán buôn hợp lệ");
-        return;
-    }
-
-    if (!categoryId) {
-        alert("Vui lòng chọn loại sản phẩm");
-        return;
-    }
-
-    // Xử lý imageUrl
-    let imageUrl = [];
-    if (imageUrlText) {
-        imageUrl = imageUrlText.split(',').map(url => url.trim()).filter(url => url.length > 0);
-    }
 
     const productData = {
-        productName: productName,
-        wholesalePrice: wholesalePrice,
-        description: description,
-        imageUrl: imageUrl,
-        categoryId: categoryId
+        productName,
+        wholesalePrice,
+        description,
+        categoryId
     };
 
     console.log('Sending product data:', productData); // Debug log
@@ -472,54 +441,43 @@ function saveEdit() {
         },
         body: JSON.stringify(productData)
     })
-    .then(res => {
-        console.log('Response status:', res.status); // Debug log
-        
-        if (!res.ok) {
-            return res.text().then(text => {
-                console.log('Error response:', text); // Debug log
-                throw new Error(`HTTP ${res.status}: ${text}`);
-            });
-        }
-        return res.json();
-    })
-    .then(data => {
-        console.log('Success response:', data); // Debug log
-        
-        // Hiển thị thông báo thành công
-        showNotification('Cập nhật sản phẩm thành công!', 'success');
-        
-        // Đóng modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('edit-product'));
-        modal.hide();
-
-        // Load lại danh sách sản phẩm từ API
-        loadProductsWithPagination(currentPage);
-    })
-    .catch(err => {
-        console.error("Lỗi khi cập nhật sản phẩm:", err);
-        
-        // Hiển thị lỗi chi tiết hơn
-        let errorMessage = 'Có lỗi xảy ra khi cập nhật sản phẩm';
-        
-        if (err.message.includes('HTTP 400')) {
-            errorMessage = 'Dữ liệu không hợp lệ: ' + err.message;
-        } else if (err.message.includes('HTTP 404')) {
-            errorMessage = 'Không tìm thấy sản phẩm';
-        } else if (err.message.includes('HTTP 500')) {
-            errorMessage = 'Lỗi server: ' + err.message;
-        } else if (err.name === 'TypeError' && err.message.includes('fetch')) {
-            errorMessage = 'Không thể kết nối đến server';
-        }
-        
-        showNotification(errorMessage, 'error');
-    })
-    .finally(() => {
-        // Khôi phục button
-        saveButton.textContent = originalText;
-        saveButton.disabled = false;
-    });
+        .then(res => {
+            console.log('Response status:', res.status);
+            if (!res.ok) {
+                return res.text().then(text => {
+                    console.log('Error response:', text);
+                    throw new Error(`HTTP ${res.status}: ${text}`);
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log('Success response:', data);
+            showNotification('Cập nhật sản phẩm thành công!', 'success');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('edit-product'));
+            modal.hide();
+            loadProductsWithPagination(currentPage);
+        })
+        .catch(err => {
+            console.error("Lỗi khi cập nhật sản phẩm:", err);
+            let errorMessage = 'Có lỗi xảy ra khi cập nhật sản phẩm';
+            if (err.message.includes('HTTP 400')) {
+                errorMessage = 'Dữ liệu không hợp lệ: ' + err.message;
+            } else if (err.message.includes('HTTP 404')) {
+                errorMessage = 'Không tìm thấy sản phẩm';
+            } else if (err.message.includes('HTTP 500')) {
+                errorMessage = 'Lỗi server: ' + err.message;
+            } else if (err.name === 'TypeError' && err.message.includes('fetch')) {
+                errorMessage = 'Không thể kết nối đến server';
+            }
+            showNotification(errorMessage, 'error');
+        })
+        .finally(() => {
+            saveButton.textContent = originalText;
+            saveButton.disabled = false;
+        });
 }
+
 
 // Hiển thị thông báo
 function showNotification(message, type = 'info') {

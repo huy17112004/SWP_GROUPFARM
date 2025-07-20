@@ -26,76 +26,287 @@
         .trending-table-scroll::-webkit-scrollbar-track {
             background: #f5fff5;
         }
-
-
-
-        /* Khối doanh thu */
-        .custom-revenue-card {
-            background: linear-gradient(to right, #f5fff5, #ffffff);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 24px;
-            transition: transform 0.3s ease;
+        .dashboard-flex-row {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .dashboard-flex-row > * {
+            flex: 1 1 480px;
+            max-width: 500px;
+        }
+        @media (max-width: 1100px) {
+            .dashboard-flex-row {
+                flex-direction: column;
+                gap: 24px;
+                align-items: center;
+            }
+            .dashboard-flex-row > * {
+                width: 100%;
+                max-width: 500px;
+            }
         }
 
-        .custom-revenue-card:hover {
-            transform: translateY(-3px);
+        /* --- Modern Revenue Card Styles --- */
+        .custom-revenue-card-v2 {
+            background: linear-gradient(120deg, #f8fff8 60%, #e0f7fa 100%);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px #0da48722, 0 1.5px 8px #b2dfdb44;
+            padding: 36px 32px 32px 32px;
+            max-width: 1500px;
+            width: 100%;
+            margin: 36px auto 0 auto;
+            border: 1.5px solid #b2dfdb;
+            transition: box-shadow 0.2s, transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            animation: fadeInUp 0.7s cubic-bezier(.39,.575,.56,1.000);
         }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(40px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        .custom-revenue-card-v2::before {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, #b2dfdb55 60%, transparent 100%);
+            z-index: 0;
+        }
+        .custom-revenue-card-v2:hover {
+            box-shadow: 0 16px 48px #0da48733, 0 2px 12px #b2dfdb55;
+            transform: translateY(-4px) scale(1.015);
+        }
+        .revenue-card-header {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            margin-bottom: 22px;
+            z-index: 1;
+            position: relative;
+        }
+        .revenue-card-icon {
+            background: linear-gradient(135deg, #0da487 60%, #4caf50 100%);
+            color: #fff;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px #0da48733;
+            border: 4px solid #e0f2f1;
+            font-size: 2.5rem;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .revenue-card-icon i {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 8px #0da48744);
+        }
+        .revenue-card-header h5 {
+            margin: 0;
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: #0da487;
+            letter-spacing: 1px;
+        }
+        .revenue-card-desc {
+            font-size: 1.05rem;
+            color: #388e3c;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+        .revenue-card-value-box {
+            text-align: right;
+            z-index: 1;
+            position: relative;
+            margin-left: auto;
+        }
+        .revenue-card-label {
+            font-size: 1.05rem;
+            color: #888;
+            margin-bottom: 2px;
+            display: block;
+            font-weight: 600;
+        }
+        .revenue-card-value {
+            color: #0da487;
+            font-size: 2.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px #0da48722;
+            margin-bottom: 0;
+            font-family: 'Russo One', 'Exo 2', Arial, sans-serif;
+            transition: color 0.2s, text-shadow 0.2s;
+            line-height: 1.1;
+        }
+        #revenueForm {
+            margin-top: 10px;
+            margin-bottom: 0;
+            z-index: 2;
+            position: relative;
+        }
+        #revenueForm .form-select {
+            min-width: 140px;
+            border-radius: 10px;
+            border: 1.5px solid #b2dfdb;
+            padding: 10px 16px;
+            background: #f8fff8;
+            color: #388e3c;
+            font-weight: 600;
+            transition: border 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 1px 4px #b2dfdb22;
+        }
+        #revenueForm .form-select:focus {
+            border-color: #0da487;
+            outline: none;
+        }
+        #revenueForm label {
+            font-weight: 700;
+            color: #0da487;
+            margin-right: 6px;
+            font-size: 1rem;
+        }
+        #revenueForm .btn-success {
+            background: linear-gradient(90deg, #0da487 60%, #4caf50 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 32px;
+            font-weight: 800;
+            box-shadow: 0 2px 8px #0da48722;
+            transition: background 0.2s, transform 0.2s;
+            font-size: 1rem;
+        }
+        #revenueForm .btn-success:hover {
+            background: linear-gradient(90deg, #4caf50 60%, #0da487 100%);
+            transform: scale(1.06);
+        }
+        #revenueResult {
+            margin-top: 10px;
+            font-size: 0.98rem;
+            color: #888;
+            font-style: italic;
+        }
+        @media (max-width: 600px) {
+            .custom-revenue-card-v2 {
+                padding: 16px 6px 16px 6px;
+                max-width: 98vw;
+            }
+            .revenue-card-header {
+                gap: 10px;
+            }
+            .revenue-card-value {
+                font-size: 1.4rem;
+            }
+            .revenue-card-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1.5rem;
+            }
+            #revenueForm .btn-success {
+                padding: 8px 16px;
+                font-size: 0.95rem;
+            }
+            #revenueForm .form-select {
+                min-width: 90px;
+                font-size: 0.95rem;
+                padding: 7px 8px;
+            }
+        }
+        /* --- End Modern Revenue Card Styles --- */
 
-        .custom-revenue-card h5 {
-            color: black;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .custom-revenue-card h3 {
-            color: mediumseagreen;
-            font-size: 28px;
-            font-weight: bold;
-        }
 
         /* Khối bảng TrendingProducts */
         .custom-trending-box {
-            background: linear-gradient(to right, #f5fff5, #ffffff);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            background: linear-gradient(120deg, #f8fff8 60%, #e0f7fa 100%);
+            border-radius: 20px;
+            padding: 28px 24px 24px 24px;
+            box-shadow: 0 6px 32px #0da48722;
+            border: 1.5px solid #b2dfdb;
+            margin: 32px auto 0 auto;
+            max-width: 1500px;
+            transition: box-shadow 0.2s, transform 0.2s;
         }
-
+        .custom-trending-box:hover {
+            box-shadow: 0 12px 48px #0da48733;
+            transform: translateY(-2px) scale(1.01);
+        }
         .custom-trending-box .dashboard-title h3 {
-            font-weight: bold;
-            color: black;
+            font-weight: 800;
+            color: #0da487;
             margin-bottom: 0;
+            letter-spacing: 1px;
         }
-
         .custom-trending-box .form-select {
-            border-radius: 8px;
-            padding: 6px 15px;
-            background-color: #f0fff0;
-            border: 1px solid #c8e6c9;
-        }
-
-        .product-table th {
-            background-color: #e8f5e9;
+            border-radius: 10px;
+            padding: 8px 16px;
+            background-color: #f8fff8;
+            border: 1.5px solid #b2dfdb;
             color: #388e3c;
             font-weight: 600;
-            border-bottom: 2px solid #c8e6c9;
+            min-width: 120px;
+            transition: border 0.2s;
         }
-
+        .custom-trending-box .form-select:focus {
+            border-color: #0da487;
+            outline: none;
+        }
+        .product-table th {
+            background-color: #e0f7fa;
+            color: #0da487;
+            font-weight: 700;
+            border-bottom: 2px solid #b2dfdb;
+            font-size: 1.05rem;
+        }
         .product-table td {
             vertical-align: middle;
-            border-top: 1px solid #d0e8d0;
+            border-top: 1px solid #b2dfdb;
+            font-size: 1rem;
         }
-
         .product-table tr:hover {
             background-color: #f1f8e9;
         }
-
         .product-table img {
             width: 40px;
             height: 40px;
             object-fit: cover;
-            border-radius: 6px;
+            border-radius: 8px;
+            border: 1.5px solid #b2dfdb;
+        }
+        .trending-table-scroll {
+            max-height: 220px;
+            overflow-y: auto;
+            display: block;
+            border-radius: 12px;
+            background: #f8fff8;
+            margin-top: 8px;
+        }
+        .trending-table-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .trending-table-scroll::-webkit-scrollbar-thumb {
+            background: #b2dfdb;
+            border-radius: 4px;
+        }
+        .trending-table-scroll::-webkit-scrollbar-track {
+            background: #f5fff5;
+        }
+        @media (max-width: 600px) {
+            .custom-trending-box {
+                padding: 12px 2px 12px 2px;
+                max-width: 98vw;
+            }
+            .product-table th, .product-table td {
+                font-size: 0.95rem;
+            }
         }
 
         /* Edit Modal Styles */
@@ -224,11 +435,11 @@
             #edit-product .modal-dialog {
                 margin: 1rem;
             }
-            
+
             #edit-product .row {
                 margin: 0;
             }
-            
+
             #edit-product .col-md-6 {
                 padding: 0;
                 margin-bottom: 1rem;
@@ -1499,9 +1710,9 @@
 <!--                            </li>-->
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-out-tab" data-bs-toggle="pill"
-                                    data-bs-target="#pills-out" type="button" role="tab"><i data-feather="log-out"></i>
-                                    Log Out</button>
+                                <button class="nav-link" id="logoutBtn" type="button">
+                                    <i data-feather="log-out"></i> Log Out
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -1590,22 +1801,32 @@
                                     </div>
                                     <br>
                                     <div>
-                                        <div class="total-contain custom-revenue-card">
-                                            <div class="total-detail">
-                                                <h5>Tổng doanh số</h5>
-                                                <form id="revenueForm" class="d-flex align-items-center mb-3 gap-2">
-                                                    <label for="period" class="mb-0">Xem theo:</label>
-                                                    <select id="period" class="form-select" style="width: 120px;">
-                                                        <option value="">Tất cả</option>
-                                                        <option value="today">Hôm nay</option>
-                                                        <option value="week">Tuần này</option>
-                                                        <option value="month">Tháng này</option>
-                                                        <option value="year">Năm nay</option>
-                                                    </select>
-                                                    <button type="submit" class="btn btn-primary">Lọc</button>
-                                                </form>
-                                                <h3 id="totalRevenue">0 VND</h3>
+                                        <div class="custom-revenue-card-v2">
+                                            <div class="revenue-card-header">
+                                                <div class="revenue-card-icon">
+                                                    <i class="fa-solid fa-coins"></i>
+                                                </div>
+                                                <div>
+                                                    <h5>Tổng doanh số</h5>
+                                                    <div class="revenue-card-desc">Tổng doanh thu cửa hàng </div>
+                                                </div>
+                                                <div class="revenue-card-value-box">
+                                                    <span class="revenue-card-label">Tổng cộng</span>
+                                                    <div class="revenue-card-value" id="totalRevenue">0 VND</div>
+                                                </div>
                                             </div>
+                                            <form id="revenueForm" class="d-flex align-items-center gap-2 mb-2">
+                                                <label for="period" class="mb-0">Xem theo:</label>
+                                                <select id="period" class="form-select">
+                                                    <option value="">Tất cả</option>
+                                                    <option value="today">Hôm nay</option>
+                                                    <option value="week">Tuần này</option>
+                                                    <option value="month">Tháng này</option>
+                                                    <option value="year">Năm nay</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-success">Lọc</button>
+                                            </form>
+                                            <div id="revenueResult"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2780,6 +3001,8 @@
     <script src="../assets/jsLogic/orderPagination.js"></script>
 
     <script src="../assets/jsLogic/stats.js"></script>
+
+    <script src="../assets/jsLogic/logout.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             loadAllOrders();

@@ -53,33 +53,50 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error(error);
             });
     });
-    // function renderRevenueChart(labels, values) {
-    //     const chartEl = document.querySelector("#revenueChart");
-    //     if (!chartEl) {
-    //         console.error("Không tìm thấy phần tử #revenueChart");
-    //         return;
-    //     }
-    //
-    //     // Xóa biểu đồ cũ (nếu có)
-    //     if (window.revenueApexChart) {
-    //         window.revenueApexChart.destroy();
-    //     }
-    //
-    //     // Tạo biểu đồ mới
-    //     window.revenueApexChart = new ApexCharts(chartEl, {
-    //         chart: { type: 'bar', height: 250 },
-    //         series: [{ name: "Doanh thu", data: values }],
-    //         xaxis: { categories: labels },
-    //         yaxis: {
-    //             labels: {
-    //                 formatter: val => val.toLocaleString('vi-VN') + ' đ'
-    //             }
-    //         },
-    //         dataLabels: { enabled: false },
-    //         colors: ['#34c38f'],
-    //         title: { text: 'Biểu đồ doanh thu', align: 'center' }
-    //     });
-    //
-    //     window.revenueApexChart.render();
-    // }
+    let revenueChartInstance = null;
+
+    function renderRevenueChart(labels, values) {
+        const ctx = document.getElementById("revenueChart").getContext("2d");
+
+        // Xóa biểu đồ cũ nếu có
+        if (revenueChartInstance) {
+            revenueChartInstance.destroy();
+        }
+
+        revenueChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Doanh thu (VND)',
+                    data: values,
+                    backgroundColor: '#34c38f'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: val => val.toLocaleString('vi-VN') + ' đ'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Biểu đồ doanh thu',
+                        align: 'center',
+                        font: {size: 18}
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
 });
+
+

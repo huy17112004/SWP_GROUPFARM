@@ -333,23 +333,42 @@
                                     </li>
                                 </ul>
 
-                                <div class="select-size">
-                                    <h4>Cake Size :</h4>
-                                    <select class="form-select select-form-size">
-                                        <option selected>Select Size</option>
-                                        <option value="1.2">1/2 KG</option>
-                                        <option value="0">1 KG</option>
-                                        <option value="1.5">1/5 KG</option>
-                                        <option value="red">Red Roses</option>
-                                        <option value="pink">With Pink Roses</option>
-                                    </select>
+<!--                                <div class="select-size">-->
+<!--                                    <h4>Cake Size :</h4>-->
+<!--                                    <select class="form-select select-form-size">-->
+<!--                                        <option selected>Select Size</option>-->
+<!--                                        <option value="1.2">1/2 KG</option>-->
+<!--                                        <option value="0">1 KG</option>-->
+<!--                                        <option value="1.5">1/5 KG</option>-->
+<!--                                        <option value="red">Red Roses</option>-->
+<!--                                        <option value="pink">With Pink Roses</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+                                <!-- BẮT ĐẦU: Chọn số lượng -->
+                                <div class="product-title">
+                                    <h4>Số lượng (kg)</h4>
                                 </div>
 
+                                <div class="note-box product-package">
+                                    <div class="cart_qty qty-box product-qty">
+                                        <div class="input-group justify-content-center">
+                                            <button type="button" class="btn qty-left-minus" data-type="minus">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                            <input class="form-control input-number qty-input text-center" type="text"
+                                                   id="quantityInput" value="1" readonly style="width: 60px;">
+                                            <button type="button" class="btn qty-right-plus" data-type="plus">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                <!-- KẾT THÚC: Chọn số lượng -->
                                 <div class="modal-button">
-                                    <button onclick="location.href = 'cart.html';"
-                                        class="btn btn-md add-cart-button icon">Add
-                                        To Cart</button>
-                                    <button onclick="location.href = 'product-left-thumbnail.html';"
+                                    <button onclick="addToCarts()" class="btn btn-md bg-dark cart-button text-white w-100">
+                                        Thêm vào giỏ hàng
+                                    </button>
+                                    <button onclick="location.href = 'product-image.html';"
                                         class="btn theme-bg-color view-button icon text-white fw-bold btn-md">
                                         View More Details</button>
                                 </div>
@@ -654,6 +673,11 @@
     <!-- theme setting js -->
     <script src="../assets/js/theme-setting.js"></script>
     <script src="../assets/jsLogic/wishList.js"></script>
+    <script src="../assets/jsLogic/product.js"></script>
+    <script src="../assets/jsLogic/cart.js"></script>
+
+
+
     <script>  // Quang Huy
     // Xử lý click vào nút wishlist
     document.body.addEventListener('click', function (e) {

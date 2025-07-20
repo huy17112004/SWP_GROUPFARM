@@ -8,14 +8,14 @@ public class RevenueDTO {
     private BigDecimal weekRevenue;
     private BigDecimal monthRevenue;
     private BigDecimal yearRevenue;
-    private String currency;
+//    private String currency;
     private String period;
 
     private List<String> labels;
     private List<BigDecimal> values;
 
     public RevenueDTO() {
-        this.currency = "VND";
+//        this.currency = "VND";
     }
     
     public RevenueDTO(BigDecimal todayRevenue, BigDecimal weekRevenue, BigDecimal monthRevenue, BigDecimal yearRevenue) {
@@ -23,7 +23,7 @@ public class RevenueDTO {
         this.weekRevenue = weekRevenue;
         this.monthRevenue = monthRevenue;
         this.yearRevenue = yearRevenue;
-        this.currency = "VND";
+//        this.currency = "VND";
     }
     
     // Getters and Setters
@@ -59,14 +59,14 @@ public class RevenueDTO {
         this.yearRevenue = yearRevenue;
     }
     
-    public String getCurrency() {
-        return currency;
-    }
-    
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-    
+//    public String getCurrency() {
+//        return currency;
+//    }
+//
+//    public void setCurrency(String currency) {
+//        this.currency = currency;
+//    }
+//
     public String getPeriod() {
         return period;
     }
