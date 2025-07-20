@@ -1,9 +1,8 @@
-package controller;
+package entity;
 
 import com.google.gson.Gson;
 import dto.ProductCreateDTO;
 import dto.ProductResponseDTO;
-import entity.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +16,6 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @WebServlet("/api/product/*")
 public class ProductServlet extends HttpServlet {

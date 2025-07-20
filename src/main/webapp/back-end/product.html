@@ -1,3 +1,33 @@
+<!-- Modal Sửa Lô Hàng -->
+<div class="modal fade" id="editLotModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa lô hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editLotForm">
+                    <input type="hidden" id="editProductId" />
+                    <input type="hidden" id="editWarehouseId" />
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng</label>
+                        <input id="editQuantity" type="number" class="form-control" min="1" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày nhập</label>
+                        <input id="editImportDate" type="datetime-local" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hạn dùng</label>
+                        <input id="editExpiredDate" type="datetime-local" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -143,7 +173,8 @@
                                         <div class="right-options">
                                             <ul>
                                                 <li>
-                                                    <a class="btn btn-solid" href="add-new-stoklot.html">Thêm lô sản phẩm vào kho</a>
+                                                    <a class="btn btn-solid" href="add-new-stoklot.html">Thêm lô sản
+                                                        phẩm vào kho</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -181,11 +212,11 @@
                                                         <th>Tên sản phẩm</th>
                                                         <th>Loại</th>
                                                         <th>Kho</th>
-                                                        <th>ID lô hàng</th>
                                                         <th>Số lượng</th>
                                                         <th>Giá</th>
                                                         <th>Hạn</th>
                                                         <th>Ngày nhập</th>
+                                                        <th>Hành động</th>
                                                     </tr>
                                                 </thead>
 
@@ -311,79 +342,187 @@
     <script src="assets/js/photoswipe-ui-default.min.js"></script>
     <script src="assets/js/photoswipe.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tbody = document.querySelector('#table_id tbody');
-            let allProducts = [];
+document.addEventListener('DOMContentLoaded', () => {
+  const tbody        = document.querySelector('#table_id tbody');
+  const editModalEl  = document.getElementById('editLotModal');
+  const editLotForm  = document.getElementById('editLotForm');
+  const editLotModal = new bootstrap.Modal(editModalEl);
+  let allProducts    = [];
 
-            function renderTable(list) {
-                tbody.innerHTML = '';
-                (Array.isArray(list) ? list : [list]).forEach(item => {
-                    const dExp = new Date(item.expiredDate).toLocaleDateString();
-                    const dImp = new Date(item.importDate).toLocaleDateString();
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                  <td><img src="${item.imageUrl}" class="img-fluid" alt=""></td>
-                  <td>${item.name}</td>
-                  <td>${item.categoryName}</td>
-                  <td>${item.warehouseName}</td> 
-                  <td>${item.lotId}</td> 
-                  <td>${item.quantity}</td>
-                  <td class="td-price">${item.retailPrice.toLocaleString()}₫</td>
-                  <td>${dExp}</td>
-                  <td>${dImp}</td>
-                `;
-                    tbody.appendChild(tr);
-                });
+  // 1) Load products + stocklot-info để hiển thị bảng
+  function loadProducts() {
+    fetch('http://localhost:8080/api/products-list')
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(data => {
+        allProducts = Array.isArray(data) ? data : [data];
+        renderTable(allProducts);
+      })
+      .catch(_ => {
+        tbody.innerHTML = '<tr><td colspan="10" style="color:red">Không thể tải dữ liệu</td></tr>';
+      });
+  }
+
+  // 2) Vẽ bảng với phân trang
+  let currentPage = 1;
+  const pageSize = 10;
+  function renderTable(list, page = 1) {
+    tbody.innerHTML = '';
+    const total = list.length;
+    const totalPages = Math.ceil(total / pageSize) || 1;
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+    currentPage = page;
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const pageList = list.slice(start, end);
+    pageList.forEach(item => {
+      const dExp = new Date(item.expiredDate).toLocaleDateString();
+      const dImp = new Date(item.importDate ).toLocaleDateString();
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><img src="${item.imageUrl}" class="img-fluid"></td>
+        <td>${item.name}</td>
+        <td>${item.categoryName}</td>
+        <td>${item.warehouseName}</td>
+        <td>${item.quantity}</td>
+        <td class="td-price">${item.retailPrice.toLocaleString()}₫</td>
+        <td>${dExp}</td>
+        <td>${dImp}</td>
+        <td>
+          <button class="btn btn-sm btn-primary btn-edit"  data-lot-id="${item.lotId}">Sửa</button>
+          <button class="btn btn-sm btn-danger  btn-delete" data-lot-id="${item.lotId}">Xóa</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    attachListeners();
+
+    // Render pagination
+    renderPagination(totalPages);
+  }
+
+  // Thêm thanh phân trang dưới bảng
+  function renderPagination(totalPages) {
+    let pag = document.getElementById('pagination-bar');
+    if (!pag) {
+      pag = document.createElement('nav');
+      pag.id = 'pagination-bar';
+      pag.className = 'mt-3';
+      tbody.parentElement.appendChild(pag);
+    }
+    let html = '<ul class="pagination justify-content-center">';
+    html += `<li class="page-item${currentPage==1?' disabled':''}"><a class="page-link" href="#" data-page="prev">&laquo;</a></li>`;
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<li class="page-item${i==currentPage?' active':''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
+    }
+    html += `<li class="page-item${currentPage==totalPages?' disabled':''}"><a class="page-link" href="#" data-page="next">&raquo;</a></li>`;
+    html += '</ul>';
+    pag.innerHTML = html;
+
+    // Gắn sự kiện click
+    pag.querySelectorAll('a.page-link').forEach(a => {
+      a.onclick = (e) => {
+        e.preventDefault();
+        let p = a.dataset.page;
+        if (p === 'prev') p = currentPage - 1;
+        else if (p === 'next') p = currentPage + 1;
+        else p = Number(p);
+        renderTable(allProducts, p);
+      };
+    });
+  }
+
+  // 3) Gắn event cho nút Edit/Delete
+  function attachListeners() {
+    // DELETE
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.onclick = () => {
+        const id = btn.dataset.lotId;
+        if (!confirm(`Xóa lô #${id}?`)) return;
+        fetch(`http://localhost:8080/api/stocklots/${id}`, { method: 'DELETE' })
+          .then(r => {
+            if (r.status === 204) {
+              allProducts = allProducts.filter(x => x.lotId != id);
+              renderTable(allProducts);
+            } else {
+              alert('Xóa thất bại: ' + r.status);
             }
+          })
+          .catch(e => alert('Lỗi khi xóa: ' + e));
+      };
+    });
 
-            fetch('http://localhost:8080/api/products-list')
-                .then(res => {
-                    if (!res.ok) return Promise.reject(res.status);
-                    return res.json();
-                })
-                .then(list => {
-                    allProducts = Array.isArray(list) ? list : [list];
-                    renderTable(allProducts);
-                })
-                .catch(err => {
-                    console.error('Không thể tải sản phẩm:', err);
-                    tbody.innerHTML = '<tr><td colspan="7" style="color:red">Không thể tải dữ liệu</td></tr>';
-                });
+    // EDIT → fetch chi tiết stocklot rồi show modal
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.onclick = () => {
+        const lotId = btn.dataset.lotId;
+        fetch(`http://localhost:8080/api/stocklots/${lotId}`)
+          .then(r => r.ok ? r.json() : Promise.reject(r.status))
+          .then(lot => {
+            // Hidden inputs giữ hai khóa ngoại
+            document.getElementById('editProductId'  ).value = lot.productId;
+            document.getElementById('editWarehouseId').value = lot.warehouseId;
+            // Các field sửa qty & date
+            document.getElementById('editQuantity'   ).value = lot.quantity;
+            document.getElementById('editImportDate' ).value = lot.importDate .slice(0,16);
+            document.getElementById('editExpiredDate').value = lot.expiredDate.slice(0,16);
+            // Lưu lại lotId để submit
+            editLotForm.dataset.lotId = lotId;
+            editLotModal.show();
+          })
+          .catch(e => alert('Không lấy được chi tiết lô: ' + e));
+      };
+    });
+  }
 
-            function filterProducts() {
-                const name = document.getElementById('searchName').value.trim().toLowerCase();
-                const category = document.getElementById('searchCategory').value.trim().toLowerCase();
-                const warehouse = document.getElementById('searchWarehouse').value.trim().toLowerCase();
-                const dateStr = document.getElementById('searchDate').value;
-                let filtered = allProducts.filter(item => {
-                    let match = true;
-                    if (name && !item.name.toLowerCase().includes(name)) match = false;
-                    if (category && !item.categoryName.toLowerCase().includes(category)) match = false;
-                    if (warehouse && !(item.warehouseName && item.warehouseName.toLowerCase().includes(warehouse))) match = false;
-                    if (dateStr) {
-                        const date = new Date(dateStr);
-                        const importDate = new Date(item.importDate);
-                        const expiredDate = new Date(item.expiredDate);
-                        if (!(date >= importDate && date <= expiredDate)) match = false;
-                    }
-                    return match;
-                });
-                renderTable(filtered);
-            }
+  // 4) Submit modal “Sửa”
+  editLotForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const lotId       = editLotForm.dataset.lotId;
+    const productId   = Number(document.getElementById('editProductId'  ).value);
+    const warehouseId = Number(document.getElementById('editWarehouseId').value);
+    const quantity    = Number(document.getElementById('editQuantity'   ).value);
+    const importDate  = document.getElementById('editImportDate' ).value + ':00';
+    const expiredDate = document.getElementById('editExpiredDate').value + ':00';
 
-            document.getElementById('btnReset').addEventListener('click', function () {
-                document.getElementById('searchName').value = '';
-                document.getElementById('searchCategory').value = '';
-                document.getElementById('searchWarehouse').value = '';
-                document.getElementById('searchDate').value = '';
-                renderTable(allProducts);
-            });
-            document.getElementById('searchName').addEventListener('input', filterProducts);
-            document.getElementById('searchCategory').addEventListener('input', filterProducts);
-            document.getElementById('searchWarehouse').addEventListener('input', filterProducts);
-            document.getElementById('searchDate').addEventListener('input', filterProducts);
-        });
-    </script>
+    if (quantity <= 0 || !importDate || !expiredDate) {
+      return alert('Vui lòng điền đầy đủ thông tin và số lượng > 0!');
+    }
+
+    const body = { productId, warehouseId, quantity,
+                   importDate: new Date(importDate).toISOString(),
+                   expiredDate: new Date(expiredDate).toISOString() };
+
+    fetch(`http://localhost:8080/api/stocklots/${lotId}`, {
+      method:  'PUT',
+      headers: {'Content-Type':'application/json'},
+      body:    JSON.stringify(body)
+    })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(updated => {
+        alert('Cập nhật thành công');
+        // Sync lại allProducts cho renderTable
+        const idx = allProducts.findIndex(x => x.lotId == lotId);
+        if (idx !== -1) {
+          allProducts[idx].quantity    = updated.quantity;
+          allProducts[idx].importDate  = updated.importDate;
+          allProducts[idx].expiredDate = updated.expiredDate;
+        }
+        renderTable(allProducts);
+        editLotModal.hide();
+      })
+      .catch(e => alert('Cập nhật thất bại: ' + e));
+  });
+
+  // 5) Khởi chạy
+  loadProducts();
+});
+</script>
+
+
+
+
+
+
 
 
 </body>
