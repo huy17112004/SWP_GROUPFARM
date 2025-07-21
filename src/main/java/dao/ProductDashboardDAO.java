@@ -66,8 +66,29 @@ public class ProductDashboardDAO {
                 p.getCategory().getId()
         );
     }
+
     public Product updateEntity(Product p) {
         return em.merge(p);
+    }
+
+    public List<ProductDashboardDTO> findRelatedProducts(Long productId, int limit) {
+        Product mainProduct = em.find(Product.class, productId);
+        if (mainProduct == null) return List.of();
+
+        List<Product> related = em.createQuery(
+                        "SELECT p FROM Product p WHERE p.category.id = :categoryId AND p.id <> :productId", Product.class)
+                .setParameter("categoryId", mainProduct.getCategory().getId())
+                .setParameter("productId", productId)
+                .setMaxResults(limit)
+                .getResultList();
+
+        return related.stream().map(p -> {
+            String imageUrl = p.getImages().stream().findFirst().map(ProductImage::getImageUrl).orElse(null);
+            return new ProductDashboardDTO(
+                    p.getId(), p.getProductName(), p.getWholesalePrice(), p.getDescription(),
+                    imageUrl, p.getCategory().getCategoryName(), p.getCategory().getId()
+            );
+        }).collect(Collectors.toList());
     }
 
 }

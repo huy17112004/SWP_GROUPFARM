@@ -30,6 +30,15 @@ public class ProductDashBoardServlet extends HttpServlet {
 //        }
         HttpSession session = req.getSession(true);
         session.setAttribute("accountId", 1); // Giả lập user có ID = 1
+        String path = req.getPathInfo(); // "/related"
+
+        if ("/related".equals(path)) {
+            Long productId = Long.parseLong(req.getParameter("productId"));
+            List<ProductDashboardDTO> related = productService.getRelatedProducts(productId, 6);
+            resp.setContentType("application/json;charset=UTF-8");
+            gson.toJson(related, resp.getWriter());
+            return;
+        }
 
         try {
             List<ProductDashboardDTO> productList = productService.getAllDashboardProducts();

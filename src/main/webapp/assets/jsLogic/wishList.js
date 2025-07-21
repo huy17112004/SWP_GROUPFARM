@@ -29,7 +29,7 @@ function loadWishlist() {
                         <td>
                             <div class="wishlist-actions">
                                 <a href="product-image.html?productId=${item.productId}" class="btn btn-info btn-sm action-btn">Xem chi tiết</a>
-                                <button class="btn btn-success btn-sm action-btn add-to-cart-btn" data-product-id="${item.productId}">Thêm vào giỏ hàng</button>
+                                 <button class="btn btn-success btn-sm action-btn add-to-cart-btn"  onclick="addToCartFromWishlist(${item.productId})">Thêm vào giỏ hàng</button>
                                 <button class="btn btn-danger btn-sm action-btn" onclick="removeFromWishlist(${item.productId})">Xóa</button>
                             </div>
                         </td>
@@ -69,12 +69,50 @@ function addToCartFromWishlist(productId) {
         body: JSON.stringify({ productId: productId, quantity: 1 })
     })
         .then(res => {
-            if (!res.ok) throw new Error("Không thể thêm sản phẩm vào giỏ.");
             alert("✅ Đã thêm vào giỏ hàng!");
+            window.location.href = 'cart.html';
         })
         .catch(err => {
             console.error(err);
             alert("Lỗi khi thêm vào giỏ hàng: " + err.message);
+        });
+}
+
+
+// Gửi yêu cầu thêm sản phẩm vào wishlist
+function addToWishlist() {
+    const productId = getProductIdFromURL();
+
+    if (!productId) {
+        alert('Không tìm thấy productId!');
+        return;
+    }
+
+    // Nếu backend nhận JSON:
+    const wishlistItem = {
+        productId: parseInt(productId)
+        // Nếu backend cần userId, có thể thêm userId: 1 (giả lập)
+    };
+
+    fetch('/api/wishlist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(wishlistItem)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Lỗi khi thêm vào wishlist');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('❤️ Đã thêm vào danh yêu thích!');
+            window.location.href = 'wishlist.html';
+        })
+        .catch(error => {
+            alert('Lỗi: ' + error.message);
         });
 }
 function removeFromWishlist(productId) {

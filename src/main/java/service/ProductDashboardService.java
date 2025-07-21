@@ -79,6 +79,14 @@ public class ProductDashboardService {
             em.close();
         }
     }
+    public List<ProductDashboardDTO> getRelatedProducts(Long productId, int limit) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return new ProductDashboardDAO(em).findRelatedProducts(productId, limit);
+        } finally {
+            em.close();
+        }
+    }
 
 
 }
