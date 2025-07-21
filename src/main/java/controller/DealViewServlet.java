@@ -2,7 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dto.DealRequestCustomerDTO;
+import dto.DealRequestViewDTO;
 import service.DealRequestService;
 import util.LocalDateTimeAdapter;
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @WebServlet("/deal-requests/orders/*")
-public class CustomerDealServlet extends HttpServlet {
+public class DealViewServlet extends HttpServlet {
     private final DealRequestService service = new DealRequestService();
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -26,11 +26,8 @@ public class CustomerDealServlet extends HttpServlet {
         String[] parts = path.split("/");
         int orderId = Integer.parseInt(parts[1]);
 
-        // 2. Lấy customerId từ session (AuthFilter đã đảm bảo session & role)
-        int customerId = (Integer) req.getSession().getAttribute("accountId");
-
         // 3. Gọi service
-        List<DealRequestCustomerDTO> deals = service.listDealsForOrder(orderId, customerId);
+        List<DealRequestViewDTO> deals = service.listDealsForOrder(orderId);
 
         // 4. Trả về JSON
         resp.setContentType("application/json;charset=UTF-8");

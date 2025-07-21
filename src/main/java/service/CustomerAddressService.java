@@ -50,6 +50,11 @@ public class CustomerAddressService {
             dto.setWardName(ca.getAddress().getWard().getName());
             dto.setDistrictName(ca.getAddress().getWard().getDistrict().getName());
             dto.setProvinceName(ca.getAddress().getWard().getDistrict().getProvince().getName());
+            dto.setLatitude(ca.getAddress().getLatitude());
+            dto.setLongitude(ca.getAddress().getLongitude());
+            dto.setWardId(ca.getAddress().getWard().getId());
+            dto.setDistrictId(ca.getAddress().getWard().getDistrict().getId());
+            dto.setProvinceId(ca.getAddress().getWard().getDistrict().getProvince().getId());
             return dto;
         }).collect(Collectors.toList());
         return dtos;
@@ -92,6 +97,7 @@ public class CustomerAddressService {
             CustomerAddress ca = new CustomerAddress();
             ca.setWholesaleCustomer(customer);
             ca.setAddress(address);
+            ca.setActive(true);
             customerAddressDAO.save(ca);
 
             tx.commit();
@@ -180,7 +186,7 @@ public class CustomerAddressService {
             }
 
             // 3. Xóa CustomerAddress
-            em.remove(customerAddress); // Nếu cascade ALL, Hibernate sẽ xóa luôn Address
+            customerAddress.setActive(false);
 
             tx.commit();
             return true;
