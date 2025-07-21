@@ -18,7 +18,16 @@ public class CategoryServlet extends HttpServlet {
     private final Gson gson = new Gson();
 
     @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET ,POST, DELETE, PUT, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         String path = req.getPathInfo(); // null hoặc "/{id}"
@@ -43,6 +52,7 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         CategoryRequestDTO reqDto = gson.fromJson(req.getReader(), CategoryRequestDTO.class);
         Category created = service.createCategory(reqDto.getCategoryName());
         CategoryResponseDTO dto = new CategoryResponseDTO(created.getId(), created.getCategoryName());
@@ -52,6 +62,7 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         String path = req.getPathInfo();
         int id = Integer.parseInt(path.substring(1));
         CategoryRequestDTO reqDto = gson.fromJson(req.getReader(), CategoryRequestDTO.class);
@@ -66,6 +77,7 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         String path = req.getPathInfo();
         int id = Integer.parseInt(path.substring(1));
         boolean ok = service.deleteCategory(id);
