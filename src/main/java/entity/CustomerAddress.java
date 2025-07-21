@@ -21,4 +21,7 @@ public class CustomerAddress {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "AddressID", nullable = false)
     private Address address;
+
+    @Column(name = "Active")
+    private Boolean active;
 }

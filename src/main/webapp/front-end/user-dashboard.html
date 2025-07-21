@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -9,7 +9,7 @@
     <meta name="keywords" content="Fastkart">
     <meta name="author" content="Fastkart">
     <link rel="icon" href="../assets/images/favicon/1.png" type="image/x-icon">
-    <title>On-demand last-mile delivery</title>
+    <title>Giao diện người dùng</title>
 
     <!-- Google font -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -52,35 +52,35 @@
             <li class="active">
                 <a href="index.html">
                     <i class="iconly-Home icli"></i>
-                    <span>Home</span>
+                    <span>Trang chủ</span>
                 </a>
             </li>
 
             <li class="mobile-category">
                 <a href="javascript:void(0)">
                     <i class="iconly-Category icli js-link"></i>
-                    <span>Category</span>
+                    <span>Danh mục</span>
                 </a>
             </li>
 
             <li>
                 <a href="search.html" class="search-box">
                     <i class="iconly-Search icli"></i>
-                    <span>Search</span>
+                    <span>Tìm kiếm</span>
                 </a>
             </li>
 
             <li>
                 <a href="wishlist.html" class="notifi-wishlist">
                     <i class="iconly-Heart icli"></i>
-                    <span>My Wish</span>
+                    <span>Yêu thích</span>
                 </a>
             </li>
 
             <li>
                 <a href="cart.html">
                     <i class="iconly-Bag-2 icli fly-cate"></i>
-                    <span>Cart</span>
+                    <span>Giỏ hàng</span>
                 </a>
             </li>
         </ul>
@@ -93,7 +93,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="breadcrumb-contain">
-                        <h2>User Dashboard</h2>
+                        <h2>Bảng điều khiển người dùng</h2>
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
@@ -101,7 +101,7 @@
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active">User Dashboard</li>
+                                <li class="breadcrumb-item active">Bảng điều khiển người dùng</li>
                             </ol>
                         </nav>
                     </div>
@@ -142,8 +142,8 @@
                                 </div>
 
                                 <div class="profile-name">
-                                    <h3>Vicki E. Pope</h3>
-                                    <h6 class="text-content">vicki.pope@gmail.com</h6>
+                                    <h3>Nguyễn Văn A</h3>
+                                    <h6 class="text-content">nguyenvana@gmail.com</h6>
                                 </div>
                             </div>
                         </div>
@@ -152,43 +152,43 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="pills-dashboard-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-dashboard" type="button"><i data-feather="home"></i>
-                                    DashBoard</button>
+                                    Bảng điều khiển</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-order" type="button"><i
-                                        data-feather="shopping-bag"></i>Order</button>
+                                        data-feather="shopping-bag"></i>Đơn hàng</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-wishlist-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-wishlist" type="button"><i data-feather="heart"></i>
-                                    Wishlist</button>
+                                    Yêu thích</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-card-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-card" type="button" role="tab"><i
-                                        data-feather="credit-card"></i> Saved Card</button>
+                                        data-feather="credit-card"></i> Thẻ đã lưu</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-address" type="button" role="tab"><i
-                                        data-feather="map-pin"></i>Address</button>
+                                        data-feather="map-pin"></i>Địa chỉ</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-profile" type="button" role="tab"><i data-feather="user"></i>
-                                    Profile</button>
+                                    Hồ sơ</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-download-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-download" type="button" role="tab"><i
-                                        data-feather="download"></i>Download</button>
+                                        data-feather="download"></i>Tải về</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-security-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-security" type="button" role="tab"><i
                                         data-feather="shield"></i>
-                                    Privacy</button>
+                                    Bảo mật</button>
                             </li>
                         </ul>
                     </div>
@@ -764,6 +764,7 @@
                                             </svg>
                                         </span>
                                     </div>
+                                    <div id="order-filter-container"></div>
                                     <div id="order-list-container"></div>
                                 </div>
                             </div>
@@ -2135,57 +2136,119 @@
         <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add a new address</h5>
+                    <h5 class="modal-title" id="exampleModalLabel1">Thêm địa chỉ mới</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="text" class="form-control" id="fname" placeholder="Enter First Name">
-                            <label for="fname">First Name</label>
+                    <form id="addAddressForm">
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="province" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                            </select>
+                            <label for="province">Tỉnh/Thành phố</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="text" class="form-control" id="lname" placeholder="Enter Last Name">
-                            <label for="lname">Last Name</label>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="district" required disabled>
+                                <option value="">Chọn quận/huyện</option>
+                            </select>
+                            <label for="district">Quận/Huyện</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="email" class="form-control" id="email" placeholder="Enter Email Address">
-                            <label for="email">Email Address</label>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="ward" required disabled>
+                                <option value="">Chọn phường/xã</option>
+                            </select>
+                            <label for="ward">Phường/Xã</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="address"
-                                style="height: 100px"></textarea>
-                            <label for="address">Enter Address</label>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <input type="text" class="form-control" placeholder="Địa chỉ cụ thể" id="address" required>
+                            <label for="address">Địa chỉ cụ thể</label>
                         </div>
-                    </form>
-
-                    <form>
-                        <div class="form-floating mb-4 theme-form-floating">
-                            <input type="email" class="form-control" id="pin" placeholder="Enter Pin Code">
-                            <label for="pin">Pin Code</label>
+                        <div class="mb-3">
+                            <label class="form-label">Chọn vị trí trên bản đồ</label>
+                            <div id="map" style="height: 300px; width: 100%;"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="latitude" class="form-label">Vĩ độ</label>
+                                <input type="text" class="form-control" id="latitude" name="latitude" readonly required>
+                            </div>
+                            <div class="col">
+                                <label for="longitude" class="form-label">Kinh độ</label>
+                                <input type="text" class="form-control" id="longitude" name="longitude" readonly required>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal">Save
-                        changes</button>
+                    <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn theme-bg-color btn-md text-white" id="saveAddressBtn">Lưu thay đổi</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Add address modal box end -->
+
+    <!-- Edit address modal box start -->
+    <div class="modal fade theme-modal" id="edit-address" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressModalLabel">Sửa địa chỉ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAddressForm">
+                        <input type="hidden" id="editAddressId">
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="editProvince" required>
+                                <option value="">Chọn tỉnh/thành phố</option>
+                            </select>
+                            <label for="editProvince">Tỉnh/Thành phố</label>
+                        </div>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="editDistrict" required disabled>
+                                <option value="">Chọn quận/huyện</option>
+                            </select>
+                            <label for="editDistrict">Quận/Huyện</label>
+                        </div>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <select class="form-select" id="editWard" required disabled>
+                                <option value="">Chọn phường/xã</option>
+                            </select>
+                            <label for="editWard">Phường/Xã</label>
+                        </div>
+                        <div class="form-floating mb-3 theme-form-floating">
+                            <input type="text" class="form-control" placeholder="Địa chỉ cụ thể" id="editAddress" required>
+                            <label for="editAddress">Địa chỉ cụ thể</label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chọn vị trí trên bản đồ</label>
+                            <div id="editMap" style="height: 300px; width: 100%;"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="editLatitude" class="form-label">Vĩ độ</label>
+                                <input type="text" class="form-control" id="editLatitude" name="editLatitude" readonly required>
+                            </div>
+                            <div class="col">
+                                <label for="editLongitude" class="form-label">Kinh độ</label>
+                                <input type="text" class="form-control" id="editLongitude" name="editLongitude" readonly required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn theme-bg-color btn-md text-white" id="updateAddressBtn">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit address modal box end -->
 
     <!-- Location Modal Start -->
     <div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1">
@@ -2470,53 +2533,6 @@
     </div>
     <!-- Edit Card End -->
 
-    <!-- Remove Profile Modal Start -->
-    <div class="modal fade theme-modal remove-profile" id="removeProfile" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-            <div class="modal-content">
-                <div class="modal-header d-block text-center">
-                    <h5 class="modal-title w-100" id="exampleModalLabel22">Are You Sure ?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="remove-box">
-                        <p>The permission for the use/group, preview is inherited from the object, object will create a
-                            new permission for this object</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn theme-bg-color btn-md fw-bold text-light"
-                        data-bs-target="#removeAddress" data-bs-toggle="modal">Yes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade theme-modal remove-profile" id="removeAddress" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center" id="exampleModalLabel12">Done!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="remove-box text-center">
-                        <h4 class="text-content">It's Removed.</h4>
-                    </div>
-                </div>
-                <div class="modal-footer pt-0">
-                    <button type="button" class="btn theme-bg-color btn-md fw-bold text-light"
-                        data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Remove Profile Modal End -->
-
     <!-- latest jquery-->
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
 
@@ -2553,6 +2569,178 @@
 
     <script src="../assets/jsLogic/order-customer-loader.js"></script>
 
+    <!-- Nhúng Leaflet CSS/JS nếu chưa có -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Import location-dropdown-loader.js như checkout -->
+    <script type="module">
+        import { setupLocationDropdown } from '../assets/jsLogic/location-dropdown-loader.js';
+        window.setupLocationDropdown = setupLocationDropdown; // Đảm bảo có thể gọi từ các script khác
+        // Luôn load lại danh sách tỉnh mỗi lần mở modal
+        $('#add-address').on('shown.bs.modal', function () {
+            // Reset form mỗi lần mở modal
+            const form = document.getElementById('addAddressForm');
+            if (form) form.reset();
+            document.getElementById('district').disabled = true;
+            document.getElementById('ward').disabled = true;
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
+            if (window.map && window.marker) {
+                window.map.setView([21.0285, 105.8542], 13);
+                window.marker.setLatLng([21.0285, 105.8542]);
+            }
+            // Load lại danh sách tỉnh nếu có hàm setupLocationDropdown
+            if (window.setupLocationDropdown) {
+                const locationDropdown = window.setupLocationDropdown();
+                if (locationDropdown && locationDropdown.loadProvinces) {
+                    locationDropdown.loadProvinces();
+                }
+            }
+            setTimeout(function() {
+                if (!map) {
+                    map = L.map('map').setView([21.0285, 105.8542], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                    marker = L.marker([21.0285, 105.8542], {draggable:true}).addTo(map);
+                    function updateLatLng(lat, lng) {
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+                    }
+                    map.on('click', function(e) {
+                        marker.setLatLng(e.latlng);
+                        updateLatLng(e.latlng.lat, e.latlng.lng);
+                    });
+                    marker.on('dragend', function(e) {
+                        var pos = marker.getLatLng();
+                        updateLatLng(pos.lat, pos.lng);
+                    });
+                    // Set initial values
+                    updateLatLng(marker.getLatLng().lat, marker.getLatLng().lng);
+                } else {
+                    map.invalidateSize();
+                }
+            }, 300);
+        });
+    </script>
+    <!-- Khởi tạo bản đồ khi modal mở và xử lý lưu địa chỉ -->
+    <script>
+        let map, marker;
+        $('#add-address').on('shown.bs.modal', function () {
+            // Reset form mỗi lần mở modal
+            const form = document.getElementById('addAddressForm');
+            if (form) form.reset();
+            document.getElementById('district').disabled = true;
+            document.getElementById('ward').disabled = true;
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
+            if (window.map && window.marker) {
+                window.map.setView([21.0285, 105.8542], 13);
+                window.marker.setLatLng([21.0285, 105.8542]);
+            }
+            // Load lại danh sách tỉnh nếu có hàm setupLocationDropdown
+            if (window.setupLocationDropdown) {
+                const locationDropdown = window.setupLocationDropdown();
+                if (locationDropdown && locationDropdown.loadProvinces) {
+                    locationDropdown.loadProvinces();
+                }
+            }
+            setTimeout(function() {
+                if (!map) {
+                    map = L.map('map').setView([21.0285, 105.8542], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                    marker = L.marker([21.0285, 105.8542], {draggable:true}).addTo(map);
+                    function updateLatLng(lat, lng) {
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+                    }
+                    map.on('click', function(e) {
+                        marker.setLatLng(e.latlng);
+                        updateLatLng(e.latlng.lat, e.latlng.lng);
+                    });
+                    marker.on('dragend', function(e) {
+                        var pos = marker.getLatLng();
+                        updateLatLng(pos.lat, pos.lng);
+                    });
+                    // Set initial values
+                    updateLatLng(marker.getLatLng().lat, marker.getLatLng().lng);
+                } else {
+                    map.invalidateSize();
+                }
+            }, 300);
+        });
+        // Khi chọn huyện, cập nhật lại map theo lat/lon của huyện
+        document.getElementById('district').addEventListener('change', async function() {
+            const districtId = this.value;
+            if (districtId && map && marker) {
+                try {
+                    const res = await fetch(`/api/geo/district?districtId=${districtId}`);
+                    const data = await res.json();
+                    if (data.lat && data.lon && data.lat !== "not_found" && data.lon !== "not_found") {
+                        const lat = parseFloat(data.lat);
+                        const lon = parseFloat(data.lon);
+                        map.setView([lat, lon], 13);
+                        marker.setLatLng([lat, lon]);
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lon;
+                    }
+                } catch (e) {
+                    // Có thể báo lỗi nếu muốn
+                }
+            }
+        });
+        // Xử lý lưu địa chỉ
+        $('#saveAddressBtn').on('click', async function() {
+            const form = document.getElementById('addAddressForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            const data = {
+                street: document.getElementById('address').value,
+                wardID: document.getElementById('ward').value,
+                latitude: document.getElementById('latitude').value,
+                longitude: document.getElementById('longitude').value
+            };
+            try {
+                const response = await fetch('/api/customer-addresses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    alert('Thêm địa chỉ thành công!');
+                    $('#add-address').modal('hide');
+                    // Reset form sau khi thêm thành công
+                    const form = document.getElementById('addAddressForm');
+                    if (form) {
+                        form.reset();
+                    }
+                    // Disable lại district và ward
+                    document.getElementById('district').disabled = true;
+                    document.getElementById('ward').disabled = true;
+                    // Reset lat/lon
+                    document.getElementById('latitude').value = '';
+                    document.getElementById('longitude').value = '';
+                    // Đưa marker và map về vị trí mặc định nếu có
+                    if (window.map && window.marker) {
+                        window.map.setView([21.0285, 105.8542], 13);
+                        window.marker.setLatLng([21.0285, 105.8542]);
+                    }
+                    // Gọi lại hàm loadAndRenderAddresses để reload danh sách địa chỉ
+                    if (window.loadAndRenderAddresses) window.loadAndRenderAddresses();
+                } else {
+                    alert(result.message || 'Có lỗi xảy ra khi thêm địa chỉ!');
+                }
+            } catch (e) {
+                alert('Có lỗi xảy ra khi thêm địa chỉ!');
+            }
+        });
+    </script>
+
     <script>
         fetch('header.html')
             .then(response => response.text())
@@ -2584,6 +2772,368 @@
         </div>
       </div>
     </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // Hàm render danh sách địa chỉ
+        function renderAddresses(addresses) {
+            const container = document.querySelector('.dashboard-address .row.g-sm-4.g-3');
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (!addresses || addresses.length === 0) {
+                container.innerHTML = "<p>Không có địa chỉ nào.</p>";
+                return;
+            }
+
+            addresses.forEach((address, idx) => {
+                const mapId = `map-address-${idx}`;
+                container.innerHTML += `
+                <div class=\"col-xxl-4 col-xl-6 col-lg-12 col-md-6\">
+                    <div class=\"address-box\">
+                        <div>
+                            <div class=\"table-responsive address-table\">
+                                <p class=\"text-content\" style=\"font-size: 1.15rem;\">
+                                    <span class=\"text-title\">Địa chỉ: </span>
+                                    ${address.street}, ${address.wardName}, ${address.districtName}, ${address.provinceName}
+                                </p>
+                    </div>
+                </div>
+                <div class=\"button-group\">
+                    <button class="btn btn-sm add-button w-100" type="button" onclick="showMapModal(${address.latitude}, ${address.longitude})">
+                        <i data-feather="map" class="me-1"></i> Xem bản đồ
+                    </button>
+                </div>
+                <div class=\"button-group\">
+                    <button class=\"btn btn-sm add-button w-100\" onclick=\"editAddress(${address.id})\"><i data-feather=\"edit\"></i> Sửa</button>
+                    <button class=\"btn btn-sm add-button w-100\" onclick=\"deleteAddress(${address.id})\"><i data-feather=\"trash-2\"></i> Xóa</button>
+                </div>
+            </div>
+        </div>
+        `;
+            });
+            if (window.feather) feather.replace();
+        }
+
+        // Hàm xóa địa chỉ
+        window.deleteAddress = function(addressId) {
+            if (confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) {
+                fetch(`/api/customer-addresses/${addressId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Xóa địa chỉ thành công!');
+                        // Reload danh sách địa chỉ
+                        window.loadAndRenderAddresses();
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi xóa địa chỉ!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa địa chỉ!');
+                });
+            }
+        };
+
+        // Hàm toàn cục để show map trong modal lớn
+        window.showMapModal = function(lat, lon) {
+            const modal = new bootstrap.Modal(document.getElementById('mapModal'));
+            modal.show();
+            setTimeout(() => {
+                // Xóa map cũ nếu có
+                if (window._modalLeafletMap) {
+                    window._modalLeafletMap.remove();
+                    window._modalLeafletMap = null;
+                }
+                // Khởi tạo map mới
+                const map = L.map('modalMap', { zoomControl: true, attributionControl: true }).setView([lat, lon], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.marker([lat, lon]).addTo(map);
+                setTimeout(() => map.invalidateSize(), 200);
+                window._modalLeafletMap = map;
+            }, 300); // Đợi modal hiện xong mới khởi tạo map
+        };
+
+        document.getElementById('mapModal').addEventListener('hidden.bs.modal', function () {
+            if (window._modalLeafletMap) {
+                window._modalLeafletMap.remove();
+                window._modalLeafletMap = null;
+            }
+        });
+
+        // Hàm load và render danh sách địa chỉ
+        window.loadAndRenderAddresses = function() {
+            fetch('/api/customer-addresses')
+                .then(res => res.json())
+                .then(data => {
+                    // Giả sử API trả về mảng các địa chỉ
+                    renderAddresses(data);
+                })
+                .catch(err => {
+                    const container = document.querySelector('.dashboard-address .row.g-sm-4.g-3');
+                    if (container) container.innerHTML = "<p>Lỗi khi tải địa chỉ.</p>";
+                });
+        }
+
+        // Gọi khi trang load
+        window.loadAndRenderAddresses();
+    });
+    </script>
+
+    <!-- Map Modal -->
+    <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mapModalLabel">Xem vị trí trên bản đồ</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+          <div class="modal-body" style="height: 60vh;">
+            <div id="modalMap" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript cho edit address -->
+    <script type="module">
+        import { setupLocationDropdown } from '../assets/jsLogic/location-dropdown-loader.js';
+        window.setupLocationDropdown = setupLocationDropdown;
+    </script>
+    <script>
+        let editMap, editMarker;
+        
+        // Hàm edit address
+        window.editAddress = async function(addressId) {
+            try {
+                const response = await fetch(`/api/customer-addresses/${addressId}`);
+                if (!response.ok) {
+                    alert('Không thể tải thông tin địa chỉ!');
+                    return;
+                }
+                
+                const addressData = await response.json();
+                
+                // Fill dữ liệu vào form
+                document.getElementById('editAddressId').value = addressId;
+                document.getElementById('editAddress').value = addressData.street;
+                document.getElementById('editLatitude').value = addressData.latitude;
+                document.getElementById('editLongitude').value = addressData.longitude;
+                
+                // Mở modal
+                const modal = new bootstrap.Modal(document.getElementById('edit-address'));
+                modal.show();
+                
+                // Load location dropdown và set giá trị
+                if (window.setupLocationDropdown) {
+                    const locationDropdown = window.setupLocationDropdown({
+                        provinceId: 'editProvince',
+                        districtId: 'editDistrict', 
+                        wardId: 'editWard'
+                    });
+                    if (locationDropdown && locationDropdown.loadProvinces) {
+                        await locationDropdown.loadProvinces();
+                        
+                        // Set province
+                        if (addressData.provinceID) {
+                            document.getElementById('editProvince').value = addressData.provinceID;
+                            document.getElementById('editDistrict').disabled = false;
+                            
+                            // Load districts
+                            const districtRes = await fetch(`/districts?provinceId=${addressData.provinceID}`);
+                            const districtData = await districtRes.json();
+                            document.getElementById('editDistrict').innerHTML = '<option value="">Chọn quận/huyện</option>';
+                            districtData.forEach(district => {
+                                const option = document.createElement('option');
+                                option.value = district.locationId;
+                                option.textContent = district.locationName;
+                                document.getElementById('editDistrict').appendChild(option);
+                            });
+                            document.getElementById('editDistrict').value = addressData.districtID;
+                            document.getElementById('editWard').disabled = false;
+                            
+                            // Load wards
+                            const wardRes = await fetch(`/wards?districtId=${addressData.districtID}`);
+                            const wardData = await wardRes.json();
+                            document.getElementById('editWard').innerHTML = '<option value="">Chọn phường/xã</option>';
+                            wardData.forEach(ward => {
+                                const option = document.createElement('option');
+                                option.value = ward.locationId;
+                                option.textContent = ward.locationName;
+                                document.getElementById('editWard').appendChild(option);
+                            });
+                            document.getElementById('editWard').value = addressData.wardID;
+                        }
+                    }
+                }
+                
+                // Khởi tạo map
+                setTimeout(() => {
+                    if (!editMap) {
+                        editMap = L.map('editMap').setView([addressData.latitude, addressData.longitude], 13);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors'
+                        }).addTo(editMap);
+                        editMarker = L.marker([addressData.latitude, addressData.longitude], {draggable: true}).addTo(editMap);
+                        
+                        function updateEditLatLng(lat, lng) {
+                            document.getElementById('editLatitude').value = lat;
+                            document.getElementById('editLongitude').value = lng;
+                        }
+                        
+                        editMap.on('click', function(e) {
+                            editMarker.setLatLng(e.latlng);
+                            updateEditLatLng(e.latlng.lat, e.latlng.lng);
+                        });
+                        
+                        editMarker.on('dragend', function(e) {
+                            var pos = editMarker.getLatLng();
+                            updateEditLatLng(pos.lat, pos.lng);
+                        });
+                    } else {
+                        editMap.setView([addressData.latitude, addressData.longitude], 13);
+                        editMarker.setLatLng([addressData.latitude, addressData.longitude]);
+                        editMap.invalidateSize();
+                    }
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi tải thông tin địa chỉ!');
+            }
+        };
+        
+        // Xử lý khi chọn tỉnh trong edit modal
+        document.getElementById('editProvince').addEventListener('change', async function() {
+            const provinceId = this.value;
+            document.getElementById('editDistrict').innerHTML = '<option value="">Chọn quận/huyện</option>';
+            document.getElementById('editWard').innerHTML = '<option value="">Chọn phường/xã</option>';
+            document.getElementById('editDistrict').disabled = true;
+            document.getElementById('editWard').disabled = true;
+            
+            if (provinceId) {
+                try {
+                    const res = await fetch(`/districts?provinceId=${provinceId}`);
+                    const data = await res.json();
+                    data.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district.locationId;
+                        option.textContent = district.locationName;
+                        document.getElementById('editDistrict').appendChild(option);
+                    });
+                    document.getElementById('editDistrict').disabled = false;
+                } catch (e) {
+                    alert('Không thể tải danh sách quận/huyện');
+                }
+            }
+        });
+        
+        // Xử lý khi chọn huyện trong edit modal
+        document.getElementById('editDistrict').addEventListener('change', async function() {
+            const districtId = this.value;
+            document.getElementById('editWard').innerHTML = '<option value="">Chọn phường/xã</option>';
+            document.getElementById('editWard').disabled = true;
+            
+            if (districtId) {
+                try {
+                    const res = await fetch(`/wards?districtId=${districtId}`);
+                    const data = await res.json();
+                    data.forEach(ward => {
+                        const option = document.createElement('option');
+                        option.value = ward.locationId;
+                        option.textContent = ward.locationName;
+                        document.getElementById('editWard').appendChild(option);
+                    });
+                    document.getElementById('editWard').disabled = false;
+                    
+                    // Cập nhật map nếu có
+                    if (editMap && editMarker) {
+                        try {
+                            const geoRes = await fetch(`/api/geo/district?districtId=${districtId}`);
+                            const geoData = await geoRes.json();
+                            if (geoData.lat && geoData.lon && geoData.lat !== "not_found" && geoData.lon !== "not_found") {
+                                const lat = parseFloat(geoData.lat);
+                                const lon = parseFloat(geoData.lon);
+                                editMap.setView([lat, lon], 13);
+                                editMarker.setLatLng([lat, lon]);
+                                document.getElementById('editLatitude').value = lat;
+                                document.getElementById('editLongitude').value = lon;
+                            }
+                        } catch (e) {
+                            // Có thể báo lỗi nếu muốn
+                        }
+                    }
+                } catch (e) {
+                    alert('Không thể tải danh sách phường/xã');
+                }
+            }
+        });
+        
+        // Xử lý khi chọn phường/xã trong edit modal (không cần cập nhật map vì không có API geo cho ward)
+        document.getElementById('editWard').addEventListener('change', function() {
+            // Có thể thêm logic khác nếu cần
+        });
+        
+        // Xử lý cập nhật địa chỉ
+        document.getElementById('updateAddressBtn').addEventListener('click', async function() {
+            const form = document.getElementById('editAddressForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const addressId = document.getElementById('editAddressId').value;
+            const data = {
+                street: document.getElementById('editAddress').value,
+                wardID: parseInt(document.getElementById('editWard').value),
+                latitude: parseFloat(document.getElementById('editLatitude').value),
+                longitude: parseFloat(document.getElementById('editLongitude').value)
+            };
+            
+            try {
+                const response = await fetch(`/api/customer-addresses/${addressId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    alert('Cập nhật địa chỉ thành công!');
+                    $('#edit-address').modal('hide');
+                    
+                    // Reset form
+                    form.reset();
+                    document.getElementById('editDistrict').disabled = true;
+                    document.getElementById('editWard').disabled = true;
+                    
+                    // Reload danh sách địa chỉ
+                    if (window.loadAndRenderAddresses) window.loadAndRenderAddresses();
+                } else {
+                    alert(result.message || 'Có lỗi xảy ra khi cập nhật địa chỉ!');
+                }
+            } catch (e) {
+                alert('Có lỗi xảy ra khi cập nhật địa chỉ!');
+            }
+        });
+        
+        // Reset form khi đóng modal edit
+        $('#edit-address').on('hidden.bs.modal', function () {
+            const form = document.getElementById('editAddressForm');
+            if (form) form.reset();
+            document.getElementById('editDistrict').disabled = true;
+            document.getElementById('editWard').disabled = true;
+        });
+    </script>
+
+
 </body>
 
 </html>

@@ -2,6 +2,7 @@ package service;
 
 import dao.*;
 import dto.OrderCustomerDTO;
+import dto.OrderInformationRequestDTO;
 import dto.OrderItemCustomerDTO;
 import dto.OrderResponseDTO;
 import entity.*;
@@ -267,14 +268,12 @@ public class WholesaleOrderService {
             // Kiểm tra xem có deal nào đang PENDING không
             List<DealRequest> pendingDeals = new ArrayList<>();
             for (WholesaleOrderItem item : order.getItems()) {
-                List<DealRequest> itemDeals = dealDao.findByOrderItemId(item.getId());
-                for (DealRequest deal : itemDeals) {
-                    if ("PENDING".equals(deal.getStatus())) {
-                        pendingDeals.add(deal);
-                    }
+                DealRequest itemDeal = dealDao.findLastByOrderItemId(item.getId());
+                if ("PENDING".equals(itemDeal.getStatus())) {
+                    pendingDeals.add(itemDeal);
                 }
             }
-            
+
             if (!pendingDeals.isEmpty()) {
                 throw new IllegalStateException("Có " + pendingDeals.size() + " deal đang chờ xử lý. Vui lòng xử lý hết các deal trước khi xác nhận đơn hàng.");
             }
@@ -296,5 +295,19 @@ public class WholesaleOrderService {
             em.close();
         }
     }
+
+    public OrderInformationRequestDTO getOrderInformation(int orderId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+        try {
+            WholesaleOrder order = orderDAO.findById(orderId);
+            return new OrderInformationRequestDTO(order);
+        } finally {
+            em.close();
+        }
+
+    }
+
+
 
 }

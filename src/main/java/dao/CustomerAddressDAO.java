@@ -12,7 +12,7 @@ public class CustomerAddressDAO extends GenericDAO<CustomerAddress> {
     }
 
     public List<CustomerAddress> findByCustomer(int customerId) {
-        String jpql = "SELECT ca FROM CustomerAddress ca WHERE ca.wholesaleCustomer.id = :customerId";
+        String jpql = "SELECT ca FROM CustomerAddress ca WHERE ca.wholesaleCustomer.id = :customerId AND ca.active = true";
         return em.createQuery(jpql, CustomerAddress.class)
                 .setParameter("customerId", customerId)
                 .getResultList();

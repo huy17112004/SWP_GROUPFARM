@@ -40,8 +40,7 @@ public class Address {
     @OneToMany(mappedBy ="deliveryAddress", fetch = FetchType.LAZY)
     private List<WholesaleOrder>  wholesaleOrders;
 
-    public void addOrder(WholesaleOrder order) {
-        wholesaleOrders.add(order);
-        order.setDeliveryAddress(this);
+    public String toStringAddress() {
+        return street + ", " + ward.getName() + ", " + ward.getDistrict().getName() + ", " + ward.getDistrict().getProvince().getName();
     }
 }
