@@ -20,10 +20,11 @@ public class RelatedProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int productId = Integer.parseInt(req.getParameter("productId"));
-        List<ProductDTO> relatedProducts = productService.getRelatedProducts(productId);
-
-        resp.setContentType("application/json");
-        new ObjectMapper().writeValue(resp.getWriter(), relatedProducts);
+//        int productId = Integer.parseInt(req.getParameter("productId"));
+//        List<ProductDTO> relatedProducts = productService.getRelatedProducts(productId);
+//
+//        resp.setContentType("application/json");
+//        new ObjectMapper().writeValue(resp.getWriter(), relatedProducts);
+//    }
     }
 }

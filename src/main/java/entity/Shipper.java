@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Shipper")
-public class Shipper extends Account {
+public class  Shipper extends Account {
 
     @Column(name = "Name", nullable = false)
     private String name;
