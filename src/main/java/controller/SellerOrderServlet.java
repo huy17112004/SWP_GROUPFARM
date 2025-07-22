@@ -22,7 +22,7 @@ public class SellerOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        
+
         // Check if user is logged in and is a seller
         HttpSession session = req.getSession(false);
         Integer sellerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;

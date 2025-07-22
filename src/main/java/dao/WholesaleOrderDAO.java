@@ -64,4 +64,16 @@ public class WholesaleOrderDAO extends GenericDAO<WholesaleOrder> {
         q.setParameter("sellerId", sellerId);
         return q.getResultList();
     }
+
+    public List<WholesaleOrder> findAllByStatusWithItems(String status) {
+        TypedQuery<WholesaleOrder> q = em.createQuery(
+                "SELECT DISTINCT o FROM WholesaleOrder o " +
+                        " LEFT JOIN FETCH o.items i" +
+                        " LEFT JOIN FETCH i.product p" +
+                        " LEFT JOIN FETCH o.customer c" +
+                        " WHERE o.status = :status ORDER BY o.createdAt DESC",
+                WholesaleOrder.class);
+        q.setParameter("status", status);
+        return q.getResultList();
+    }
 }
