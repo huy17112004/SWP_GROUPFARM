@@ -782,19 +782,19 @@
         // Bổ sung: Khi chọn huyện, cập nhật lại map theo lat/lon của huyện
         document.getElementById('district').addEventListener('change', async function() {
             const districtId = this.value;
-            if (districtId && map && marker) {
-                try {
-                    const res = await fetch(`/api/geo/district?districtId=${districtId}`);
-                    const data = await res.json();
-                    if (data.lat && data.lon && data.lat !== "not_found" && data.lon !== "not_found") {
-                        const lat = parseFloat(data.lat);
-                        const lon = parseFloat(data.lon);
-                        map.setView([lat, lon], 13);
-                        marker.setLatLng([lat, lon]);
-                        document.getElementById('latitude').value = lat;
-                        document.getElementById('longitude').value = lon;
-                    }
-                } catch (e) {
+                if (districtId && map && marker) {
+                    try {
+                        const res = await fetch(`/api/geo/district?districtId=${districtId}`);
+                        const data = await res.json();
+                        if (data.lat && data.lon && data.lat !== "not_found" && data.lon !== "not_found") {
+                            const lat = parseFloat(data.lat);
+                            const lon = parseFloat(data.lon);
+                            map.setView([lat, lon], 13);
+                            marker.setLatLng([lat, lon]);
+                            document.getElementById('latitude').value = lat;
+                            document.getElementById('longitude').value = lon;
+                        }
+                    } catch (e) {
                     // Có thể báo lỗi nếu muốn
                 }
             }

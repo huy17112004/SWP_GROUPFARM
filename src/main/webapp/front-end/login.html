@@ -59,7 +59,7 @@
                     <span>Category</span>
                 </a>
             </li>
-z
+            z
             <li>
                 <a href="search.html" class="search-box">
                     <i class="iconly-Search icli"></i>
@@ -129,7 +129,8 @@ z
                             <form id="loginForm" class="row g-4">
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating log-in-form">
-                                        <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập/Số điện thoại/Email">
+                                        <input type="text" class="form-control" id="username"
+                                            placeholder="Tên đăng nhập/Số điện thoại/Email">
                                         <label for="username">Tên đăng nhập/Số điện thoại/Email</label>
                                     </div>
                                 </div>
@@ -154,7 +155,8 @@ z
                                 </div>
 
                                 <div class="col-12">
-                                    <button class="btn btn-animation w-100 justify-content-center" type="submit">Đăng nhập</button>
+                                    <button class="btn btn-animation w-100 justify-content-center" type="submit">Đăng
+                                        nhập</button>
                                 </div>
                             </form>
                         </div>
@@ -286,18 +288,55 @@ z
 
     <script src="../assets/jsLogic/login.js"></script>
     <script>
-      fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('header-placeholder').innerHTML = data;
-        });
-      fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-placeholder').innerHTML = data;
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("loginForm");
+            const errorDiv = document.createElement("div");
+            errorDiv.id = "loginError";
+            errorDiv.className = "text-danger mb-3";
+            form.prepend(errorDiv);
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                // Xóa lỗi cũ
+                errorDiv.textContent = '';
+
+                // Lấy giá trị input
+                const username = document.getElementById("username").value.trim();
+                const password = document.getElementById("password").value;
+
+                if (!username || !password) {
+                    errorDiv.textContent = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.";
+                    return;
+                }
+
+                try {
+                    const resp = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const result = await resp.json();
+
+                    if (resp.ok && result.success) {
+                        // Đăng nhập thành công, điều hướng về trang dashboard hoặc homepage
+                        window.location.href = '/dashboard.html';
+                    } else {
+                        // Hiển thị thông báo lỗi
+                        errorDiv.textContent = result.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+                        if (resp.status === 401) {
+                            // Có thể xử lý lockout, captcha... sau nhiều lần
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error during login:', err);
+                    errorDiv.textContent = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
+                }
+            });
         });
     </script>
 </body>
 
 </html>
-

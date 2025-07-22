@@ -77,8 +77,11 @@ public class CartDAO extends GenericDAO<Cart> {
 
     public List<Cart> findByUserId(Long userId) {
         return em.createQuery(
-                        "SELECT c FROM Cart c JOIN FETCH c.product WHERE c.customer.id = :userId", Cart.class)
-                .setParameter("userId", userId.intValue()) // vì customer.id là int
+                        "SELECT c FROM Cart c " +
+                                "JOIN FETCH c.product p " +
+                                "LEFT JOIN FETCH p.images " +
+                                "WHERE c.customer.id = :userId", Cart.class)
+                .setParameter("userId", userId.intValue())
                 .getResultList();
     }
 

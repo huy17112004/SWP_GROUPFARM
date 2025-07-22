@@ -55,9 +55,14 @@ export function renderProducts(containerId, products) {
             <li title="Compare">
               <a href="compare.html"><i data-feather="refresh-cw"></i></a>
             </li>
-            <li title="Wishlist">
-              <a href="wishlist.html"><i data-feather="heart"></i></a>
+            
+            <!--Quang Huy-->
+             <li title="Wishlist">
+             <button class="wishlist-btn" data-product-id="${prod.productId}" style="all:unset;cursor:pointer;">
+                      <i data-feather="heart"></i>
+               </button>
             </li>
+             <!--Quang Huy-->
           </ul>
         </div>
         <div class="product-detail position-relative">
@@ -125,12 +130,14 @@ export function renderProductsInShopCategory(productsOrObj) {
                                                     <i data-feather="refresh-cw"></i>
                                                 </a>
                                             </li>
-
+                                <!--quang huy thêm -->
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <a href="wishlist.html" class="notifi-wishlist">
+                                                <button class="wishlist-btn" data-product-id="${prod.productId}" style="all:unset;cursor:pointer;">
                                                     <i data-feather="heart"></i>
-                                                </a>
+                                                </button>
                                             </li>
+                                <!--quang huy thêm -->
+                            
                                         </ul>
                                     </div>
                                 </div>

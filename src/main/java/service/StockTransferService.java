@@ -24,6 +24,7 @@ public class StockTransferService {
             StockTransferDAO stockTransferDAO = new StockTransferDAO(em);
 
             WholesaleOrder order = wholesaleOrderDAO.findById(orderId);
+            order.setStatus("CONSOLIDATING");
             List<StockTransfer> stockTransfers = new ArrayList<>();
             order.getItems().forEach(item -> {
                 item.getOrderItemAllocations().forEach(orderItemAllocation -> {

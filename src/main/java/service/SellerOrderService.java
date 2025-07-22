@@ -24,7 +24,7 @@ public class SellerOrderService {
             List<WholesaleOrder> orders = orderDao.findAllBySellerIdWithItems(sellerId);
             
             return orders.stream()
-                    .map(this::mapToOrderSellerDTO)
+                    .map(SellerOrderService::mapToOrderSellerDTO)
                     .collect(Collectors.toList());
         } finally {
             em.close();
@@ -88,10 +88,10 @@ public class SellerOrderService {
         }
     }
 
-    private OrderSellerDTO mapToOrderSellerDTO(WholesaleOrder order) {
+    public static OrderSellerDTO mapToOrderSellerDTO(WholesaleOrder order) {
         // Map items
         List<OrderItemSellerDTO> items = order.getItems() != null ? order.getItems().stream()
-                .map(this::mapToOrderItemSellerDTO)
+                .map(SellerOrderService::mapToOrderItemSellerDTO)
                 .collect(Collectors.toList()) : new ArrayList<>();
 
         // Build delivery address
@@ -124,7 +124,7 @@ public class SellerOrderService {
         );
     }
 
-    private OrderItemSellerDTO mapToOrderItemSellerDTO(WholesaleOrderItem item) {
+    private static OrderItemSellerDTO mapToOrderItemSellerDTO(WholesaleOrderItem item) {
         String productImage = "";
         if (item.getProduct() != null && item.getProduct().getImages() != null && !item.getProduct().getImages().isEmpty()) {
             productImage = item.getProduct().getImages().get(0).getImageUrl();

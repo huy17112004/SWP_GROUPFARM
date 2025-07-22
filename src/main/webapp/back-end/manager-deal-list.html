@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Danh sách Deal</title>
+
+    <!-- Google font-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="assets/css/linearicon.css">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+
+    <!-- Themify icon css-->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+
+    <!-- Data Table css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/datatables.css">
+
+    <!-- Feather icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <style>
+        #dealDetailModal .modal-content {
+            border: 2px solid #dee2e6;
+            border-radius: 0.5rem;
+        }
+        #dealDetailModal .info-container {
+            border: 1px solid #e9ecef;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- tap on top start -->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end -->
+
+    <!-- page-wrapper Start -->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div id="header-placeholder"></div>
+        <!-- Page Header Ends-->
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="index.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="index.html">
+                            <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                            <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png"
+                                alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav active" href="manager-deal-list.html">
+                                        <i class="ri-list-check"></i>
+                                        <span>Danh sách deal</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="manager-order-confirmation.html">
+                                        <i class="ri-checkbox-circle-line"></i>
+                                        <span>Xác nhận đơn hàng</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+
+            <!-- Coupon list table starts-->
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-table">
+                                <div class="card-body">
+                                    <div class="title-header option-title">
+                                        <h5>Danh sách Deal</h5>
+                                        <div class="right-options">
+                                            <ul>
+                                                <li>
+                                                    <select class="form-select" id="status-filter">
+                                                        <option value="">Tất cả</option>
+                                                        <option value="PENDING">Đang chờ</option>
+                                                        <option value="APPROVED">Đã duyệt</option>
+                                                        <option value="REJECTED">Bị từ chối</option>
+                                                    </select>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="table-responsive">
+                                            <table class="table all-package coupon-list-table table-hover theme-table"
+                                                id="deal-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Khách hàng</th>
+                                                        <th>Sản phẩm</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Giá gốc</th>
+                                                        <th>Giá đề xuất</th>
+                                                        <th>Thời gian yêu cầu</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Tùy chọn</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <!-- Pagination will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Container-fluid Ends-->
+
+                <!-- footer start-->
+                <div class="container-fluid">
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- footer end-->
+        </div>
+
+        <!-- Deal Details Modal Start -->
+        <div class="modal fade" id="dealDetailModal" tabindex="-1" aria-labelledby="dealDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dealDetailModalLabel">Chi tiết Deal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-container">
+                                    <h4>Thông tin khách hàng</h4>
+                                    <p><strong>Tên khách hàng:</strong> <span id="modal-customer-name"></span></p>
+                                    <p><strong>Số điện thoại:</strong> <span id="modal-customer-phone"></span></p>
+                                    <p><strong>Email:</strong> <span id="modal-customer-email"></span></p>
+                                    <p><strong>Địa chỉ giao hàng:</strong> <span id="modal-customer-address"></span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-container">
+                                    <h4>Thông tin đơn hàng</h4>
+                                    <p><strong>Mã đơn hàng:</strong> <span id="modal-order-id"></span></p>
+                                    <p><strong>Tổng tiền:</strong> <span id="modal-order-total"></span> VND</p>
+                                    <p><strong>Phí vận chuyển:</strong> <span id="modal-order-shipping"></span> VND</p>
+                                    <p><strong>Tổng tiền hàng:</strong> <span id="modal-order-items-total"></span> VND</p>
+                                    <p><strong>Ngày tạo:</strong> <span id="modal-order-created-at"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Deal Details Modal End -->
+
+        <!-- Modal Start -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h5 class="modal-title" id="staticBackdropLabel">Đăng xuất</h5>
+                        <p>Bạn có chắc chắn muốn đăng xuất?</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="button-box">
+                            <button type="button" class="btn btn--no" data-bs-dismiss="modal">Không</button>
+                            <button type="button" onclick="location.href = 'login.html';"
+                                class="btn  btn--yes btn-primary">Có</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal End -->
+    </div>
+    <!-- page-wrapper End -->
+
+    <!-- Delete Modal Box Start -->
+    <div class="modal fade theme-modal remove-coupon" id="exampleModalToggle" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-block text-center">
+                    <h5 class="modal-title w-100" id="exampleModalLabel22">Bạn có chắc không?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="remove-box">
+                        <p>Quyền sử dụng/nhóm, xem trước được kế thừa từ đối tượng, đối tượng sẽ tạo một quyền mới cho đối tượng này</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-dismiss="modal">Không</button>
+                    <button type="button" class="btn btn-animation btn-md fw-bold" data-bs-target="#exampleModalToggle2"
+                        data-bs-toggle="modal" data-bs-dismiss="modal">Có</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade theme-modal remove-coupon" id="exampleModalToggle2" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel12">Hoàn thành!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="remove-box text-center">
+                        <div class="wrapper">
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                        </div>
+                        <h4 class="text-content">Đã bị xóa.</h4>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal Box End -->
+
+    <!-- latest js -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap js -->
+    <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- feather icon js -->
+    <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
+
+    <!-- customizer js -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Sidebar js -->
+    <script src="assets/js/config.js"></script>
+
+    <!-- Plugins JS -->
+    <script src="assets/js/sidebar-menu.js"></script>
+    <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="assets/js/notify/index.js"></script>
+
+    <!-- Data table js -->
+    <script src="assets/js/jquery.dataTables.js"></script>
+    <script src="assets/js/custom-data-table.js"></script>
+
+    <!-- all checkbox select js -->
+    <script src="assets/js/checkbox-all-check.js"></script>
+
+    <!-- sidebar effect -->
+    <script src="assets/js/sidebareffect.js"></script>
+
+    <!-- Theme js -->
+    <script src="assets/js/script.js"></script>
+
+    <!-- component-loader js -->
+    <script src="components/component-loader.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let currentPage = 1;
+            const limit = 10;
+            let dealsData = [];
+
+            function fetchDeals(page = 1, status = '') {
+                const url = new URL('/api/manager/deal-requests', window.location.origin);
+                url.searchParams.append('page', page);
+                url.searchParams.append('limit', limit);
+                if (status) {
+                    url.searchParams.append('status', status);
+                }
+
+                const statusMapping = {
+                    'PENDING': { text: 'Đang chờ', class: 'warning' },
+                    'APPROVED': { text: 'Đã duyệt', class: 'success' },
+                    'REJECTED': { text: 'Bị từ chối', class: 'danger' }
+                };
+
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        dealsData = data;
+
+                        dealsData.sort((a, b) => {
+                            if (a.status === b.status) {
+                                return new Date(b.requestedAt) - new Date(a.requestedAt);
+                            }
+                            if (a.status === 'PENDING') {
+                                return -1;
+                            }
+                            if (b.status === 'PENDING') {
+                                return 1;
+                            }
+                            return new Date(b.requestedAt) - new Date(a.requestedAt);
+                        });
+
+                        const tableBody = $('#deal-table tbody');
+                        tableBody.empty();
+                        if (dealsData.length > 0) {
+                            dealsData.forEach(deal => {
+                                const row = `<tr>
+                                    <td>${deal.dealId}</td>
+                                    <td>${deal.customerInformation.customerName}</td>
+                                    <td>${deal.productName}</td>
+                                    <td>${deal.quantity}</td>
+                                    <td>${deal.originalPrice.toLocaleString('vi-VN')} VND</td>
+                                    <td>${deal.proposedPrice.toLocaleString('vi-VN')} VND</td>
+                                    <td>${new Date(deal.requestedAt).toLocaleString()}</td>
+                                    <td><span class="badge badge-light-${statusMapping[deal.status].class}">${statusMapping[deal.status].text}</span></td>
+                                    <td data-deal-id="${deal.dealId}">
+                                        <ul class="option">
+                                            <li>
+                                                <a href="javascript:void(0)" class="view-details-btn" data-deal-id="${deal.dealId}">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                            </li>
+                                            ${deal.status === 'PENDING' ? `
+                                            <li>
+                                                <a href="javascript:void(0)" class="approve-btn">
+                                                    <i class="ri-check-line"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" class="reject-btn">
+                                                    <i class="ri-close-line"></i>
+                                                </a>
+                                            </li>
+                                            ` : ''}
+                                        </ul>
+                                    </td>
+                                </tr>`;
+                                tableBody.append(row);
+                            });
+                        } else {
+                            tableBody.append('<tr><td colspan="9" class="text-center">Không tìm thấy deal nào</td></tr>');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching deals:', error));
+            }
+
+            function approveDeal(dealId) {
+                const url = new URL('/deal-requests/approve', window.location.origin);
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ dealId: dealId, message: "Deal approved by manager." })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        fetchDeals(currentPage, $('#status-filter').val()); // Refresh the list
+                    } else {
+                        alert('Failed to approve deal.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error approving deal:', error);
+                    alert('An error occurred while approving the deal.');
+                });
+            }
+
+            function rejectDeal(dealId) {
+                const reason = prompt("Vui lòng nhập lý do từ chối:", "");
+                if (reason === null) {
+                    return; // User cancelled
+                }
+
+                if (reason.trim() === "") {
+                    alert("Lý do từ chối không được để trống.");
+                    return;
+                }
+
+                const url = new URL('/deal-requests/reject', window.location.origin);
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ dealId: dealId, message: reason })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        fetchDeals(currentPage, $('#status-filter').val()); // Refresh the list
+                    } else {
+                        alert('Failed to reject deal.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error rejecting deal:', error);
+                    alert('An error occurred while rejecting the deal.');
+                });
+            }
+
+            $('#deal-table tbody').on('click', '.approve-btn', function() {
+                const dealId = $(this).closest('td').data('deal-id');
+                if (confirm('Bạn có chắc chắn muốn duyệt deal này không?')) {
+                    approveDeal(dealId);
+                }
+            });
+
+            $('#deal-table tbody').on('click', '.reject-btn', function() {
+                const dealId = $(this).closest('td').data('deal-id');
+                rejectDeal(dealId);
+            });
+
+            $('#status-filter').on('change', function () {
+                currentPage = 1;
+                fetchDeals(currentPage, $(this).val());
+            });
+
+            $('#deal-table tbody').on('click', '.view-details-btn', function () {
+                const dealId = $(this).data('deal-id');
+                const selectedDeal = dealsData.find(d => d.dealId === dealId);
+
+                if (selectedDeal) {
+                    // Populate modal with customer information
+                    $('#modal-customer-name').text(selectedDeal.customerInformation.customerName);
+                    $('#modal-customer-phone').text(selectedDeal.customerInformation.phone);
+                    $('#modal-customer-email').text(selectedDeal.customerInformation.email);
+                    $('#modal-customer-address').text(selectedDeal.customerInformation.addressDelivery);
+
+                    // Populate modal with order information
+                    $('#modal-order-id').text(selectedDeal.orderInformation.orderId);
+                    $('#modal-order-total').text(parseInt(selectedDeal.orderInformation.totalPrice).toLocaleString('vi-VN'));
+                    $('#modal-order-shipping').text(parseInt(selectedDeal.orderInformation.shippingPrice).toLocaleString('vi-VN'));
+                    $('#modal-order-items-total').text(parseInt(selectedDeal.orderInformation.itemsTotal).toLocaleString('vi-VN'));
+                    $('#modal-order-created-at').text(new Date(selectedDeal.orderInformation.createdAt).toLocaleString());
+
+                    // Show the modal
+                    $('#dealDetailModal').modal('show');
+                }
+            });
+
+            // Initial load
+            fetchDeals();
+        });
+    </script>
+</body>
+
+</html>

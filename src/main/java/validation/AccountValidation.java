@@ -22,9 +22,9 @@ public class AccountValidation {
             throw new IllegalArgumentException("Invalid email format");
         }
 
-        if (!userName.matches("^[a-zA-Z0-9]+$")) {
-            throw new IllegalArgumentException("Username can only contain letters and numbers");
-        }
+//        if (!userName.matches("^[a-zA-Z0-9]+$")) {
+//            throw new IllegalArgumentException("Username can only contain letters and numbers");
+//        }
 
         if (password.length() < 8) {
             throw new IllegalArgumentException("Password must be at least 8 characters long");
