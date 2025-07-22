@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
+
 public class WarehouseManagerDAO extends GenericDAO<WarehouseManager> {
     public WarehouseManagerDAO(EntityManager em) {
         super(WarehouseManager.class, em);
@@ -24,4 +26,10 @@ public class WarehouseManagerDAO extends GenericDAO<WarehouseManager> {
             return null;
         }
     }
+    public List<WarehouseManager> findAll() {
+        String jpql = "SELECT w FROM WarehouseManager w";
+        TypedQuery<WarehouseManager> query = em.createQuery(jpql, WarehouseManager.class);
+        return query.getResultList();
+    }
+
 }
