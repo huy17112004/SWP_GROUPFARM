@@ -16,7 +16,4 @@ public class Manager extends Account {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    private List<DealRequest>  dealRequests;
-
 }

@@ -1,19 +1,25 @@
 package service;
 
 import dao.StockLotDAO;
+import dao.WholesaleOrderDAO;
 import dto.InventoryResponseDTO;
+import dto.StockLotAllocationDTO;
 import dto.StockLotRequestDTO;
 import dto.StockLotResponseDTO;
+import entity.OrderItemAllocation;
 import entity.Product;
 import entity.StockLot;
+import entity.WholesaleOrder;
 import util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -147,5 +153,48 @@ public class StockLotService {
                 s.getImportDate(),
                 s.getExpiredDate()
         );
+    }
+
+    public List<StockLotAllocationDTO> getAllocationByOrderId(int orderId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        WholesaleOrderDAO wholesaleOrderDAO = new WholesaleOrderDAO(em);
+        WholesaleOrder wholesaleOrder = wholesaleOrderDAO.findById(orderId);
+        StockLotDAO stockLotDAO = new StockLotDAO(em);
+        List<StockLotAllocationDTO> dtos = new ArrayList<>();
+        wholesaleOrder.getItems().stream().forEach(item -> {
+            List<StockLot> stockLots = stockLotDAO.findEligibleStockLotsJava(item.getProduct().getId(), java.sql.Timestamp.valueOf(wholesaleOrder.getDeliveryDate()));
+            StockLotAllocationDTO stockLotAllocationDTO = new StockLotAllocationDTO(item);
+            for (StockLot stockLot : stockLots) {
+                int remainingQuantity = stockLot.getQuantity() - stockLot.getOrderItemAllocations().stream().mapToInt(OrderItemAllocation::getQuantity).sum();
+                Optional<OrderItemAllocation> optionalAllocation = stockLot.getOrderItemAllocations().stream()
+                        .filter(ia -> ia.getOrderItem().getId() == item.getId())
+                        .findFirst();
+
+                if (optionalAllocation.isPresent()) {
+                    OrderItemAllocation takenAllocation = optionalAllocation.get();
+                    stockLotAllocationDTO.getAllocationList().add(new StockLotAllocationDTO.AllocationInformation(
+                            stockLot.getId(),
+                            takenAllocation.getQuantity(),
+                            remainingQuantity + takenAllocation.getQuantity(),
+                            stockLot.getExpiredDate(),
+                            stockLot.getWarehouse().getWarehouseName())
+                    );
+                } else {
+                    if (remainingQuantity != 0) {
+                        stockLotAllocationDTO.getAllocationList().add(new StockLotAllocationDTO.AllocationInformation(
+                                stockLot.getId(),
+                                0,
+                                remainingQuantity,
+                                stockLot.getExpiredDate(),
+                                stockLot.getWarehouse().getWarehouseName())
+                        );
+                    }
+                }
+
+            }
+            dtos.add(stockLotAllocationDTO);
+        });
+        em.close();
+        return dtos;
     }
 }

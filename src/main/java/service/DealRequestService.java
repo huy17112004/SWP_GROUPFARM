@@ -70,6 +70,20 @@ public class DealRequestService {
             em.close();
         }
     }
+
+    public List<DealRequestForManagerDTO> listDealRequestsForManager(DealRequestFilterDTO filter) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            DealRequestDAO dealDao = new DealRequestDAO(em);
+            List<DealRequest> dealRequests = dealDao.findByFilter(filter);
+            return dealRequests.stream()
+                    .map(DealRequestForManagerDTO::new)
+                    .collect(Collectors.toList());
+        } finally {
+            em.close();
+        }
+    }
+
 //    public List<DealRequestDTO> listDealRequests(DealRequestFilterDTO filter) {
 //        EntityManager em = JpaUtil.getEntityManager();
 //        try {

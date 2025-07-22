@@ -1,7 +1,7 @@
 package dao;
 
 import dto.DealRequestDTO;
-//import dto.DealRequestFilterDTO;
+import dto.DealRequestFilterDTO;
 import dto.OrderItemDTO;
 import entity.DealRequest;
 import jakarta.persistence.EntityManager;
@@ -77,6 +77,26 @@ public class DealRequestDAO extends GenericDAO<DealRequest> {
         drDTO.setDiscountAmount(drDTO.getTotalOriginalPrice().subtract(drDTO.getTotalProposedPrice()));
         drDTO.setDiscountRate(drDTO.getDiscountAmount().divide(drDTO.getTotalOriginalPrice(), 2, BigDecimal.ROUND_HALF_UP));
         return drDTO;
+    }
+
+    public List<DealRequest> findByFilter(DealRequestFilterDTO filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<DealRequest> cq = cb.createQuery(DealRequest.class);
+        Root<DealRequest> dealRequest = cq.from(DealRequest.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (filter.getStatus() != null && !filter.getStatus().isEmpty()) {
+            predicates.add(cb.equal(dealRequest.get("status"), filter.getStatus()));
+        }
+
+        cq.where(predicates.toArray(new Predicate[0]));
+        cq.orderBy(cb.desc(dealRequest.get("requestedAt")));
+
+        TypedQuery<DealRequest> query = em.createQuery(cq);
+        query.setFirstResult((filter.getPage() - 1) * filter.getLimit());
+        query.setMaxResults(filter.getLimit());
+
+        return query.getResultList();
     }
 
 }
