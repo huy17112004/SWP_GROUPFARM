@@ -15,7 +15,7 @@ document.getElementById("signUpForm").addEventListener("submit", function (event
 
             if (response.ok) {
                 alert(data.message); // Đăng ký thành công
-                window.location.href = "/front-end/index.html";
+                window.location.href = "/front-end/index-7.html";
             } else {
                 alert(data.message); // Sai tài khoản, mật khẩu
             }

@@ -25,13 +25,13 @@ public class WholesaleCustomer extends Account {
     @Column(name = "Phone", length = 50)
     private String phone;
 
-    @Column(name = "CompanyName", length = 50)
+    @Column(name = "CompanyName", length = 50 , columnDefinition = "NVARCHAR(50)")
     private String companyName;
 
     @Column(name = "TaxCode", length = 50)
     private String taxCode;
 
-    @Column(name = "BusinessType", length = 50)
+    @Column(name = "BusinessType", length = 50 , columnDefinition = "NVARCHAR(50)")
     private String businessType;
 
     @Column(name = "CreatedAt")

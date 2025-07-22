@@ -32,7 +32,8 @@ public class ProductListDAO {
     }
 
     // 2) Detail theo id
-    public ProductListResponseDTO findProductListById(int id) {
+    public ProductListResponseDTO
+    findProductListById(int id) {
         String jpql =
                 "SELECT new dto.ProductListResponseDTO(" +
                         "  (SELECT pi.imageUrl FROM ProductImage pi " +
