@@ -1,52 +1,46 @@
-<!-- … phần đầu template của bạn … -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Provinces Fetch</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5rem 0; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Danh sách Tỉnh/Thành phố</h1>
+  <button id="btn-load">Tải provinces</button>
+  <div id="status"></div>
+  <ul id="prov-list"></ul>
 
-<div class="table-responsive">
-    <table class="table all-package theme-table table-product" id="table_id">
-        <thead>
-        <tr>
-            <th>Product Image</th>
-            <th>Product Name</th>
-            <th>Category</th>
-            <th>Current Qty</th>
-            <th>Price</th>
-            <th>Expired Date</th>
-            <th>Import Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Xóa hết các <tr> mẫu cũ đi, để trống -->
-        </tbody>
-    </table>
-</div>
+  <script>
+    document.getElementById('btn-load').addEventListener('click', () => {
+      const status = document.getElementById('status');
+      const listEl = document.getElementById('prov-list');
+      status.textContent = 'Đang tải...';
+      listEl.innerHTML = '';
 
-<!-- … phần cuối template của bạn … -->
-
-<!-- Chèn đoạn script ngay trước </body> -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const tbody = document.querySelector('#table_id tbody');
-
-        fetch('http://localhost:8080/api/products-list')
-            .then(res => res.ok ? res.json() : Promise.reject(res.status))
-            .then(data => {
-                const list = Array.isArray(data) ? data : [data];
-                list.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-            <td><img src="${item.imageUrl}" class="img-fluid" alt=""></td>
-            <td>${item.name}</td>
-            <td>${item.categoryName}</td>
-            <td>${item.quantity}</td>
-            <td class="td-price">${item.retailPrice.toLocaleString()}₫</td>
-            <td>${item.expiredDate}</td>
-            <td>${item.importDate}</td>
-          `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(err => {
-                console.error('Lỗi khi tải sản phẩm:', err);
-                tbody.innerHTML = '<tr><td colspan="7" style="color:red">Không thể tải dữ liệu</td></tr>';
-            });
+      fetch('http://localhost:8080/provinces')
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then(data => {
+          status.textContent = `Đã tải ${data.length} mục`;
+          data.forEach(p => {
+            const li = document.createElement('li');
+            li.textContent = `${p.locationId} — ${p.locationName}`;
+            listEl.appendChild(li);
+          });
+        })
+        .catch(err => {
+          status.innerHTML = `<span class="error">Lỗi: ${err.message}</span>`;
+          console.error(err);
+        });
     });
-</script>
+  </script>
+</body>
+</html>s

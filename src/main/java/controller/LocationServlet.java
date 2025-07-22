@@ -20,7 +20,15 @@ public class LocationServlet extends HttpServlet {
     private final Gson gson = new Gson();
 
     @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET ,POST, DELETE, PUT, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setContentType("application/json;charset=UTF-8");
 
         String servletPath = request.getServletPath();
