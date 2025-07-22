@@ -21,11 +21,16 @@ public class TopProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Admin not logged in");
-            return;
-        }
+//        HttpSession session = req.getSession(false);
+//        if (session == null || session.getAttribute("accountId") == null) {
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Admin not logged in");
+//            return;
+//        }
+
+        //  Giả lập đăng nhập admin với accountId = 1
+        HttpSession session = req.getSession(true); // true = tạo session nếu chưa có
+        session.setAttribute("accountId", 1);
+        session.setAttribute("role", "admin");
         
         try {
             // Lấy parameters

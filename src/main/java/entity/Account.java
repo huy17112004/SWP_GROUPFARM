@@ -26,7 +26,7 @@ public abstract class Account {
 
     @Column(name = "OTP", length = 10)
     private String otp;
-
+    
     @Column(name = "OTP_Expired_At")
     private LocalDateTime otpExpiredAt;
 }

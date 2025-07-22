@@ -17,7 +17,7 @@ public class CartService {
     public Cart addToCart(CartItemDTO dto) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            CartDAO cartDAO = new CartDAO(em);
+            CartDAO cartDAO = new CartDAO(em);  
             em.getTransaction().begin();
             Cart cart = cartDAO.addToCart(dto);
             em.getTransaction().commit();
@@ -58,7 +58,6 @@ public class CartService {
     }
 
 
-
     public String removeFromCart(Long productId, long userId) {
         EntityManager em = JpaUtil.getEntityManager();
         CartDAO cartDAO = new CartDAO(em);
@@ -95,5 +94,36 @@ public class CartService {
                     return price.multiply(quantity);
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public boolean updateQuantity(Long userId, Long productId, int quantity) {
+        EntityManager em = JpaUtil.getEntityManager();
+        CartDAO cartDAO = new CartDAO(em);
+        try {
+            em.getTransaction().begin();
+
+            Cart cart = cartDAO.findByUserAndProduct(userId, productId);
+            if (cart == null) {
+                throw new RuntimeException("Không tìm thấy sản phẩm trong giỏ hàng.");
+            }
+
+            if (quantity <= 0) {
+                em.remove(cart);
+            } else {
+                cart.setQuantity(quantity);
+            }
+
+            em.getTransaction().commit();
+            return true;
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
     }
 }

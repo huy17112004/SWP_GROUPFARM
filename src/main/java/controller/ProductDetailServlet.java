@@ -22,7 +22,7 @@ public class ProductDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String pathInfo = request.getPathInfo(); // /6
+        String pathInfo = request.getPathInfo(); //
 
         response.setContentType("application/json;charset=UTF-8");
         Gson gson = new Gson();

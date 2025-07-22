@@ -117,7 +117,7 @@ public class CartServlet extends HttpServlet {
             cartService.removeFromCart(productId, 1L);
 //            cartService.removeFromCart(productId, userId);
             resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write("{\"message\":\"Item removed from cart successfully\",\"success\":true}");
+            resp.getWriter().write("{\"message\":\"Sản phẩm được xóa thành công\",\"success\":true}");
 
         } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");
@@ -126,4 +126,29 @@ public class CartServlet extends HttpServlet {
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\",\"success\":false}");
         }
     }
+
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Gson gson = new Gson();
+        CartItemDTO dto = gson.fromJson(req.getReader(), CartItemDTO.class);
+
+        dto.setUserId(1L); // Tạm hard-code
+
+        try {
+            boolean updated = cartService.updateQuantity(dto.getUserId(), dto.getProductId(), dto.getQuantity());
+
+            resp.setContentType("application/json;charset=UTF-8");
+            if (updated) {
+                resp.getWriter().write("{\"message\":\"Cập nhật thành công\",\"success\":true}");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("{\"message\":\"Không thể cập nhật\",\"success\":false}");
+            }
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"message\":\"Lỗi server: " + e.getMessage() + "\",\"success\":false}");
+        }
+    }
+
 }
