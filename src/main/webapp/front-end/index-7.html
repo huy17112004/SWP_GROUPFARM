@@ -70,9 +70,9 @@
                                             <h1>Get your grocery in 25 minutes</h1>
                                             <h3>Better ingredients, better food, and beverages, at low prices</h3>
                                             <div class="search-box">
-                                                <input type="search" class="form-control"
+                                                <input type="search" class="form-control" id="search-input"
                                                     placeholder="I'm searching for...">
-                                                <i data-feather="search"></i>
+                                                <i data-feather="search" id="search-btn" style="cursor:pointer;"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -746,6 +746,25 @@
         alert("❌ Lỗi hệ thống khi thêm vào wishlist.");
     });
     });
+    </script>
+
+    <!-- Thêm logic search chuyển trang -->
+    <script>
+        (function() {
+            const input = document.getElementById('search-input');
+            const btn = document.getElementById('search-btn');
+            if (!input || !btn) return;
+            function doSearch() {
+                const value = input.value.trim();
+                if (value) {
+                    window.location.href = `shop-category.html?name=${encodeURIComponent(value)}`;
+                }
+            }
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') doSearch();
+            });
+            btn.addEventListener('click', doSearch);
+        })();
     </script>
 
 </body>

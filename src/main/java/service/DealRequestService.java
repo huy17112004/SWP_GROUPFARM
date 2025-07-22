@@ -10,6 +10,7 @@ import util.JpaUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,15 +70,30 @@ public class DealRequestService {
             em.close();
         }
     }
-    public List<DealRequestDTO> listDealRequests(DealRequestFilterDTO filter) {
+
+    public List<DealRequestForManagerDTO> listDealRequestsForManager(DealRequestFilterDTO filter) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             DealRequestDAO dealDao = new DealRequestDAO(em);
-            return dealDao.findByFilter(filter);
+            List<DealRequest> dealRequests = dealDao.findByFilter(filter);
+            return dealRequests.stream()
+                    .map(DealRequestForManagerDTO::new)
+                    .collect(Collectors.toList());
         } finally {
             em.close();
         }
     }
+
+//    public List<DealRequestDTO> listDealRequests(DealRequestFilterDTO filter) {
+//        EntityManager em = JpaUtil.getEntityManager();
+//        try {
+//            DealRequestDAO dealDao = new DealRequestDAO(em);
+//            return dealDao.findByFilter(filter);
+//        } finally {
+//            em.close();
+//        }
+//    }
+
 
     public DealRequestDTO rejectDeal(DealConfirmDTO dto) {
         EntityManager em = JpaUtil.getEntityManager();
@@ -150,25 +166,19 @@ public class DealRequestService {
         }
     }
 
-    public List<DealRequestCustomerDTO> listDealsForOrder(int orderId, int customerId) {
+    public List<DealRequestViewDTO> listDealsForOrder(int orderId) {
         EntityManager em = JpaUtil.getEntityManager();
+        WholesaleOrderItemDAO orderItemDAO = new WholesaleOrderItemDAO(em);
+        DealRequestDAO dealRequestDAO = new DealRequestDAO(em);
         try {
-            DealRequestDAO dao = new DealRequestDAO(em);
-            List<DealRequest> list = dao.findByOrderAndCustomer(orderId, customerId);
-            return list.stream()
-                    .map(d -> new DealRequestCustomerDTO(
-                            d.getId(),
-                            d.getOrderItem().getId(),
-                            d.getOrderItem().getProduct().getProductName(),
-                            d.getOrderItem().getQuantity(),
-                            d.getOrderItem().getPrice(),
-                            d.getProposedPrice(),
-                            d.getStatus(),
-                            d.getRequestedAt(),
-                            d.getRespondedAt(),
-                            d.getMessage()
-                    ))
-                    .collect(Collectors.toList());
+            List<WholesaleOrderItem> items = orderItemDAO.findOrderItemsByOrderId(orderId);
+            List<DealRequestViewDTO> dtoList = new ArrayList<>();
+
+            for (WholesaleOrderItem item : items) {
+                DealRequest latestDeal = dealRequestDAO.findLastByOrderItemId(item.getId());
+                dtoList.add(new DealRequestViewDTO(item, latestDeal));
+            }
+            return dtoList;
         } finally {
             em.close();
         }

@@ -1,28 +1,16 @@
 package dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.math.BigDecimal;
-
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DealRequestFilterDTO {
-    private java.util.List<String> statuses;       // e.g. ["PENDING","APPROVED"]
-    private String customerName;                   // partial match
-    private Integer productId;
-    private String productName;                    // partial match
-
-    private BigDecimal minTotalOriginalPrice;
-    private BigDecimal maxTotalOriginalPrice;
-
-    private BigDecimal minTotalProposedPrice;
-    private BigDecimal maxTotalProposedPrice;
-
-    private BigDecimal minDiscountRate;            // 0.1 = 10%
-    private BigDecimal maxDiscountRate;
-
-    private Integer minQuantity;
-    private Integer maxQuantity;
-
-    private String sortField;                      // "requestedAt", "discountRate", ...
-    private boolean  sortAsc;                      // true = ASC, false = DESC
-}
+    private String status;
+    private int page = 1;
+    private int limit = 10;
+} 

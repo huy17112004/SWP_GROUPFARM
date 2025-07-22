@@ -23,9 +23,6 @@ public class DealRequest {
     @JoinColumn(name = "OrderItemID", nullable = false)
     private WholesaleOrderItem orderItem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ManagerID")
-    private Manager manager;
 
     @Column(name = "ProposedPrice", precision = 18, scale = 2, nullable = false)
     private BigDecimal proposedPrice;

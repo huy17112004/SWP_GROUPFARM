@@ -31,6 +31,6 @@ public class OrderItemAllocation {
     @Column(name = "Status", length = 16)
     private String status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "orderItemAllocation", fetch = FetchType.LAZY)
     private StockTransferItem stockTransferItem;
 }

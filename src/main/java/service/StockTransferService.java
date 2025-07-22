@@ -24,6 +24,7 @@ public class StockTransferService {
             StockTransferDAO stockTransferDAO = new StockTransferDAO(em);
 
             WholesaleOrder order = wholesaleOrderDAO.findById(orderId);
+            order.setStatus("CONSOLIDATING");
             List<StockTransfer> stockTransfers = new ArrayList<>();
             order.getItems().forEach(item -> {
                 item.getOrderItemAllocations().forEach(orderItemAllocation -> {
@@ -113,7 +114,7 @@ public class StockTransferService {
                         stockLot.setWarehouse(stockTransfer.getDestinationWarehouse());
                         stockLot.setImportDate(item.getStockLot().getImportDate());
                         stockLot.setExpiredDate(item.getStockLot().getExpiredDate());
-                        stockLotDAO.create(stockLot);
+                        stockLotDAO.save(stockLot);
                         item.setStockLot(stockLot);
                         item.getOrderItemAllocation().setStockLot(stockLot);
                     });

@@ -201,53 +201,28 @@
 
                         <div class="filter-category">
                             <ul>
-                                <li>
-                                    <a href="javascript:void(0)">Vegetable</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Fruit</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Fresh</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Milk</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Meat</a>
-                                </li>
+                                <!-- Đã xóa các tag Vegetable, Fruit, Fresh, Milk, Meat theo yêu cầu -->
                             </ul>
                         </div>
                     </div>
 
+                    <div id="search-tag" style="margin-bottom: 16px;"></div>
                     <div
                         class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section" id="product-list">
                             <!-- Import product here -->
                     </div>
 
+                    <!-- PHÂN TRANG MỚI START -->
                     <nav class="custom-pagination">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript:void(0)" tabindex="-1">
-                                    <i class="fa-solid fa-angles-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="javascript:void(0)">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">
-                                    <i class="fa-solid fa-angles-right"></i>
-                                </a>
-                            </li>
+                        <ul class="pagination justify-content-center" id="pagination-new">
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Previous">&laquo;</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                         </ul>
                     </nav>
+                    <!-- PHÂN TRANG MỚI END -->
                 </div>
             </div>
         </div>
@@ -759,18 +734,21 @@
         }
 
         // Sửa hàm loadProducts để nhận và truyền totalPages
-        async function loadProducts(categoryId = null, sortType = null, page = 0) {
+        async function loadProducts(categoryId = null, sortType = null, page = 0, name = null) {
             try {
                 currentCategoryId = categoryId;
                 currentSortType = sortType;
                 currentPage = page;
 
-                const params = { page, size: 10 };
+                const params = { page, size: 12 };
                 if (categoryId) {
                     params.categoryId = categoryId;
                 }
                 if (sortType) {
                     params.sortType = sortType;
+                }
+                if (name) {
+                    params.name = name;
                 }
 
                 const data = await fetchProducts(params); // {products, totalPages, totalItems}
@@ -781,8 +759,9 @@
                 const urlParams = new URLSearchParams();
                 if (categoryId) urlParams.set('categoryId', categoryId);
                 if (sortType) urlParams.set('sortType', sortType);
+                if (name) urlParams.set('name', name);
                 urlParams.set('page', page);
-                urlParams.set('size', 10);
+                urlParams.set('size', 12);
                 history.pushState({}, '', `?${urlParams.toString()}`);
 
             } catch (error) {
@@ -817,9 +796,34 @@
                 const categoryId = params.get('categoryId');
                 const sortType = params.get('sortType');
                 const page = parseInt(params.get('page')) || 0;
+                const name = params.get('name'); // Lấy tham số name
+                
+                // Hiển thị tag nếu có name
+                const searchTag = document.getElementById('search-tag');
+                if (name && searchTag) {
+                    searchTag.innerHTML = `<span style='background:#f3f3f3; color:#333; border-radius:4px; padding:6px 14px; display:inline-block; font-size:16px; position:relative;'>Kết quả cho: <b>"${name.replace(/</g, '&lt;').replace(/>/g, '&gt;')}"</b> <button id='clear-search-tag' style='background:transparent;border:none;color:#888;font-size:18px;cursor:pointer;position:relative;top:-1px;margin-left:8px;' title='Bỏ tìm kiếm'>&times;</button></span>`;
+                    // Gắn sự kiện cho nút x
+                    const clearBtn = document.getElementById('clear-search-tag');
+                    if (clearBtn) {
+                        clearBtn.addEventListener('click', function() {
+                            const params = new URLSearchParams(window.location.search);
+                            params.delete('name');
+                            // Giữ lại các tham số khác (categoryId, sortType, page...)
+                            window.location.search = params.toString();
+                        });
+                    }
+                } else if (searchTag) {
+                    searchTag.innerHTML = '';
+                }
                 
                 // Load sản phẩm ban đầu
-                await loadProducts(categoryId, sortType, page);
+                const fetchParams = {};
+                if (categoryId) fetchParams.categoryId = categoryId;
+                if (sortType) fetchParams.sortType = sortType;
+                if (name) fetchParams.name = name;
+                fetchParams.page = page;
+                fetchParams.size = 12;
+                await loadProducts(fetchParams.categoryId, fetchParams.sortType, fetchParams.page, fetchParams.name);
 
                 // Set lại tab active cho category
                 document.querySelectorAll('#category-list button').forEach(btn2 =>
@@ -843,14 +847,23 @@
         document.getElementById('category-list').addEventListener('click', async (e) => {
             const btn = e.target.closest('button[data-category-id]');
             if (!btn) return;
-            
             const catId = btn.getAttribute('data-category-id');
-            await loadProducts(catId, currentSortType, 0); // Reset về trang đầu khi chọn category mới
-
-            // Set lại tab active
-            document.querySelectorAll('#category-list button').forEach(btn2 =>
-                btn2.classList.toggle('active', btn2.getAttribute('data-category-id') === catId)
-            );
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            if (catId === currentCategoryId) {
+                // Nếu click lại vào category đang active, bỏ lọc category
+                await loadProducts(null, currentSortType, 0, name);
+                // Bỏ active tất cả tab
+                document.querySelectorAll('#category-list button').forEach(btn2 =>
+                    btn2.classList.remove('active')
+                );
+            } else {
+                await loadProducts(catId, currentSortType, 0, name);
+                // Set lại tab active
+                document.querySelectorAll('#category-list button').forEach(btn2 =>
+                    btn2.classList.toggle('active', btn2.getAttribute('data-category-id') === catId)
+                );
+            }
         });
 
         // Event listener cho sort dropdown
@@ -858,18 +871,22 @@
             if (e.target.classList.contains('dropdown-item')) {
                 const sortId = e.target.id;
                 const sortType = sortTypeMapping[sortId];
-                
+                // Lấy lại name từ URL nếu có
+                const params = new URLSearchParams(window.location.search);
+                const name = params.get('name');
                 // Cập nhật text hiển thị
                 updateSortDropdownText(sortId);
-                
                 // Load sản phẩm với sort mới
-                await loadProducts(currentCategoryId, sortType, 0); // Reset về trang đầu khi sort
+                await loadProducts(currentCategoryId, sortType, 0, name); // Reset về trang đầu khi sort
             }
         });
 
         // Gắn event cho nút phân trang với các tùy chọn
         attachPaginationEvents('.custom-pagination ul.pagination', async (page) => {
-            await loadProducts(currentCategoryId, currentSortType, page);
+            // Lấy lại name từ URL nếu có
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            await loadProducts(currentCategoryId, currentSortType, page, name);
         }, {
             scrollToTop: true,
             showLoading: true

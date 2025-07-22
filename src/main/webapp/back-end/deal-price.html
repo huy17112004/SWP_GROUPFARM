@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
 
-    <!-- Bootstrap css -->
+    <!-- Bootstrap css -->                                  
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
 
     <!-- App css -->
@@ -239,25 +239,103 @@
             border-radius: 8px;
             border: 1px solid #dee2e6;
         }
-        
-        .deal-product-info img {
-            max-width: 80px;
-            max-height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
+        .deal-latest-info {
+            background: #e9f7ef;
+            border-left: 5px solid #22c55e;
+            border-radius: 10px;
+            padding: 18px 22px 14px 22px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(34,197,94,0.07);
+            position: relative;
         }
-        
-        .price-comparison {
-            font-size: 14px;
+        .deal-latest-info h6 {
+            font-size: 1.08em;
+            font-weight: bold;
+            color: #22c55e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        .savings-positive {
-            color: #28a745;
+        .deal-latest-info .deal-icon {
+            color: #22c55e;
+            font-size: 1.3em;
         }
-        
-        .savings-negative {
-            color: #dc3545;
+        .deal-latest-info p {
+            margin-bottom: 7px;
+            font-size: 1em;
         }
+        .deal-latest-info strong {
+            color: #1a7f37;
+        }
+        .deal-latest-info .deal-status {
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: #d1fae5;
+            color: #15803d;
+            font-size: 0.98em;
+        }
+    </style>
+    <style>
+    /* Dark mode support for custom blocks */
+    body.dark-only .order-info-card,
+    body.dark-only .customer-info,
+    body.dark-only .product-item,
+    body.dark-only .deal-product-info,
+    body.dark-only .deal-latest-info {
+        background-color: #23272f !important;
+        color: #e2e8f0 !important;
+        border-color: #374151 !important;
+    }
+    body.dark-only .price-info {
+        background-color: #23272f !important;
+        color: #e2e8f0 !important;
+        border-color: #374151 !important;
+    }
+    body.dark-only .deal-latest-info strong,
+    body.dark-only .deal-latest-info .deal-status {
+        color: #7ee787 !important;
+    }
+    /* Dark mode for chat */
+    body.dark-only .chat-container {
+        background: #23272f !important;
+        border-color: #374151 !important;
+    }
+    body.dark-only .chat-header {
+        background: #1d1e27 !important;
+        color: #7ee787 !important;
+    }
+    body.dark-only .chat-messages {
+        background: #23272f !important;
+        color: #e2e8f0 !important;
+    }
+    body.dark-only .chat-input {
+        background: #23272f !important;
+        border-top: 1px solid #374151 !important;
+    }
+    body.dark-only .chat-input input {
+        background: #1d1e27 !important;
+        color: #e2e8f0 !important;
+        border-color: #374151 !important;
+    }
+    body.dark-only .chat-input button {
+        background: #23272f !important;
+        color: #7ee787 !important;
+        border: 1px solid #374151 !important;
+    }
+    body.dark-only .message.sent .message-content {
+        background: #0da487 !important;
+        color: #fff !important;
+    }
+    body.dark-only .message.received .message-content {
+        background: #23272f !important;
+        border: 1px solid #374151 !important;
+        color: #e2e8f0 !important;
+    }
+    body.dark-only .message-time {
+        color: #7ee787 !important;
+    }
     </style>
 </head>
 
@@ -534,6 +612,9 @@
         let lastMessageTime = null;
         let refreshInterval = null;
         let currentDealItem = null;
+        let orderInfo = null;
+        let orderInfoLoaded = false;
+        let dealItemsLoaded = false;
 
         $(document).ready(function() {
             // Get orderId from URL parameter
@@ -546,6 +627,7 @@
                 return;
             }
 
+            loadOrderInfo();
             loadOrderDetails();
             loadChatMessages();
             
@@ -572,29 +654,62 @@
             $('#submitDealBtn').click(submitDeal);
         });
 
+        function loadOrderInfo() {
+            $.ajax({
+                url: '../order-information/' + currentOrderId,
+                method: 'GET',
+                success: function(data) {
+                    orderInfo = data;
+                    orderInfoLoaded = true;
+                    tryDisplayOrderDetails();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading order info:', error);
+                    orderInfoLoaded = true;
+                    tryDisplayOrderDetails();
+                }
+            });
+        }
+
         function loadOrderDetails() {
             $.ajax({
-                url: '../api/seller/orders',
+                url: '../deal-requests/orders/' + currentOrderId,
                 method: 'GET',
-                success: function(orders) {
-                    currentOrder = orders.find(o => o.orderId === parseInt(currentOrderId));
-                    if (!currentOrder) {
+                success: function(dealItems) {
+                    if (!dealItems || dealItems.length === 0) {
                         alert('Không tìm thấy thông tin đơn hàng!');
                         window.location.href = 'order-list-seller.html';
                         return;
                     }
-                    displayOrderDetails();
+                    currentOrder = dealItems;
+                    dealItemsLoaded = true;
+                    tryDisplayOrderDetails();
                 },
                 error: function(xhr, status, error) {
                     console.error('Error loading order details:', error);
-                    if (xhr.status === 401) {
-                        alert('Bạn chưa đăng nhập!');
-                        window.location.href = '../login';
-                    } else {
-                        alert('Có lỗi xảy ra khi tải thông tin đơn hàng!');
-                    }
+                    dealItemsLoaded = true;
+                    tryDisplayOrderDetails();
                 }
             });
+        }
+
+        function tryDisplayOrderDetails() {
+            if (!orderInfoLoaded || !dealItemsLoaded) return;
+            if (orderInfo) {
+                // Update order info
+                $('#orderCode').text(orderInfo.orderId);
+                $('#orderCodeInfo').text(orderInfo.orderId);
+                $('#orderDate').text(orderInfo.createdAt ? new Date(orderInfo.createdAt).toLocaleDateString('vi-VN') : 'N/A');
+                $('#orderStatus').html(`<span class="badge status-badge ${getStatusClass(orderInfo.status)}">${getStatusText(orderInfo.status)}</span>`);
+                $('#subtotal').text(formatVND(orderInfo.itemTotal));
+                $('#shipFee').text(formatVND(orderInfo.shippingFee));
+                $('#totalPrice').text(formatVND(orderInfo.totalPrice));
+                $('#customerName').text(orderInfo.customerName || 'N/A');
+                $('#customerEmail').text(orderInfo.customerEmail || 'N/A');
+                $('#customerPhone').text(orderInfo.customerPhone || 'N/A');
+                $('#deliveryAddress').text(orderInfo.addressDelivery || 'N/A');
+            }
+            displayProducts();
         }
 
         function displayOrderDetails() {
@@ -627,18 +742,44 @@
             const productsList = $('#productsList');
             productsList.empty();
             
-            if (!currentOrder.items || currentOrder.items.length === 0) {
+            if (!currentOrder || currentOrder.length === 0) {
                 productsList.html('<p class="text-muted">Không có sản phẩm nào trong đơn hàng</p>');
                 return;
             }
             
-            currentOrder.items.forEach(item => {
+            currentOrder.forEach((item, idx) => {
                 const itemImage = item.productImage && item.productImage.trim() !== '' ? 
                     item.productImage : 'assets/images/product/1.png';
                 const itemName = item.productName || 'Sản phẩm không xác định';
                 const itemQuantity = item.quantity || 0;
-                const itemPrice = formatVND(item.price);
-                const itemSubTotal = formatVND(item.subTotal);
+                const itemPrice = formatVND(item.originalPrice);
+                const itemSubTotal = formatVND((item.originalPrice || 0) * (item.quantity || 0));
+                const collapseId = `dealCollapse${item.orderItemId}`;
+                
+                let showDealButton = true;
+                if (item.dealId && (item.status === 'PENDING' || item.status === 'APPROVED')) {
+                    showDealButton = false;
+                }
+                
+                let dealButtonHtml = '';
+                let dealCollapseHtml = '';
+                if (item.dealId) {
+                    dealButtonHtml = `<button class="btn btn-outline-info btn-sm ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
+                        <i class="ri-eye-line me-1"></i>Xem deal gần nhất
+                    </button>`;
+                    dealCollapseHtml = `
+                        <div class="collapse mt-2" id="${collapseId}">
+                            <div class="deal-latest-info">
+                                <h6><span class="deal-icon"><i class="ri-price-tag-3-line"></i></span>Thông tin deal gần nhất</h6>
+                                <p><strong>Giá đề xuất:</strong> ${item.proposedPrice ? formatVND(item.proposedPrice) : '<span class=\'text-muted\'>Không có</span>'}</p>
+                                <p><strong>Ghi chú:</strong> ${item.message ? item.message : '<span class=\'text-muted\'>Không có</span>'}</p>
+                                <p><strong>Trạng thái:</strong> <span class="deal-status">${getStatusText(item.status) || ''}</span></p>
+                                <p><strong>Thời gian gửi:</strong> ${item.requestedAt ? new Date(item.requestedAt).toLocaleString('vi-VN') : ''}</p>
+                                <p><strong>Thời gian phản hồi:</strong> ${item.respondedAt ? new Date(item.respondedAt).toLocaleString('vi-VN') : '<span class=\'text-muted\'>Chưa phản hồi</span>'}</p>
+                            </div>
+                        </div>
+                    `;
+                }
                 
                 const productHtml = `
                     <div class="product-item">
@@ -656,12 +797,14 @@
                                     <p class="mb-0"><strong>Tổng:</strong> ${itemSubTotal}</p>
                                 </div>
                             </div>
-                                                            <div class="col-md-3">
-                                    <button class="btn btn-outline-primary btn-sm" onclick="openDealModal(${item.itemId})">
-                                        <i class="ri-edit-line me-1"></i>Đề xuất giá
-                                    </button>
-                                </div>
+                            <div class="col-md-3 d-flex flex-column align-items-end">
+                                ${showDealButton ? `<button class="btn btn-outline-primary btn-sm mb-1" onclick="openDealModal(${item.orderItemId})">
+                                    <i class="ri-edit-line me-1"></i>Đề xuất giá
+                                </button>` : ''}
+                                ${dealButtonHtml}
+                            </div>
                         </div>
+                        ${dealCollapseHtml}
                     </div>
                 `;
                 productsList.append(productHtml);
@@ -710,6 +853,12 @@
                     return 'Đã từ chối';
                 case 'UNKNOWN':
                     return 'Không xác định';
+                // Trạng thái deal
+                case 'PENDING':
+                    return 'Chờ phản hồi';
+                case 'APPROVED':
+                    return 'Đã chấp nhận';
+                // Có thể bổ sung thêm các trạng thái khác nếu có
                 default:
                     return status;
             }
@@ -874,7 +1023,7 @@
 
         function openDealModal(itemId) {
             // Find the item in current order
-            currentDealItem = currentOrder.items.find(item => item.itemId === itemId);
+            currentDealItem = currentOrder.find(item => item.orderItemId === itemId);
             if (!currentDealItem) {
                 alert('Không tìm thấy thông tin sản phẩm!');
                 return;
@@ -895,14 +1044,14 @@
                         <div class="col-md-8">
                             <h6 class="mb-1">${currentDealItem.productName}</h6>
                             <p class="text-muted mb-1">Số lượng: ${currentDealItem.quantity}</p>
-                            <p class="mb-0"><strong>Giá hiện tại:</strong> ${formatVND(currentDealItem.price)}</p>
+                            <p class="mb-0"><strong>Giá hiện tại:</strong> ${formatVND(currentDealItem.originalPrice)}</p>
                         </div>
                     </div>
                 </div>
             `);
             
             // Set current price
-            $('#currentPrice').text(formatVND(currentDealItem.price));
+            $('#currentPrice').text(formatVND(currentDealItem.originalPrice));
             
             // Reset form
             $('#proposedPrice').val('');
@@ -917,7 +1066,7 @@
         function calculateSavings() {
             if (!currentDealItem) return;
             
-            const currentPrice = parseFloat(currentDealItem.price);
+            const currentPrice = parseFloat(currentDealItem.originalPrice);
             const proposedPrice = parseFloat($('#proposedPrice').val()) || 0;
             const quantity = currentDealItem.quantity;
             
@@ -949,7 +1098,7 @@
             
             // Create request data
             const requestData = {
-                orderItemId: currentDealItem.itemId,
+                orderItemId: currentDealItem.orderItemId,
                 proposedPrice: proposedPrice,
                 message: message || null
             };
