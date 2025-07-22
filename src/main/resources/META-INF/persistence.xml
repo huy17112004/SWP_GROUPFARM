@@ -4,7 +4,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>entity.Account</class>
         <class>entity.Admin</class>
-        <class>entity.Saler</class>
+        <class>entity.Seller</class>
         <class>entity.Manager</class>
         <class>entity.Shipper</class>
         <class>entity.WholesaleCustomer</class>
@@ -39,10 +39,10 @@
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="jakarta.persistence.jdbc.url"
-                      value="jdbc:sqlserver://localhost:1433;databaseName=ASSSWP1;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8"/>
+                      value="jdbc:sqlserver://localhost:1433;databaseName=ASSSWP8;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8"/>
 
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
-            <property name="jakarta.persistence.jdbc.password" value="1234"/>
+            <property name="jakarta.persistence.jdbc.password" value="123"/>
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
