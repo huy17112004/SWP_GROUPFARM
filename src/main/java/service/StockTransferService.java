@@ -114,7 +114,7 @@ public class StockTransferService {
                         stockLot.setWarehouse(stockTransfer.getDestinationWarehouse());
                         stockLot.setImportDate(item.getStockLot().getImportDate());
                         stockLot.setExpiredDate(item.getStockLot().getExpiredDate());
-                        stockLotDAO.save(stockLot);
+                        stockLotDAO.create(stockLot);
                         item.setStockLot(stockLot);
                         item.getOrderItemAllocation().setStockLot(stockLot);
                     });

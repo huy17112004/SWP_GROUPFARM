@@ -63,6 +63,57 @@
     </section>
     <!-- login section end -->
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // Lấy form và các phần tử
+          const form = document.querySelector('section.log-in-section form.row.g-4');
+          const emailInput = form.querySelector('#email');
+          const sendLinkBtn = form.querySelector('a.btn-animation');
+          // Container để show alert
+          const alertContainer = document.createElement('div');
+          form.prepend(alertContainer);
+    
+          sendLinkBtn.addEventListener('click', async e => {
+            e.preventDefault();
+            alertContainer.innerHTML = '';
+    
+            const email = emailInput.value.trim();
+            if (!email) {
+              return showAlert('Vui lòng nhập email.', 'danger');
+            }
+    
+            try {
+              // Đổi URL này thành địa chỉ trang reset-password của bạn
+              const resetBaseUrl = window.location.origin 
+                + '/front-end/reset-password.html';
+    
+              const resp = await fetch('http://localhost:8080/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, resetBaseUrl })
+              });
+              const data = await resp.json();
+    
+              if (resp.ok) {
+                showAlert(data.message, 'success');
+              } else {
+                showAlert(data.error || 'Gửi link thất bại.', 'danger');
+              }
+            } catch (err) {
+              console.error(err);
+              showAlert('Không thể kết nối đến server.', 'danger');
+            }
+          });
+    
+          function showAlert(msg, type='info') {
+            alertContainer.innerHTML = '';
+            const div = document.createElement('div');
+            div.className = `alert alert-${type}`;
+            div.textContent = msg;
+            alertContainer.append(div);
+          }
+        });
+        </script>
 </body>
 
 </html>
