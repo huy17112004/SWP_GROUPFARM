@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Quản lý đơn hàng</title>
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="assets/css/linearicon.css">
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+    <!-- Themify icon css-->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+    <!-- Data Table css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/datatables.css">
+    <!-- Feather icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <!-- Custom CSS for order details -->
+    <style>
+        .order-item-detail {
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .order-item-detail:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .order-details h5 {
+            color: #495057;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .badge.order-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge.order-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .badge.order-cancle {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .badge.order-rejected {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .badge.order-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .badge.order-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        /* Action buttons styling */
+        .btn-outline-success {
+            border-color: #28a745;
+            color: #28a745;
+        }
+        
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+        
+        tr {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Responsive for mobile */
+        @media (max-width: 768px) {
+            .offcanvas {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- tap on top start -->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end -->
+    <!-- page-wrapper Start -->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div id="header-placeholder"></div>
+        <!-- Page Header Ends-->
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="index.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="index.html">
+                            <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                            <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png" alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="warehouse-stocktransfer-management.html">
+                                        <i class="fa fa-warehouse"></i>
+                                        <span>Quản lý nhập xuất kho</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="warehouse-stocktransfer-history.html">
+                                        <i class="fa fa-history"></i>
+                                        <span>Lịch sử nhập xuất kho</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav active" href="warehouse-order-confirmation.html">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <span>Quản lý đơn hàng</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+            <!-- Main Content Start-->
+            <div class="page-body">
+                <!-- Table Start -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-table">
+                                <div class="card-body">
+                                    <div class="title-header option-title">
+                                        <h5>Danh sách đơn hàng</h5>
+                                    </div>
+                                    <div>
+                                        <div class="table-responsive">
+                                            <table class="table all-package order-table theme-table" id="table_id">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã đơn hàng</th>
+                                                        <th>Ngày tạo</th>
+                                                        <th>Ngày giao hàng</th>
+                                                        <th>Khách hàng</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Tổng tiền</th>
+                                                        <th>Tùy chọn</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ordersTableBody">
+                                                    <!-- Orders will be loaded here dynamically -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Table End -->
+                <div id="pagination" class="mt-3"></div>
+            </div>
+            <!-- Main Content End-->
+            <!-- Offcanvas Box Start -->
+            <div class="offcanvas offcanvas-end order-offcanvas" tabindex="-1" id="order-details"
+                aria-labelledby="offcanvasExampleLabel" aria-expanded="false" style="width: 80%; max-width: 800px;">
+                <div class="offcanvas-header">
+                    <h4 class="offcanvas-title" id="offcanvasExampleLabel">Chi tiết đơn hàng</h4>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="offcanvas-body" id="orderDetailsBody">
+                    <!-- Order details will be loaded here -->
+                </div>
+            </div>
+            <!-- Offcanvas Box End -->
+            <!-- Modal chọn shipper Start -->
+            <div class="modal fade" id="selectShipperModal" tabindex="-1" aria-labelledby="selectShipperModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="selectShipperModalLabel">Chọn shipper để xuất hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="shipperListContainer">
+                                <select class="form-select" id="shipperSelect">
+                                    <option value="">-- Chọn shipper --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-success" id="confirmExportBtn">Xuất hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal chọn shipper End -->
+            <!-- footer start-->
+            <div class="container-fluid">
+                <footer class="footer">
+                    <div class="row">
+                        <div class="col-md-12 footer-copyright text-center">
+                            <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- footer end-->
+        </div>
+    <!-- page-wrapper End -->
+    <!-- latest js -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- feather icon js -->
+    <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+    <!-- scrollbar simplebar js -->
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
+    <!-- customizer js -->
+    <script src="assets/js/customizer.js"></script>
+    <!-- Sidebar js -->
+    <script src="assets/js/config.js"></script>
+    <!-- Plugins JS -->
+    <script src="assets/js/sidebar-menu.js"></script>
+    <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="assets/js/notify/index.js"></script>
+    <!-- Data table js -->
+    <script src="assets/js/jquery.dataTables.js"></script>
+    <script src="assets/js/custom-data-table.js"></script>
+    <!-- all checkbox select js -->
+    <script src="assets/js/checkbox-all-check.js"></script>
+    <!-- sidebar effect -->
+    <script src="assets/js/sidebareffect.js"></script>
+    <!-- Theme js -->
+    <script src="assets/js/script.js"></script>
+    <!-- component-loader js -->
+    <script src="components/component-loader.js"></script>
+
+    <!-- Custom script for loading orders -->
+    <script>
+        let allOrders = []; // Store all orders to access when needed
+        let currentPage = 1;
+        const pageSize = 10;
+
+        $(document).ready(function() {
+            loadManagerOrders();
+            // Sự kiện click nút xuất hàng
+            $(document).on('click', '.export-order-btn', function() {
+                const orderId = $(this).data('order-id');
+                openSelectShipperModal(orderId);
+            });
+            // Sự kiện xác nhận xuất hàng
+            $('#confirmExportBtn').on('click', function() {
+                const shipperId = $('#shipperSelect').val();
+                if (!shipperId) {
+                    alert('Vui lòng chọn shipper!');
+                    return;
+                }
+                const orderId = $('#selectShipperModal').data('order-id');
+                exportOrder(orderId, shipperId);
+            });
+        });
+
+        function loadManagerOrders() {
+            $.ajax({
+                url: '../api/staff/orders',
+                method: 'GET',
+                success: function(orders) {
+                    allOrders = orders.filter(order => order.status === 'PROCESSING');
+                    currentPage = 1;
+                    renderPagination();
+                    displayOrders(getOrdersForPage(currentPage));
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading orders:', error);
+                    if (xhr.status === 401) {
+                        alert('Bạn chưa đăng nhập!');
+                        window.location.href = 'login.html';
+                    } else if (xhr.status === 404) {
+                         $('#ordersTableBody').empty().append(`
+                            <tr>
+                                <td colspan="6" class="text-center">API endpoint không tìm thấy. Vui lòng triển khai.</td>
+                            </tr>
+                        `);
+                    }
+                    else {
+                        alert('Đã xảy ra lỗi khi tải danh sách đơn hàng!');
+                    }
+                }
+            });
+        }
+
+        function getOrdersForPage(page) {
+            const start = (page - 1) * pageSize;
+            return allOrders.slice(start, start + pageSize);
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(allOrders.length / pageSize);
+            let html = '';
+            if (totalPages <= 1) {
+                $('#pagination').html('');
+                return;
+            }
+            html += `<nav aria-label="Page navigation"><ul class="pagination justify-content-center">`;
+            html += `<li class="page-item${currentPage === 1 ? ' disabled' : ''}"><a class="page-link" href="#" onclick="gotoPage(${currentPage - 1}); return false;">&laquo;</a></li>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<li class="page-item${i === currentPage ? ' active' : ''}"><a class="page-link" href="#" onclick="gotoPage(${i}); return false;">${i}</a></li>`;
+            }
+            html += `<li class="page-item${currentPage === totalPages ? ' disabled' : ''}"><a class="page-link" href="#" onclick="gotoPage(${currentPage + 1}); return false;">&raquo;</a></li>`;
+            html += `</ul></nav>`;
+            $('#pagination').html(html);
+        }
+
+        window.gotoPage = function(page) {
+            const totalPages = Math.ceil(allOrders.length / pageSize);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            displayOrders(getOrdersForPage(currentPage));
+            renderPagination();
+        }
+
+        function displayOrders(orders) {
+            const tbody = $('#ordersTableBody');
+            tbody.empty();
+
+            if (orders.length === 0) {
+                tbody.append(`
+                    <tr>
+                        <td colspan="7" class="text-center">Không có đơn hàng nào cần xác nhận.</td>
+                    </tr>
+                `);
+                return;
+            }
+
+            orders.forEach(order => {
+                const orderDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('vi-VN') : 'N/A';
+                const statusClass = getStatusClass(order.status);
+                const statusText = getStatusText(order.status);
+
+                const row = `
+                    <tr>
+                        <td onclick="showOrderDetails(${order.orderId})" data-bs-toggle="offcanvas" href="#order-details" style="cursor:pointer">${order.orderCode}</td>
+                        <td onclick="showOrderDetails(${order.orderId})" data-bs-toggle="offcanvas" href="#order-details" style="cursor:pointer">${orderDate}</td>
+                        <td onclick="showOrderDetails(${order.orderId})" data-bs-toggle="offcanvas" href="#order-details" style="cursor:pointer; color: #212529;">${formatDateTimeVN(order.deliveryDate)}</td>
+                        <td onclick="showOrderDetails(${order.orderId})" data-bs-toggle="offcanvas" href="#order-details" style="cursor:pointer">${order.customerName || 'N/A'}</td>
+                        <td onclick="showOrderDetails(${order.orderId})" data-bs-toggle="offcanvas" href="#order-details" style="cursor:pointer" class="${statusClass}">
+                            <span>${statusText}</span>
+                        </td>
+                        <td onclick="showOrderDetails(${order.orderId})" data-bs-toggle="offcanvas" href="#order-details" style="cursor:pointer">${formatVND(order.totalPrice)}</td>
+                        <td>
+                            <button class="btn btn-outline-success btn-sm export-order-btn" data-order-id="${order.orderId}">Xuất hàng</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'CONFIRMED':
+                    return 'order-warning';
+                default:
+                    return 'order-pending';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'CONFIRMED':
+                    return 'Chờ xác nhận';
+                default:
+                    return status;
+            }
+        }
+        
+        function formatVND(amount) {
+            if (!amount) return '0 VNĐ';
+            return Math.floor(parseFloat(amount)).toLocaleString('vi-VN') + ' VNĐ';
+        }
+
+        function formatDateTimeVN(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return 'N/A';
+            const pad = n => n.toString().padStart(2, '0');
+            return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()}`;
+        }
+
+        function showOrderDetails(orderId) {
+            const order = allOrders.find(o => o.orderId === orderId);
+            if (!order) {
+                alert('Không tìm thấy thông tin đơn hàng!');
+                return;
+            }
+
+            $('#offcanvasExampleLabel').text(`Chi tiết đơn hàng: ${order.orderCode}`);
+
+            const orderDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('vi-VN') : 'N/A';
+            const statusText = getStatusText(order.status);
+            const deliveryDate = order.deliveryDate ? formatDateTimeVN(order.deliveryDate) : 'N/A';
+            
+            let itemsHtml = '';
+            if (order.items && order.items.length > 0) {
+                order.items.forEach(item => {
+                    itemsHtml += `
+                        <div class="order-item-detail mb-3 p-3 border rounded">
+                            <div class="row align-items-center">
+                                <div class="col-md-1">
+                                    <img src="${item.productImage || 'assets/images/product/1.png'}" class="img-fluid rounded" alt="${item.productName}" style="max-width: 60px;">
+                                </div>
+                                <div class="col-md-5">
+                                    <h6 class="mb-1">${item.productName || 'N/A'}</h6>
+                                    <p class="text-muted mb-0">Số lượng: ${item.quantity || 0}</p>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <p class="mb-0">${formatVND(item.price)}</p>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <p class="mb-0 fw-bold">${formatVND(item.subTotal)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                itemsHtml = '<p class="text-muted">Không có sản phẩm nào trong đơn hàng</p>';
+            }
+
+            // Tính tổng tiền hàng (không tính phí vận chuyển)
+            let subtotal = 0;
+            if (order.totalPrice && order.estimatedShipFee) {
+                subtotal = parseFloat(order.totalPrice) - parseFloat(order.estimatedShipFee);
+            } else if (order.totalPrice) {
+                subtotal = parseFloat(order.totalPrice);
+            }
+
+            const detailsHtml = `
+                <div class="order-details">
+                    <div class="order-info mb-4">
+                        <h5>Thông tin đơn hàng</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Mã đơn hàng:</strong> ${order.orderCode || 'N/A'}</p>
+                                <p><strong>Ngày tạo:</strong> ${orderDate}</p>
+                                <p><strong>Ngày giao hàng:</strong> ${deliveryDate}</p>
+                                <p><strong>Trạng thái:</strong> <span class="badge ${getStatusClass(order.status)}">${statusText}</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Tổng tiền hàng:</strong> ${formatVND(subtotal)}</p>
+                                <p><strong>Phí vận chuyển:</strong> ${formatVND(order.estimatedShipFee)}</p>
+                                <p><strong>Tổng tiền:</strong> <span class="fw-bold">${formatVND(order.totalPrice)}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="customer-info mb-4">
+                        <h5>Thông tin khách hàng</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Tên:</strong> ${order.customerName || 'N/A'}</p>
+                                <p><strong>Email:</strong> ${order.customerEmail || 'N/A'}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Số điện thoại:</strong> ${order.customerPhone || 'N/A'}</p>
+                                <p><strong>Địa chỉ giao hàng:</strong> ${order.deliveryAddress || 'N/A'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-items">
+                        <h5>Chi tiết sản phẩm</h5>
+                        ${itemsHtml}
+                    </div>
+                </div>
+            `;
+
+            $('#orderDetailsBody').html(detailsHtml);
+        }
+
+        function openSelectShipperModal(orderId) {
+            // Lưu orderId vào modal để dùng khi xác nhận
+            $('#selectShipperModal').data('order-id', orderId);
+            // Xóa các option cũ
+            $('#shipperSelect').empty().append('<option value="">-- Chọn shipper --</option>');
+            // Gọi API lấy danh sách shipper
+            $.ajax({
+                url: '../shippers',
+                method: 'GET',
+                success: function(shippers) {
+                    if (shippers && shippers.length > 0) {
+                        shippers.forEach(function(shipper) {
+                            $('#shipperSelect').append(`<option value="${shipper.shipperId}">${shipper.shipperName}</option>`);
+                        });
+                    } else {
+                        $('#shipperSelect').append('<option value="">Không có shipper nào</option>');
+                    }
+                    // Hiển thị modal
+                    $('#selectShipperModal').modal('show');
+                },
+                error: function() {
+                    alert('Không thể tải danh sách shipper!');
+                }
+            });
+        }
+
+        function exportOrder(orderId, shipperId) {
+            $.ajax({
+                url: `../api/export-order?orderId=${orderId}&shipperId=${shipperId}`,
+                method: 'POST',
+                success: function(res) {
+                    $('#selectShipperModal').modal('hide');
+                    alert('Xuất hàng thành công!');
+                    loadManagerOrders();
+                },
+                error: function(xhr) {
+                    alert('Xuất hàng thất bại!\n' + xhr.responseText);
+                    console.error('Export order error:', xhr);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 

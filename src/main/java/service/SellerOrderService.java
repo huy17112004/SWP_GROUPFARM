@@ -120,6 +120,7 @@ public class SellerOrderService {
                 order.getCustomer() != null ? order.getCustomer().getPhone() : "",
                 order.getCustomer() != null ? order.getCustomer().getEmail() : "",
                 deliveryAddress,
+                order.getDeliveryDate(),
                 items
         );
     }

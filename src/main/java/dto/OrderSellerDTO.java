@@ -1,6 +1,7 @@
 package dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class OrderSellerDTO {
     private String customerPhone;
     private String customerEmail;
     private String deliveryAddress;
+    private LocalDateTime deliveryDate;
     private List<OrderItemSellerDTO> items;
 
     public OrderSellerDTO() {
@@ -23,7 +25,7 @@ public class OrderSellerDTO {
     public OrderSellerDTO(int orderId, String orderCode, Date createdAt, String status, 
                          BigDecimal totalPrice, BigDecimal estimatedShipFee, 
                          String customerName, String customerPhone, String customerEmail,
-                         String deliveryAddress, List<OrderItemSellerDTO> items) {
+                         String deliveryAddress, LocalDateTime deliveryDate, List<OrderItemSellerDTO> items) {
         this.orderId = orderId;
         this.orderCode = orderCode;
         this.createdAt = createdAt;
@@ -34,6 +36,7 @@ public class OrderSellerDTO {
         this.customerPhone = customerPhone;
         this.customerEmail = customerEmail;
         this.deliveryAddress = deliveryAddress;
+        this.deliveryDate = deliveryDate;
         this.items = items;
     }
 

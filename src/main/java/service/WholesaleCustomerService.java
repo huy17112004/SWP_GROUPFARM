@@ -77,46 +77,5 @@ public class WholesaleCustomerService {
         }
     }
 
-    public void sendOtp(String email) {
-        WholesaleCustomer customer = customerDAO.findByEmail(email);
-        if (customer == null) {
-            throw new IllegalArgumentException("Email not found");
-        }
 
-        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
-        LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(5);
-
-        customer.setOtp(otp);
-        customer.setOtpExpiredAt(expiryTime);
-        customerDAO.createOrUpdate(customer);
-
-        String subject = "Your OTP Code";
-        String content = "Your OTP code is: " + otp + "\nIt will expire in 5 minutes.";
-        EmailUtil.sendEmail(email, subject, content);
-    }
-
-    public boolean verifyOtp(String email, String otp) {
-        WholesaleCustomer customer = customerDAO.findByEmail(email);
-        if (customer == null || customer.getOtp() == null) {
-            return false;
-        }
-
-        return customer.getOtp().equals(otp)
-                && customer.getOtpExpiredAt().isAfter(LocalDateTime.now());
-    }
-
-    public void resetPassword(String email, String otp, String newPassword) {
-        if (!verifyOtp(email, otp)) {
-            throw new IllegalArgumentException("OTP is invalid or expired");
-        }
-
-        WholesaleCustomer customer = customerDAO.findByEmail(email);
-        String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-
-        customer.setPassword(hashedPassword);
-        customer.setOtp(null);
-        customer.setOtpExpiredAt(null);
-
-        customerDAO.createOrUpdate(customer);
-    }
 }

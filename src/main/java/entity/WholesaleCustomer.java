@@ -43,14 +43,8 @@ public class WholesaleCustomer extends Account {
     @OneToMany(mappedBy = "wholesaleCustomer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CustomerAddress> customerAddresses;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<Contract> contract;
-
     @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
     private List<Cart> cart;
-
-    @OneToOne(mappedBy = "customer",fetch = FetchType.LAZY)
-    private ShippingLog shippingLog;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<WholesaleOrder> orders;
