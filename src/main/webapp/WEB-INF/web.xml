@@ -3,4 +3,26 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
+    <context-param>
+        <param-name>JWT_SECRET</param-name>
+        <param-value>TeG7mXQgYsOtIG3huq10IMSR4bunIGtDoGkgdsOg1HBo4bupYvB04bqhcA=</param-value>
+    </context-param>
+    <context-param>
+        <param-name>JWT_EXP_MS</param-name>
+        <param-value>86400000</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SMTP_EMAIL</param-name>
+        <param-value>aoloithat@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>SMTP_PASSWORD</param-name>
+        <param-value>mniqtcrvfljibcdh</param-value>
+    </context-param>
+
+
+    <listener>
+        <listener-class>listener.AppConfigListener</listener-class>
+    </listener>
+
 </web-app>

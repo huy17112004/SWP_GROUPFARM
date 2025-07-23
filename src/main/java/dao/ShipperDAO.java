@@ -24,4 +24,7 @@ public class ShipperDAO extends GenericDAO<Shipper> {
             return null;
         }
     }
+    public Shipper findByAccountId(Integer accountId) {
+        return em.find(Shipper.class, accountId);
+    }
 }

@@ -80,7 +80,7 @@
                 <a href="wishlist.html" class="notifi-wishlist">
                     <i class="iconly-Heart icli"></i>
                     <span>My Wish</span>
-                </a>    
+                </a>
             </li>
 
             <li>
@@ -340,7 +340,7 @@
 
                                 <!-- KẾT THÚC: Chọn số lượng -->
                                 <div class="modal-button">
-                                    <button onclick="addToCart()" class="btn btn-md bg-dark cart-button text-white w-100">
+                                    <button onclick="addToCarts()" class="btn btn-md bg-dark cart-button text-white w-100">
                                         Thêm vào giỏ hàng
                                     </button>
                                     <button onclick="location.href = 'product-image.html';"
@@ -702,30 +702,6 @@
                 feather.replace();
             });
 
-        // Xử lý khi mở modal
-        document.addEventListener('DOMContentLoaded', function() {
-            const viewModal = document.getElementById('view');
-            if (viewModal) {
-                viewModal.addEventListener('show.bs.modal', function(event) {
-                    const button = event.relatedTarget;
-                    const productId = button.getAttribute('data-product-id');
-                    if (productId) {
-                        // Cập nhật URL với productId khi mở modal
-                        const url = new URL(window.location.href);
-                        url.searchParams.set('productId', productId);
-                        window.history.replaceState({}, '', url);
-                    }
-                });
-
-                // Xử lý khi đóng modal
-                viewModal.addEventListener('hidden.bs.modal', function() {
-                    // Xóa productId khỏi URL khi đóng modal
-                    const url = new URL(window.location.href);
-                    url.searchParams.delete('productId');
-                    window.history.replaceState({}, '', url);
-                });
-            }
-        });
 
     </script>
 
@@ -815,13 +791,13 @@
             try {
                 const cats = await fetchCategories();
                 renderCategoriesInShopCategory(cats);
-
+                
                 const params = new URLSearchParams(window.location.search);
                 const categoryId = params.get('categoryId');
                 const sortType = params.get('sortType');
                 const page = parseInt(params.get('page')) || 0;
                 const name = params.get('name'); // Lấy tham số name
-
+                
                 // Hiển thị tag nếu có name
                 const searchTag = document.getElementById('search-tag');
                 if (name && searchTag) {
@@ -839,7 +815,7 @@
                 } else if (searchTag) {
                     searchTag.innerHTML = '';
                 }
-
+                
                 // Load sản phẩm ban đầu
                 const fetchParams = {};
                 if (categoryId) fetchParams.categoryId = categoryId;

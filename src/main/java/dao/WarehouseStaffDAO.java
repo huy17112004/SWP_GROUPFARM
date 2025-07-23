@@ -24,4 +24,7 @@ public class WarehouseStaffDAO extends GenericDAO<WarehouseStaff> {
             return null;
         }
     }
+    public WarehouseStaff findByAccountId(Integer accountId) {
+        return em.find(WarehouseStaff.class, accountId);
+    }
 }

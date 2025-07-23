@@ -175,7 +175,8 @@
                             <h5 class="fw-bold text-uppercase text-primary display-6 mb-0" style="letter-spacing:1px;">
                                 <i class="ri-price-tag-3-line me-2"></i>Quản lý loại sản phẩm
                             </h5>
-                            <input id="categorySearchInput" class="form-control" style="max-width: 300px;" placeholder="Tìm kiếm tên loại sản phẩm...">
+                            <input id="categorySearchInput" class="form-control" style="max-width: 300px;"
+                                placeholder="Tìm kiếm tên loại sản phẩm...">
                             <button id="openCategoryModalBtn" class="btn btn-sm btn-primary">
                                 <i class="ri-add-line me-1"></i> Thêm mới
                             </button>
@@ -270,32 +271,32 @@
         <!-- component-loader js -->
         <script src="components/component-loader.js"></script>
 
-       <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const apiBase = 'http://localhost:8080/api/categories';
-    const tableBody = document.querySelector('#categoriesTable tbody');
-    const openBtn = document.getElementById('openCategoryModalBtn');
-    const modalEl = document.getElementById('categoryModal');
-    const modal = new bootstrap.Modal(modalEl);
-    const modalTitle = document.getElementById('categoryModalLabel');
-    const nameInput = document.getElementById('categoryNameModal');
-    const saveBtn = document.getElementById('saveCategoryModalBtn');
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const apiBase = 'http://localhost:8080/api/categories';
+                const tableBody = document.querySelector('#categoriesTable tbody');
+                const openBtn = document.getElementById('openCategoryModalBtn');
+                const modalEl = document.getElementById('categoryModal');
+                const modal = new bootstrap.Modal(modalEl);
+                const modalTitle = document.getElementById('categoryModalLabel');
+                const nameInput = document.getElementById('categoryNameModal');
+                const saveBtn = document.getElementById('saveCategoryModalBtn');
 
-    let editingId = null;
+                let editingId = null;
 
-    async function loadCategories() {
-        try {
-            const res = await fetch(apiBase);
-            if (!res.ok) throw new Error('API trả về lỗi');
-            let data = await res.json();
-            // Đảm bảo data là mảng và có trường categoryID, categoryName
-            if (!Array.isArray(data)) {
-                alert('Dữ liệu trả về không đúng định dạng mảng!');
-                tableBody.innerHTML = '';
-                return;
-            }
-            // Nếu phần tử không có categoryID, thử lấy id hoặc id khác
-            tableBody.innerHTML = data.map((cat, idx) => `
+                async function loadCategories() {
+                    try {
+                        const res = await fetch(apiBase);
+                        if (!res.ok) throw new Error('API trả về lỗi');
+                        let data = await res.json();
+                        // Đảm bảo data là mảng và có trường categoryID, categoryName
+                        if (!Array.isArray(data)) {
+                            alert('Dữ liệu trả về không đúng định dạng mảng!');
+                            tableBody.innerHTML = '';
+                            return;
+                        }
+                        // Nếu phần tử không có categoryID, thử lấy id hoặc id khác
+                        tableBody.innerHTML = data.map((cat, idx) => `
                 <tr>
                     <td class="cat-id">${cat.categoryID ?? cat.id ?? idx + 1}</td>
                     <td>${cat.categoryName ?? cat.name ?? ''}</td>
@@ -311,112 +312,112 @@ document.addEventListener('DOMContentLoaded', () => {
                     </td>
                 </tr>
             `).join('');
-            bindTableButtons();
-        } catch (e) {
-            console.error(e);
-            alert('Không thể kết nối server hoặc dữ liệu lỗi.');
-            tableBody.innerHTML = '';
-        }
-    }
-
-    function bindTableButtons() {
-        tableBody.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.onclick = () => {
-                editingId = btn.dataset.id;
-                console.log('EDIT id:', editingId);
-                modalTitle.textContent = 'Sửa loại sản phẩm';
-                nameInput.value = btn.closest('tr').children[1].textContent.trim();
-                modal.show();
-            };
-        });
-        tableBody.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.onclick = async () => {
-                const id = btn.dataset.id;
-                console.log('DELETE id:', id);
-                if (!id) {
-                    alert("Không xác định được ID để xóa!");
-                    return;
+                        bindTableButtons();
+                    } catch (e) {
+                        console.error(e);
+                        alert('Không thể kết nối server hoặc dữ liệu lỗi.');
+                        tableBody.innerHTML = '';
+                    }
                 }
-                if (!confirm('Xác nhận xóa?')) return;
-                try {
-                    const res = await fetch(`${apiBase}/${id}`, { method: 'DELETE' });
-                    if (res.ok) loadCategories();
-                    else alert('Lỗi xóa.');
-                } catch (err) {
-                    console.error(err);
-                    alert('Không thể kết nối server.');
+
+                function bindTableButtons() {
+                    tableBody.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.onclick = () => {
+                            editingId = btn.dataset.id;
+                            console.log('EDIT id:', editingId);
+                            modalTitle.textContent = 'Sửa loại sản phẩm';
+                            nameInput.value = btn.closest('tr').children[1].textContent.trim();
+                            modal.show();
+                        };
+                    });
+                    tableBody.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.onclick = async () => {
+                            const id = btn.dataset.id;
+                            console.log('DELETE id:', id);
+                            if (!id) {
+                                alert("Không xác định được ID để xóa!");
+                                return;
+                            }
+                            if (!confirm('Xác nhận xóa?')) return;
+                            try {
+                                const res = await fetch(`${apiBase}/${id}`, { method: 'DELETE' });
+                                if (res.ok) loadCategories();
+                                else alert('Lỗi xóa.');
+                            } catch (err) {
+                                console.error(err);
+                                alert('Không thể kết nối server.');
+                            }
+                        };
+                    });
                 }
-            };
-        });
-    }
 
-    openBtn.addEventListener('click', () => {
-        editingId = null;
-        modalTitle.textContent = 'Thêm loại sản phẩm';
-        nameInput.value = '';
-        modal.show();
-    });
+                openBtn.addEventListener('click', () => {
+                    editingId = null;
+                    modalTitle.textContent = 'Thêm loại sản phẩm';
+                    nameInput.value = '';
+                    modal.show();
+                });
 
-    saveBtn.addEventListener('click', async () => {
-        const name = nameInput.value.trim();
-        if (!name) return alert('Vui lòng nhập tên loại sản phẩm.');
+                saveBtn.addEventListener('click', async () => {
+                    const name = nameInput.value.trim();
+                    if (!name) return alert('Vui lòng nhập tên loại sản phẩm.');
 
-        const exists = Array.from(tableBody.rows)
-            .some(r => r.cells[1].textContent.trim().toLowerCase() === name.toLowerCase());
-        if (exists && editingId === null) {
-            return alert(`"${name}" đã tồn tại.`);
-        }
+                    const exists = Array.from(tableBody.rows)
+                        .some(r => r.cells[1].textContent.trim().toLowerCase() === name.toLowerCase());
+                    if (exists && editingId === null) {
+                        return alert(`"${name}" đã tồn tại.`);
+                    }
 
-        try {
-            let method, url, body;
-            if (editingId) {
-                method = 'PUT';
-                url = `${apiBase}/${editingId}`;
-                body = JSON.stringify({ categoryID: editingId, categoryName: name });
-                console.log('Gửi PUT:', url, body);
-            } else {
-                method = 'POST';
-                url = apiBase;
-                body = JSON.stringify({ categoryName: name });
-            }
-            const res = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body
-            });
-            if (!res.ok) {
-                let errMsg = 'Lỗi server.';
-                try { 
-                    const err = await res.json();
-                    errMsg = err.message || errMsg;
-                } catch {}
-                alert(errMsg);
-                return;
-            }
-            modal.hide();
-            loadCategories();
-        } catch (e) {
-            console.error(e);
-            alert('Không thể kết nối server.');
-        }
-    });
+                    try {
+                        let method, url, body;
+                        if (editingId) {
+                            method = 'PUT';
+                            url = `${apiBase}/${editingId}`;
+                            body = JSON.stringify({ categoryID: editingId, categoryName: name });
+                            console.log('Gửi PUT:', url, body);
+                        } else {
+                            method = 'POST';
+                            url = apiBase;
+                            body = JSON.stringify({ categoryName: name });
+                        }
+                        const res = await fetch(url, {
+                            method,
+                            headers: { 'Content-Type': 'application/json' },
+                            body
+                        });
+                        if (!res.ok) {
+                            let errMsg = 'Lỗi server.';
+                            try {
+                                const err = await res.json();
+                                errMsg = err.message || errMsg;
+                            } catch { }
+                            alert(errMsg);
+                            return;
+                        }
+                        modal.hide();
+                        loadCategories();
+                    } catch (e) {
+                        console.error(e);
+                        alert('Không thể kết nối server.');
+                    }
+                });
 
-    let allCategories = [];
-    const originalLoadCategories = loadCategories;
-    loadCategories = async function() {
-      try {
-        const res = await fetch(apiBase);
-        if (!res.ok) throw new Error('API trả về lỗi');
-        allCategories = await res.json();
-        renderCategoryTable(allCategories);
-      } catch (e) {
-        console.error(e);
-        alert('Không thể kết nối server hoặc dữ liệu lỗi.');
-        tableBody.innerHTML = '';
-      }
-    }
-    function renderCategoryTable(list) {
-      tableBody.innerHTML = list.map((cat, idx) => `
+                let allCategories = [];
+                const originalLoadCategories = loadCategories;
+                loadCategories = async function () {
+                    try {
+                        const res = await fetch(apiBase);
+                        if (!res.ok) throw new Error('API trả về lỗi');
+                        allCategories = await res.json();
+                        renderCategoryTable(allCategories);
+                    } catch (e) {
+                        console.error(e);
+                        alert('Không thể kết nối server hoặc dữ liệu lỗi.');
+                        tableBody.innerHTML = '';
+                    }
+                }
+                function renderCategoryTable(list) {
+                    tableBody.innerHTML = list.map((cat, idx) => `
         <tr>
           <td class="cat-id">${cat.categoryID ?? cat.id ?? idx + 1}</td>
           <td>${cat.categoryName ?? cat.name ?? ''}</td>
@@ -432,22 +433,22 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
         </tr>
       `).join('');
-      bindTableButtons();
-    }
-    const categorySearchInput = document.getElementById('categorySearchInput');
-    if (categorySearchInput) {
-      categorySearchInput.addEventListener('input', function() {
-        const keyword = this.value.trim().toLowerCase();
-        const filtered = allCategories.filter(cat =>
-          (cat.categoryName || cat.name || '').toLowerCase().includes(keyword)
-        );
-        renderCategoryTable(filtered);
-      });
-    }
+                    bindTableButtons();
+                }
+                const categorySearchInput = document.getElementById('categorySearchInput');
+                if (categorySearchInput) {
+                    categorySearchInput.addEventListener('input', function () {
+                        const keyword = this.value.trim().toLowerCase();
+                        const filtered = allCategories.filter(cat =>
+                            (cat.categoryName || cat.name || '').toLowerCase().includes(keyword)
+                        );
+                        renderCategoryTable(filtered);
+                    });
+                }
 
-    loadCategories();
-});
-</script>
+                loadCategories();
+            });
+        </script>
 
 
 
