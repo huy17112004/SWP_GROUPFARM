@@ -24,4 +24,7 @@ public class AdminDAO extends GenericDAO<Admin> {
             return null;
         }
     }
+    public Admin findByAccountId(Integer accountId) {
+        return em.find(Admin.class, accountId);
+    }
 }

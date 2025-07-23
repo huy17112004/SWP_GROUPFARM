@@ -131,7 +131,7 @@
                                     <div class="form-floating theme-form-floating log-in-form">
                                         <input type="text" class="form-control" id="username"
                                             placeholder="Tên đăng nhập/Số điện thoại/Email">
-                                        <label for="username">Tên đăng nhập/Số điện thoại/Email</label>
+                                        <label for="username">Tên đăng nhập</label>
                                     </div>
                                 </div>
 
@@ -165,26 +165,7 @@
                             <h6>hoặc</h6>
                         </div>
 
-                        <div class="log-in-button">
-                            <ul>
-                                <li>
-                                    <a href="https://www.google.com/" class="btn google-button w-100">
-                                        <img src="../assets/images/inner-page/google.png" class="blur-up lazyload"
-                                            alt=""> Đăng nhập với Google
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://www.facebook.com/" class="btn google-button w-100">
-                                        <img src="../assets/images/inner-page/facebook.png" class="blur-up lazyload"
-                                            alt=""> Đăng nhập với Facebook
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
 
-                        <div class="other-log-in">
-                            <h6></h6>
-                        </div>
 
                         <div class="sign-up-box">
                             <h4>Chưa có tài khoản?</h4>
@@ -286,56 +267,62 @@
     <script src="../assets/js/theme-setting.js"></script>
 
 
-    <script src="../assets/jsLogic/login.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const form = document.getElementById("loginForm");
-            const errorDiv = document.createElement("div");
-            errorDiv.id = "loginError";
-            errorDiv.className = "text-danger mb-3";
-            form.prepend(errorDiv);
+        // ../assets/jsLogic/login.js
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('loginForm');
+            // Tạo container để show alert ngay trong form
+            const alertContainer = document.createElement('div');
+            form.prepend(alertContainer);
 
-            form.addEventListener("submit", async (e) => {
+            form.addEventListener('submit', async e => {
                 e.preventDefault();
-                // Xóa lỗi cũ
-                errorDiv.textContent = '';
+                alertContainer.innerHTML = '';
 
-                // Lấy giá trị input
-                const username = document.getElementById("username").value.trim();
-                const password = document.getElementById("password").value;
+                // Lấy giá trị từ form
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('flexCheckDefault').checked;
 
+                // Validate cơ bản
                 if (!username || !password) {
-                    errorDiv.textContent = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.";
+                    showAlert('Vui lòng nhập đầy đủ thông tin.', 'danger');
                     return;
                 }
 
+                // Gửi request lên backend
                 try {
-                    const resp = await fetch('/api/login', {
+                    const resp = await fetch('http://localhost:8080/signin', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ username, password })
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password, rememberMe })
                     });
+                    const data = await resp.json();
 
-                    const result = await resp.json();
-
-                    if (resp.ok && result.success) {
-                        // Đăng nhập thành công, điều hướng về trang dashboard hoặc homepage
-                        window.location.href = '/dashboard.html';
+                    if (resp.ok) {
+                        showAlert(data.message, 'success');
+                        // Chuyển trang sau 1s (sang trang chủ hoặc dashboard)
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
                     } else {
-                        // Hiển thị thông báo lỗi
-                        errorDiv.textContent = result.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
-                        if (resp.status === 401) {
-                            // Có thể xử lý lockout, captcha... sau nhiều lần
-                        }
+                        showAlert(data.error || 'Đăng nhập thất bại.', 'danger');
                     }
                 } catch (err) {
-                    console.error('Error during login:', err);
-                    errorDiv.textContent = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
+                    console.error(err);
+                    showAlert('Không thể kết nối đến server.', 'danger');
                 }
             });
+
+            function showAlert(msg, type = 'info') {
+                alertContainer.innerHTML = '';
+                const div = document.createElement('div');
+                div.className = `alert alert-${type} mt-2`;
+                div.textContent = msg;
+                alertContainer.append(div);
+            }
         });
+
     </script>
 </body>
 

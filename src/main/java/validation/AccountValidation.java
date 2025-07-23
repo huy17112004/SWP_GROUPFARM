@@ -6,38 +6,33 @@ import util.JpaUtil;
 
 public class AccountValidation {
 
-    public static void validateAccountCreation(String userName, String email, String password, Class<?> entityType)
-            throws IllegalArgumentException {
-        if (userName == null || userName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username is required");
+    // Chỉ kiểm tra cú pháp chung: username, email, password, confirmPassword
+    public static void validateSyntax(String username,
+                                      String email,
+                                      String password,
+                                      String confirmPassword) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Username không được để trống");
         }
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email is required");
+        if (email == null || !email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,6}$")) {
+            throw new IllegalArgumentException("Email không hợp lệ");
         }
-        if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("Password is required");
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("Password phải có ít nhất 8 ký tự");
         }
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Xác nhận mật khẩu không khớp");
+        }
+        // …các rule khác về ký tự, độ mạnh mật khẩu…
+    }
 
-        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
-
-//        if (!userName.matches("^[a-zA-Z0-9]+$")) {
-//            throw new IllegalArgumentException("Username can only contain letters and numbers");
-//        }
-
-        if (password.length() < 8) {
-            throw new IllegalArgumentException("Password must be at least 8 characters long");
-        }
-
-        try (Session session = JpaUtil.getEntityManager().unwrap(Session.class)) {
-            Query<Long> query = session.createQuery(
-                    "SELECT COUNT(a) FROM " + entityType.getSimpleName() + " a WHERE a.email = :email",
-                    Long.class);
-            query.setParameter("email", email);
-            if (query.uniqueResult() > 0) {
-                throw new IllegalArgumentException("Email already exists");
-            }
-        }
+    // Nếu cần vẫn giữ validateAccountCreation, nhưng chỉ gọi validateSyntax bên trong
+    public static void validateAccountCreation(String username,
+                                               String email,
+                                               String password,
+                                               String confirmPassword,
+                                               Class<?> userClass) {
+        validateSyntax(username, email, password, confirmPassword);
+        // BỎ phần kiểm tra unique email/username ở đây!
     }
 }
