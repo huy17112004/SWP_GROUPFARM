@@ -18,7 +18,6 @@ function addToCart() {
     }
 
     const cartItem = {
-        userId: 1, // Giả lập userId
         productId: parseInt(productId),
         quantity: quantity
     };

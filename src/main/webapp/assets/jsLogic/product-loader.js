@@ -120,7 +120,7 @@ export function renderProductsInShopCategory(productsOrObj) {
                                         <ul class="product-option">
                                             <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
                                                 <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                    data-bs-target="#view">
+                                                    data-bs-target="#view" data-product-id="${prod.productId}">
                                                     <i data-feather="eye"></i>
                                                 </a>
                                             </li>
