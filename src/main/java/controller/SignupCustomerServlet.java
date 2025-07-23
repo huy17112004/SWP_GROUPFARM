@@ -2,61 +2,67 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import dto.SignInRequestDTO;
-import entity.WholesaleCustomer;
+import dto.RegisterRequestDTO;
 import service.WholesaleCustomerService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/signup")
+public class SignupCustomerServlet extends HttpServlet {
     private final WholesaleCustomerService svc = new WholesaleCustomerService();
     private final Gson gson = new Gson();
 
     @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET ,POST, DELETE, PUT, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setContentType("application/json; charset=UTF-8");
 
         try {
-            if (req.getContentType() == null || !req.getContentType().contains("application/json")) {
+            // 1. Kiểm header
+            String ct = req.getContentType();
+            if (ct == null || !ct.contains("application/json")) {
                 resp.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
                 resp.getWriter().write("{\"error\":\"Chỉ hỗ trợ application/json\"}");
                 return;
             }
 
-            SignInRequestDTO dto = gson.fromJson(req.getReader(), SignInRequestDTO.class);
-            WholesaleCustomer user = svc.login(dto);
+            // 2. Đọc và parse JSON
+            RegisterRequestDTO dto = gson.fromJson(req.getReader(), RegisterRequestDTO.class);
 
-            HttpSession session = req.getSession(true);
-            session.setAttribute("user", user);
-            if (dto.isRememberMe()) {
-                Cookie cookie = new Cookie("JSESSIONID", session.getId());
-                cookie.setHttpOnly(true);
-                cookie.setMaxAge(30*24*60*60);
-                cookie.setPath(req.getContextPath());
-                resp.addCookie(cookie);
-            }
+            // 3. Gọi service
+            svc.signup(dto);
 
+            // 4. Trả success
             resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write("{\"message\":\"Đăng nhập thành công\",\"username\":\""
-                    + user.getUsername() + "\"}");
+            resp.getWriter().write("{\"message\":\"Đăng ký thành công! Vui lòng kiểm tra email.\"}");
 
         } catch (JsonSyntaxException e) {
+            // JSON không hợp lệ
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\":\"JSON không hợp lệ\"}");
 
-        } catch (IllegalArgumentException|IllegalStateException e) {
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } catch (IllegalArgumentException e) {
+            // validate lỗi (username/email exist, pw mismatch,…)
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // mọi lỗi khác
+            e.printStackTrace(); // in log
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"error\":\"Server lỗi, thử lại sau.\"}");
         }
     }
-
 }
+
+

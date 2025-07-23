@@ -1,0 +1,718 @@
+<!-- Modal Thêm Kho Mới -->
+<div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm kho mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addWarehouseForm">
+          <div class="mb-3">
+            <label class="form-label">Tên kho</label>
+            <input type="text" class="form-control" id="warehouseName" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" id="warehousePhone" required pattern="^[0-9]{9,11}$" maxlength="11" />
+            <div class="invalid-feedback">Số điện thoại phải là 9-11 chữ số.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quản lý kho</label>
+            <select class="form-select" id="managerId" required>
+              <option value="">Chọn quản lý</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tỉnh/Thành phố</label>
+            <select class="form-select" id="provinceId" required>
+              <option value="">Chọn tỉnh/thành phố</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quận/Huyện</label>
+            <select class="form-select" id="districtId" required disabled>
+              <option value="">Chọn quận/huyện</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phường/Xã</label>
+            <select class="form-select" id="wardId" required disabled>
+              <option value="">Chọn phường/xã</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Địa chỉ (đường, số nhà)</label>
+            <input type="text" class="form-control" id="street" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Chọn vị trí trên bản đồ</label>
+            <div id="warehouseMap" style="height: 250px; width: 100%;"></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Vĩ độ</label>
+              <input type="text" class="form-control" id="latitude" readonly required />
+            </div>
+            <div class="col">
+              <label class="form-label">Kinh độ</label>
+              <input type="text" class="form-control" id="longitude" readonly required />
+            </div>
+          </div>
+          <div class="alert alert-danger d-none" id="addWarehouseError"></div>
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary" id="saveWarehouseBtn">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Nhúng Leaflet CSS nếu chưa có -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Nhúng Leaflet JS nếu chưa có -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script type="module">
+let warehouseMap, warehouseMarker;
+let isEditMode = false;
+let editingId = null;
+
+// Hàm mở modal Thêm mới
+function openAddWarehouseModal() {
+  isEditMode = false;
+  editingId = null;
+  document.getElementById('addWarehouseForm').reset();
+  document.getElementById('addWarehouseError').classList.add('d-none');
+  loadManagers();
+  loadProvinces();
+  document.getElementById('saveWarehouseBtn').textContent = 'Lưu';
+}
+
+// Hàm mở modal Sửa (rút gọn: chỉ sửa tên kho và số điện thoại)
+async function openEditWarehouseModal(id) {
+  isEditMode = true;
+  editingId = id;
+  document.getElementById('addWarehouseForm').reset();
+  document.getElementById('addWarehouseError').classList.add('d-none');
+  document.getElementById('saveWarehouseBtn').textContent = 'Cập nhật';
+
+  // Lấy chi tiết kho
+  const res = await fetch(`http://localhost:8080/api/warehouses-detail/${id}`);
+  if (!res.ok) {
+    alert('Không lấy được thông tin kho!');
+    return;
+  }
+  const data = await res.json();
+
+  // Chỉ set tên kho và số điện thoại
+  document.getElementById('warehouseName').value = data.warehouseName;
+  document.getElementById('warehousePhone').value = data.warehousePhone;
+}
+
+// Load managers
+async function loadManagers(selectedId) {
+  const sel = document.getElementById('managerId');
+  sel.innerHTML = '<option value="">Chọn quản lý</option>';
+  const list = await fetch('http://localhost:8080/api/warehouse-managers').then(r => r.ok ? r.json() : []);
+  list.forEach(m => sel.innerHTML += `<option value="${m.managerId}">${m.name}</option>`);
+  if (selectedId) sel.value = selectedId;
+}
+
+// Load provinces, districts, wards
+async function loadProvinces(selectedProvince, selectedDistrict, selectedWard) {
+  const provinceSel = document.getElementById('provinceId');
+  const districtSel = document.getElementById('districtId');
+  const wardSel = document.getElementById('wardId');
+  provinceSel.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
+  districtSel.innerHTML = '<option value="">Chọn quận/huyện</option>';
+  wardSel.innerHTML = '<option value="">Chọn phường/xã</option>';
+  districtSel.disabled = true;
+  wardSel.disabled = true;
+
+  const provinces = await fetch('http://localhost:8080/provinces').then(r => r.ok ? r.json() : []);
+  provinces.forEach(p => provinceSel.innerHTML += `<option value="${p.locationId}">${p.locationName}</option>`);
+  if (selectedProvince) provinceSel.value = selectedProvince;
+
+  provinceSel.onchange = async function () {
+    const pid = this.value;
+    districtSel.innerHTML = '<option value="">Chọn quận/huyện</option>';
+    wardSel.innerHTML = '<option value="">Chọn phường/xã</option>';
+    wardSel.disabled = true;
+    if (!pid) {
+      districtSel.disabled = true;
+      return;
+    }
+    districtSel.disabled = false;
+    const districts = await fetch(`http://localhost:8080/districts?provinceId=${pid}`).then(r => r.ok ? r.json() : []);
+    districts.forEach(d => {
+      let opt = document.createElement('option');
+      opt.value = d.locationId;
+      opt.textContent = d.locationName;
+      // Nếu không có lat/lng thì gán tạm
+      let lat = d.latitude;
+      let lng = d.longitude;
+      if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+        lat = 21.0285 + Math.random() * 0.01;
+        lng = 105.8542 + Math.random() * 0.01;
+      }
+      opt.setAttribute('data-lat', lat);
+      opt.setAttribute('data-lng', lng);
+      districtSel.appendChild(opt);
+    });
+    districtSel.onchange();
+  };
+
+  districtSel.onchange = async function () {
+    const did = this.value;
+    wardSel.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+    // Lấy lat/lng của quận/huyện vừa chọn (luôn có vì đã gán tạm)
+    const selected = districtSel.options[districtSel.selectedIndex];
+    let lat = selected.getAttribute('data-lat');
+    let lng = selected.getAttribute('data-lng');
+    // Nếu vẫn chưa có, gán tạm
+    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+      lat = 21.0285 + Math.random() * 0.01;
+      lng = 105.8542 + Math.random() * 0.01;
+      selected.setAttribute('data-lat', lat);
+      selected.setAttribute('data-lng', lng);
+    }
+    // Cập nhật input và map
+    if (lat && lng && warehouseMap && warehouseMarker) {
+      warehouseMap.setView([parseFloat(lat), parseFloat(lng)], 14);
+      warehouseMarker.setLatLng([parseFloat(lat), parseFloat(lng)]);
+      document.getElementById('latitude').value = lat;
+      document.getElementById('longitude').value = lng;
+    }
+
+    if (!did) {
+      wardSel.disabled = true;
+      return;
+    }
+    wardSel.disabled = false;
+    const wards = await fetch(`http://localhost:8080/wards?districtId=${did}`).then(r => r.ok ? r.json() : []);
+    wards.forEach(w => {
+      let opt = document.createElement('option');
+      opt.value = w.locationId;
+      opt.textContent = w.locationName;
+      // Gán lat/lng tạm cho phường/xã nếu không có
+      let wlat = w.latitude;
+      let wlng = w.longitude;
+      if (!wlat || !wlng || isNaN(wlat) || isNaN(wlng)) {
+        wlat = 21.0285 + Math.random() * 0.01;
+        wlng = 105.8542 + Math.random() * 0.01;
+      }
+      opt.setAttribute('data-lat', wlat);
+      opt.setAttribute('data-lng', wlng);
+      wardSel.appendChild(opt);
+    });
+    wardSel.onchange();
+  };
+
+  wardSel.onchange = function () {
+    const selected = wardSel.options[wardSel.selectedIndex];
+    const lat = selected.getAttribute('data-lat');
+    const lng = selected.getAttribute('data-lng');
+    if (lat && lng && warehouseMap && warehouseMarker) {
+      warehouseMap.setView([parseFloat(lat), parseFloat(lng)], 16);
+      warehouseMarker.setLatLng([parseFloat(lat), parseFloat(lng)]);
+      document.getElementById('latitude').value = lat;
+      document.getElementById('longitude').value = lng;
+    }
+  };
+
+  // Nếu có giá trị đã chọn (khi sửa), tự động set lại
+  if (selectedProvince) {
+    provinceSel.value = selectedProvince;
+    provinceSel.onchange();
+    setTimeout(async () => {
+      if (selectedDistrict) {
+        districtSel.value = selectedDistrict;
+        districtSel.onchange();
+        setTimeout(() => {
+          if (selectedWard) {
+            wardSel.value = selectedWard;
+            wardSel.onchange();
+          }
+        }, 400);
+      }
+    }, 400);
+  }
+}
+
+// Sự kiện mở modal Thêm mới
+document.getElementById('btnAddWarehouse').onclick = function () {
+  openAddWarehouseModal();
+  new bootstrap.Modal(document.getElementById('addWarehouseModal')).show();
+  setTimeout(() => {
+    if (!warehouseMap) {
+      warehouseMap = L.map('warehouseMap').setView([21.0285, 105.8542], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(warehouseMap);
+      warehouseMarker = L.marker([21.0285, 105.8542], { draggable: true }).addTo(warehouseMap);
+      function updateLatLng(lat, lng) {
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
+      }
+      warehouseMap.on('click', function (e) {
+        warehouseMarker.setLatLng(e.latlng);
+        updateLatLng(e.latlng.lat, e.latlng.lng);
+      });
+      warehouseMarker.on('dragend', function (e) {
+        var pos = warehouseMarker.getLatLng();
+        updateLatLng(pos.lat, pos.lng);
+      });
+      updateLatLng(warehouseMarker.getLatLng().lat, warehouseMarker.getLatLng().lng);
+    } else {
+      warehouseMap.invalidateSize();
+    }
+  }, 300);
+};
+
+// Xử lý submit form (thêm mới hoặc cập nhật)
+document.getElementById('addWarehouseForm').onsubmit = async function (e) {
+  e.preventDefault();
+  const name = document.getElementById('warehouseName').value.trim();
+  const phone = document.getElementById('warehousePhone').value.trim();
+  const managerId = document.getElementById('managerId').value;
+  const street = document.getElementById('street').value.trim();
+  const wardId = document.getElementById('wardId').value;
+  const districtId = document.getElementById('districtId').value;
+  const provinceId = document.getElementById('provinceId').value;
+  const lat = parseFloat(document.getElementById('latitude').value);
+  const lon = parseFloat(document.getElementById('longitude').value);
+  const errorDiv = document.getElementById('addWarehouseError');
+  errorDiv.classList.add('d-none');
+  if (!name || !phone.match(/^\d{9,11}$/) || !managerId || !street || !provinceId || !districtId || !wardId || isNaN(lat) || isNaN(lon)) {
+    errorDiv.textContent = 'Vui lòng nhập đầy đủ thông tin hợp lệ.';
+    errorDiv.classList.remove('d-none');
+    return;
+  }
+  if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+    errorDiv.textContent = 'Tọa độ không hợp lệ.';
+    errorDiv.classList.remove('d-none');
+    return;
+  }
+  const btn = document.getElementById('saveWarehouseBtn');
+  btn.disabled = true;
+  btn.textContent = isEditMode ? 'Đang cập nhật...' : 'Đang lưu...';
+  try {
+    let url = 'http://localhost:8080/api/warehouses-detail';
+    let method = 'POST';
+    if (isEditMode && editingId) {
+      url += `/${editingId}`;
+      method = 'PUT';
+    }
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        warehouseName: name,
+        warehousePhone: phone,
+        managerId: parseInt(managerId),
+        street,
+        provinceId: parseInt(provinceId),
+        districtId: parseInt(districtId),
+        wardId: parseInt(wardId),
+        latitude: lat,
+        longitude: lon
+      })
+    });
+    if (res.ok || res.status === 201) {
+      bootstrap.Modal.getInstance(document.getElementById('addWarehouseModal')).hide();
+      if (typeof loadWarehouses === 'function') loadWarehouses();
+      else location.reload();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      errorDiv.textContent = data.message || (isEditMode ? 'Cập nhật kho thất bại!' : 'Tạo kho thất bại!');
+      errorDiv.classList.remove('d-none');
+    }
+  } catch (err) {
+    errorDiv.textContent = 'Lỗi kết nối hoặc server.';
+    errorDiv.classList.remove('d-none');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = isEditMode ? 'Cập nhật' : 'Lưu';
+  }
+};
+
+// Xử lý bảng danh sách kho, nút Sửa/Xóa
+document.addEventListener('DOMContentLoaded', () => {
+  const tbody = document.querySelector('#warehousesTable tbody');
+  let allWarehouses = [];
+
+  // 1) Load dữ liệu warehouse
+  async function loadWarehouses() {
+    try {
+      const res = await fetch('http://localhost:8080/api/warehouses-detail');
+      if (!res.ok) throw new Error(res.status);
+      allWarehouses = await res.json();
+      renderTable(allWarehouses);
+    } catch (err) {
+      console.error('Không thể tải danh sách kho:', err);
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Lỗi tải dữ liệu</td></tr>';
+    }
+  }
+
+  // Thêm sự kiện tìm kiếm
+  const searchInput = document.getElementById('warehouseSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const keyword = this.value.trim().toLowerCase();
+      const filtered = allWarehouses.filter(item =>
+        item.warehouseName.toLowerCase().includes(keyword) ||
+        item.warehousePhone.includes(keyword)
+      );
+      renderTable(filtered);
+    });
+  }
+
+  // 2) Hàm vẽ bảng
+  function renderTable(list) {
+    tbody.innerHTML = '';
+    list.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.warehouseId}</td>
+        <td>${item.warehouseName}</td>
+        <td>${item.warehousePhone}</td>
+        <td>${item.fullAddress}</td>
+        <td>${item.managerName}</td>
+        <td>${item.staffName}</td>
+        <td>
+          <button class="btn btn-sm btn-warning btn-edit" data-id="${item.warehouseId}"><i class="ri-edit-line"></i></button>
+          <button class="btn btn-sm btn-danger btn-delete" data-id="${item.warehouseId}"><i class="ri-delete-bin-line"></i></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Gán sự kiện cho nút Sửa
+    tbody.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.onclick = function() {
+        const id = this.getAttribute('data-id');
+        openEditWarehouseModal(id);
+        new bootstrap.Modal(document.getElementById('addWarehouseModal')).show();
+        setTimeout(() => {
+          if (warehouseMap) warehouseMap.invalidateSize();
+        }, 300);
+      };
+    });
+
+    // Gán sự kiện cho nút Xóa
+    tbody.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.onclick = function() {
+        const id = this.getAttribute('data-id');
+        if (!confirm('Bạn có chắc chắn muốn xóa kho này?')) return;
+        fetch(`http://localhost:8080/api/warehouses-detail/${id}`, {
+          method: 'DELETE'
+        })
+        .then(res => {
+          if (res.ok) {
+            alert('Đã xóa kho thành công!');
+            loadWarehouses();
+          } else {
+            alert('Xóa kho thất bại!');
+          }
+        });
+      };
+    });
+  }
+
+  // Khởi tạo bảng khi load trang
+  loadWarehouses();
+  // Để các hàm này global cho các nơi khác gọi
+  window.loadWarehouses = loadWarehouses;
+});
+</script>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <!-- meta data -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+  <meta name="keywords"
+    content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+  <meta name="author" content="pixelstrap">
+  <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+  <title>Fastkart - Add New Product</title>
+
+  <!-- Google font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Linear Icon css -->
+  <link rel="stylesheet" href="assets/css/linearicon.css">
+
+  <!-- Fontawesome css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+
+  <!-- Themify icon css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+
+  <!--Dropzon css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/dropzone.css">
+
+  <!-- Feather icon css-->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+
+  <!-- remixicon css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+
+  <!-- Select2 css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+
+  <!-- Plugins css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/chartist.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/date-picker.css">
+
+  <!-- Bootstrap css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+
+  <!-- Bootstrap-tag input css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap-tagsinput.css">
+
+  <!-- App css -->
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+  <!-- tap on top start -->
+  <div class="tap-top">
+    <span class="lnr lnr-chevron-up"></span>
+  </div>
+  <!-- tap on tap end -->
+
+  <!-- page-wrapper start -->
+  <div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Page Header Start-->
+    <div id="header-placeholder"></div>
+    <!-- Page Header Ends-->
+
+    <!-- Page Body start -->
+    <div class="page-body-wrapper">
+      <!-- Page Sidebar Start-->
+      <div class="sidebar-wrapper">
+        <div id="sidebarEffect"></div>
+        <div>
+            <div class="logo-wrapper logo-wrapper-center">
+                <a href="index.html" data-bs-original-title="" title="">
+                    <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                </a>
+                <div class="back-btn">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="toggle-sidebar">
+                    <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                </div>
+            </div>
+            <div class="logo-icon-wrapper">
+                <a href="index.html">
+                    <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                    <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png" alt="logo">
+                </a>
+            </div>
+            <nav class="sidebar-main">
+                <div class="left-arrow" id="left-arrow">
+                    <i data-feather="arrow-left"></i>
+                </div>
+                <div id="sidebar-menu">
+                    <ul class="sidebar-links" id="simple-bar">
+                        <li class="back-btn"></li>
+                        <li class="sidebar-list">
+                            <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                <i class="ri-home-line"></i>
+                                <span>Quản lí </span>
+                            </a>
+                        </li>
+                        <li class="sidebar-list">
+                            <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <i class="ri-store-3-line"></i>
+                                <span>Sản phẩm</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                  <a href="view-product.html">Danh sách các sản phẩm</a>
+                                </li>
+                                <li>
+                                    <a href="add-new-product.html">Thêm sản phẩm</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-list">
+                            <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <i class="ri-list-check-2"></i>
+                                <span>Loại sản phẩm</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="view-category.html">Danh sách các loại sản phẩm</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-list">
+                            <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <i class="ri-list-check-2"></i>
+                                <span>Lô hàng</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="product.html">Danh sách thông tin các lô hàng</a>
+                                </li>
+                                <li>
+                                    <a href="add-new-stoklot.html">Thêm lô hàng</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-list">
+                            <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                <i class="ri-store-3-line"></i>
+                                <span>Kho</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="view-warehouse.html">Quản lí danh sách kho</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="right-arrow" id="right-arrow">
+                    <i data-feather="arrow-right"></i>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Sidebar Ends-->
+
+    <div class="page-body">
+
+      <div class="card mb-5">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-uppercase text-primary display-6 mb-0" style="letter-spacing:1px;">
+              <i class="ri-store-3-line me-2"></i>Quản lý kho
+            </h5>
+            <input id="warehouseSearchInput" class="form-control" style="max-width: 300px;" placeholder="Tìm kiếm tên kho hoặc số điện thoại...">
+            <button id="btnAddWarehouse" class="btn btn-sm btn-primary">
+              <i class="ri-add-line me-1"></i> Thêm mới
+            </button>
+          </div>
+          <table class="table table-bordered" id="warehousesTable">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 20%;">Tên kho</th>
+                <th style="width: 15%;">Điện thoại</th>
+                <th style="width: 25%;">Địa chỉ</th>
+                <th style="width: 15%;">Quản lý</th>
+                <th style="width: 15%;">Nhân viên</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <!-- Page Body End -->
+  </div>
+  <!-- page-wrapper End -->
+
+  <!-- latest js -->
+  <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+  <!-- Bootstrap js -->
+  <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+  <!-- feather icon js -->
+  <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+  <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+
+  <!-- scrollbar simplebar js -->
+  <script src="assets/js/scrollbar/simplebar.js"></script>
+  <script src="assets/js/scrollbar/custom.js"></script>
+
+  <!-- Sidebar js -->
+  <script src="assets/js/config.js"></script>
+
+  <!-- bootstrap tag-input js -->
+  <script src="assets/js/bootstrap-tagsinput.min.js"></script>
+  <script src="assets/js/sidebar-menu.js"></script>
+
+  <!-- customizer js -->
+  <script src="assets/js/customizer.js"></script>
+
+  <!--Dropzon js -->
+  <script src="assets/js/dropzone/dropzone.js"></script>
+  <script src="assets/js/dropzone/dropzone-script.js"></script>
+
+  <!-- Plugins js -->
+  <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+  <script src="assets/js/notify/index.js"></script>
+
+  <!-- ck editor js -->
+  <script src="assets/js/ckeditor.js"></script>
+  <script src="assets/js/ckeditor-custom.js"></script>
+
+  <!-- select2 js -->
+  <script src="assets/js/select2.min.js"></script>
+  <script src="assets/js/select2-custom.js"></script>
+
+  <!-- sidebar effect -->
+  <script src="assets/js/sidebareffect.js"></script>
+
+  <!-- Theme js -->
+  <script src="assets/js/script.js"></script>
+
+  <!-- component-loader js -->
+  <script src="components/component-loader.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tbody = document.querySelector('#warehousesTable tbody');
+
+      // 1) Load dữ liệu warehouse
+      fetch('http://localhost:8080/api/warehouses-detail')
+        .then(res => {
+          if (!res.ok) throw new Error(res.status);
+          return res.json();
+        })
+        .then(list => renderTable(list))
+        .catch(err => {
+          console.error('Không thể tải danh sách kho:', err);
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Lỗi tải dữ liệu</td></tr>';
+        });
+
+      // 2) Hàm vẽ bảng
+      function renderTable(list) {
+        tbody.innerHTML = '';
+        list.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+        <td>${item.warehouseId}</td>
+        <td>${item.warehouseName}</td>
+        <td>${item.warehousePhone}</td>
+        <td>${item.fullAddress}</td>
+        <td>${item.managerName}</td>
+        <td>${item.staffName}</td>
+      `;
+          tbody.appendChild(tr);
+        });
+      }
+    });
+  </script>
+
+
+
+</body>
+
+</html>
