@@ -17,6 +17,17 @@ import java.util.stream.Collectors;
 
 public class SellerOrderService {
 
+    public OrderSellerDTO getByOrderId(int orderId){
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+            WholesaleOrder order = orderDAO.findById(orderId);
+            return mapToOrderSellerDTO(order);
+        } finally {
+            em.close();
+        }
+    }
+
     public List<OrderSellerDTO> getAllOrdersForSeller(int sellerId) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -114,6 +125,7 @@ public class SellerOrderService {
                 "ORD-" + String.format("%06d", order.getId()), // Generate order code
                 order.getCreatedAt() != null ? order.getCreatedAt() : new Date(),
                 order.getStatus() != null ? order.getStatus() : "UNKNOWN",
+                order.getItemsTotal()!= null ? order.getItemsTotal() : BigDecimal.ZERO,
                 order.getTotalPrice() != null ? order.getTotalPrice() : BigDecimal.ZERO,
                 order.getEstimatedShipFee() != null ? order.getEstimatedShipFee() : BigDecimal.ZERO,
                 order.getCustomer() != null ? order.getCustomer().getContactPerson() : "",
