@@ -99,7 +99,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="breadcrumb-contain">
-                        <h2>Shop Category</h2>
+                        <h2>Danh sách sản phẩm</h2>
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
@@ -107,7 +107,7 @@
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active">Shop Category</li>
+                                <li class="breadcrumb-item active">Danh sách sản phẩm</li>
                             </ol>
                         </nav>
                     </div>
@@ -143,33 +143,23 @@
                                 <div class="dropdown">
                                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
                                         data-bs-toggle="dropdown">
-                                        <span>Most Popular</span> <i class="fa-solid fa-angle-down"></i>
+                                        <span>Phổ biến</span> <i class="fa-solid fa-angle-down"></i>
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="dropdown-item" id="pop" href="javascript:void(0)">Popularity</a>
+                                            <a class="dropdown-item" id="pop" href="javascript:void(0)">Phổ biến</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="low" href="javascript:void(0)">Low - High
-                                                Price</a>
+                                            <a class="dropdown-item" id="low" href="javascript:void(0)">Từ Thấp - Cao</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="high" href="javascript:void(0)">High - Low
-                                                Price</a>
+                                            <a class="dropdown-item" id="high" href="javascript:void(0)">Từ Cao - Thấp</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="rating" href="javascript:void(0)">Average
-                                                Rating</a>
+                                            <a class="dropdown-item" id="aToz" href="javascript:void(0)">Từ A - Z</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="aToz" href="javascript:void(0)">A - Z Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="zToa" href="javascript:void(0)">Z - A Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="off" href="javascript:void(0)">% Off - Hight To
-                                                Low</a>
+                                            <a class="dropdown-item" id="zToa" href="javascript:void(0)">Từ Z - A</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -651,9 +641,77 @@
     <script src="../assets/jsLogic/product.js"></script>
     <script src="../assets/jsLogic/cart.js"></script>
 
+        <script>
 
 
-    <script>  // Quang Huy
+
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-placeholder').innerHTML = data;
+                    feather.replace();
+
+                    // Đặt script xử lý đăng nhập/đăng xuất ở đây!
+                    fetch('/api/auth/user')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.loggedIn) {
+                                document.getElementById('user-not-logged-in').classList.add('d-none');
+                                document.getElementById('user-logged-in').classList.remove('d-none');
+                                // Đổi icon thành filled
+                                document.getElementById('user-icon-area').innerHTML = '<i data-feather="user-check"></i>';
+                                // Cập nhật tên người dùng
+                                document.getElementById('user-greeting').textContent = `Xin chào,`;
+                                document.getElementById('user-account-label').textContent = `${data.name}`;
+                            } else {
+                                document.getElementById('user-not-logged-in').classList.remove('d-none');
+                                document.getElementById('user-logged-in').classList.add('d-none');
+                                // Đổi lại icon outline
+                                document.getElementById('user-icon-area').innerHTML = '<i data-feather="user"></i>';
+                                // Cập nhật lại về mặc định
+                                document.getElementById('user-greeting').textContent = "Gia nhập";
+                                document.getElementById('user-account-label').textContent = "với chúng tôi";
+                                feather.replace();
+                            }
+                        });
+                    document.addEventListener('click', function(e) {
+                        if (e.target && e.target.id === 'logout-btn') {
+                            e.preventDefault();
+                            fetch('/logout', { method: 'GET' })
+                                .then(() => window.location.href = 'login.html');
+                        }
+                    });
+
+                    // Thêm logic search cho thanh search trong header
+                    (function() {
+                        // Tìm input và button trong header
+                        const input = document.querySelector('.middle-box input[type="search"]');
+                        const btn = document.getElementById('button-addon2');
+                        if (!input || !btn) return;
+                        function doSearch() {
+                            const value = input.value.trim();
+                            if (value) {
+                                window.location.href = `shop-category.html?name=${encodeURIComponent(value)}`;
+                            }
+                        }
+                        input.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter') doSearch();
+                        });
+                        btn.addEventListener('click', doSearch);
+                    })();
+                });
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-placeholder').innerHTML = data;
+                    feather.replace();
+                });
+
+        </script>
+
+
+
+        <script>  // Quang Huy
     // Xử lý click vào nút wishlist
     document.body.addEventListener('click', function (e) {
         const button = e.target.closest('.wishlist-btn');
@@ -688,21 +746,6 @@
                 alert("❌ Lỗi hệ thống khi thêm vào wishlist.");
             });
     });
-    </script>    <script>
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-placeholder').innerHTML = data;
-                feather.replace();
-            });
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-                feather.replace();
-            });
-
-
     </script>
 
     <script type="module">
@@ -775,13 +818,11 @@
             if (!dropdownButton) return;
 
             const sortTexts = {
-                'pop': 'Most Popular',
-                'low': 'Low - High Price',
-                'high': 'High - Low Price',
-                'rating': 'Average Rating',
-                'aToz': 'A - Z Order',
-                'zToa': 'Z - A Order',
-                'off': '% Off - High To Low'
+                'pop': 'Phổ biến',
+                'low': 'Từ Thấp - Cao',
+                'high': 'Từ Cao - Thấp',
+                'aToz': 'Từ A - Z',
+                'zToa': 'Từ Z - A'
             };
 
             dropdownButton.textContent = sortTexts[sortId] || 'Most Popular';

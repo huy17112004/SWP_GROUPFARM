@@ -306,7 +306,23 @@ public class WholesaleOrderService {
             em.close();
         }
 
+
     }
+    public void confirmOrderByShipper(int orderId) {
+        EntityManager  em = JpaUtil.getEntityManager();
+        WholesaleOrderDAO orderDAO = new WholesaleOrderDAO(em);
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            WholesaleOrder order = orderDAO.findById(orderId);
+            order.setStatus("DELIVERED");
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
+        }
+    }
+
 
 
 

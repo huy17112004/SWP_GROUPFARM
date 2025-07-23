@@ -40,6 +40,8 @@ public class CartServlet extends HttpServlet {
         try {
             List<CartItemDTO> cartItems = cartService.getCartByUserId(userId);
             // Trả JSON
+
+
             resp.setContentType("application/json;charset=UTF-8");
             new Gson().toJson(cartItems, resp.getWriter());
 

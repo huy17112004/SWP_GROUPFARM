@@ -19,22 +19,11 @@ public class ShippingLog {
     @Column(name = "ShippingLogID")
     private int id;
 
-    @Column(name = "Status", length = 50, nullable = false)
-    private String status;
-
-    @Column(name = "ShippedAtDateTime")
-    private Date shippedAtDateTime;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CustomerID", nullable = false, insertable = false, updatable = false)
-    private WholesaleCustomer customer;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ShipperID", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ShipperID")
     private Shipper shipper;
 
-    /* n ShippingLog ↔ 1 WholesaleOrder */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OrderID", nullable = false, insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OrderID")
     private WholesaleOrder order;
 }

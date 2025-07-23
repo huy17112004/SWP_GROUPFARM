@@ -2185,6 +2185,44 @@
 
     <script src="../assets/jsLogic/relateProduct.js"></script>
 
+    <script>
+        function addToWishlist() {
+            const productId = getProductIdFromURL();
+
+            if (!productId) {
+                alert('Không tìm thấy productId!');
+                return;
+            }
+
+            // Nếu backend nhận JSON:
+            const wishlistItem = {
+                productId: parseInt(productId)
+                // Nếu backend cần userId, có thể thêm userId: 1 (giả lập)
+            };
+
+            fetch('/api/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(wishlistItem)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Lỗi khi thêm vào wishlist');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('❤️ Đã thêm vào danh yêu thích!');
+                    window.location.href = 'wishlist.html';
+                })
+                .catch(error => {
+                    alert('Lỗi: ' + error.message);
+                });
+        }
+    </script>
+
 
 </body>
 

@@ -123,9 +123,7 @@
                                 <li>
                                     <div class="checkout-icon">
                                         <lord-icon target=".nav-item" src="https://cdn.lordicon.com/oaflahpk.json"
-                                            trigger="loop-on-hover"
-                                            colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
-                                            class="lord-icon">
+                                                   trigger="loop-on-hover" colors="primary:#0baf9a" class="lord-icon">
                                         </lord-icon>
                                     </div>
                                     <div class="checkout-box">
@@ -147,7 +145,9 @@
                                 <li>
                                     <div class="checkout-icon">
                                         <lord-icon target=".nav-item" src="https://cdn.lordicon.com/ggihhudh.json"
-                                            trigger="loop-on-hover" colors="primary:#0baf9a" class="lord-icon">
+                                                   trigger="loop-on-hover"
+                                                   colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
+                                                   class="lord-icon">
                                         </lord-icon>
                                     </div>
                                     <div class="checkout-box">
@@ -217,74 +217,24 @@
                                 <h3>Tóm tắt đơn hàng</h3>
                             </div>
 
-                            <ul class="summery-contain">
-                                <li>
-                                    <img src="../assets/images/vegetable/product/1.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Ớt chuông <span>X 1</span></h4>
-                                    <h4 class="price">32,34₫</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/2.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Cà tím <span>X 3</span></h4>
-                                    <h4 class="price">12,23₫</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/3.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Củ hành <span>X 2</span></h4>
-                                    <h4 class="price">18,27₫</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/4.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Khoai tây <span>X 1</span></h4>
-                                    <h4 class="price">26,90₫</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/5.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Ớt baby <span>X 1</span></h4>
-                                    <h4 class="price">19,28₫</h4>
-                                </li>
-
-                                <li>
-                                    <img src="../assets/images/vegetable/product/6.png"
-                                        class="img-fluid blur-up lazyloaded checkout-image" alt="">
-                                    <h4>Súp lơ xanh <span>X 2</span></h4>
-                                    <h4 class="price">29,69₫</h4>
-                                </li>
+                            <ul class="summery-contain" id="cart-summary-list">
+                                <!-- Sẽ render động ở đây -->
                             </ul>
 
                             <ul class="summery-total">
                                 <li>
                                     <h4>Tạm tính</h4>
-                                    <h4 class="price">111,81₫</h4>
+                                    <h4 class="price" id="subtotal">111,81₫</h4>
                                 </li>
 
                                 <li>
                                     <h4>Phí vận chuyển</h4>
-                                    <h4 class="price">8,90₫</h4>
+                                    <h4 class="price" id="shipping-fee">Vui lòng chọn địa chỉ!</h4>
                                 </li>
-
-                                <li>
-                                    <h4>Thuế</h4>
-                                    <h4 class="price">29,498₫</h4>
-                                </li>
-
-                                <li>
-                                    <h4>Mã giảm giá</h4>
-                                    <h4 class="price">-23,10₫</h4>
-                                </li>
-
+                                
                                 <li class="list-total">
                                     <h4>Tổng cộng (VNĐ)</h4>
-                                    <h4 class="price">19,28₫</h4>
+                                    <h4 class="price" id="grand-total">19,28₫</h4>
                                 </li>
                             </ul>
                         </div>
@@ -671,6 +621,44 @@
     </script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const res = await fetch('/api/cart');
+                const cartItems = await res.json();
+
+                // Render sản phẩm
+                const listEl = document.getElementById('cart-summary-list');
+                let subtotal = 0;
+                if (listEl) {
+                    listEl.innerHTML = '';
+                    cartItems.forEach(item => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <img src="${item.productImage || '../assets/images/vegetable/product/1.png'}"
+                                class="img-fluid blur-up lazyloaded checkout-image" alt="">
+                            <h4>${item.productName} <span>X ${item.quantity}</span></h4>
+                            <h4 class="price">${item.totalPrice ? formatCurrencyVND(item.totalPrice) : 0}</h4>
+                        `;
+                        listEl.appendChild(li);
+                        subtotal += item.totalPrice ? Number(item.totalPrice) : 0;
+                    });
+                }
+                // Render tạm tính
+                const subtotalEl = document.querySelector('.summery-total .price');
+                if (subtotalEl) {
+                    subtotalEl.textContent = formatCurrencyVND(subtotal);
+                }
+                const listtotalEl = document.querySelector('.list-total .price');
+                if (listtotalEl) {
+                    listtotalEl.textContent = formatCurrencyVND(subtotal);
+                }
+            } catch (e) {
+                console.error('Không thể lấy giỏ hàng:', e);
+            }
+        });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const placeOrderBtn = document.getElementById('placeOrderBtn');
             
@@ -840,6 +828,52 @@
             locationDropdown.loadProvinces();
         });
     </script>
+
+    <script>
+// Định dạng số tiền VND
+function formatCurrencyVND(amount) {
+    if (typeof amount === 'string') amount = parseFloat(amount);
+    return amount.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}).replace('₫', '') + '₫';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('change', async function(e) {
+        if (e.target && e.target.name === 'addressCustomerId') {
+            const addressId = e.target.value;
+            try {
+                // Gọi API tính phí vận chuyển
+                const formData = new FormData();
+                formData.append('addressId', addressId);
+                const res = await fetch('/api/shipping/estimate?addressId=' + addressId, {
+                    method: 'POST',
+                });
+                if (res.ok) {
+                    const fee = await res.json();
+                    document.getElementById('shipping-fee').textContent = formatCurrencyVND(fee);
+
+                    let subtotal = 0;
+                    const subtotalEl = document.getElementById('subtotal');
+                    if (subtotalEl) {
+                        // Loại bỏ mọi ký tự không phải số hoặc dấu chấm (cho số thập phân)
+                        subtotal = Number(subtotalEl.textContent.replace(/[^\d]/g, ''));
+                    }
+                    // Tính tổng cộng
+                    const grandTotal = subtotal + Number(fee);
+                    const grandTotalEl = document.getElementById('grand-total');
+                    if (grandTotalEl) {
+                        grandTotalEl.textContent = formatCurrencyVND(grandTotal);
+                    }
+
+                } else {
+                    document.getElementById('shipping-fee').textContent = 'Lỗi!';
+                }
+            } catch (err) {
+                document.getElementById('shipping-fee').textContent = 'Lỗi!';
+            }
+        }
+    });
+});
+</script>
 </body>
 
 </html>

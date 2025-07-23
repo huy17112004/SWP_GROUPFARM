@@ -39,7 +39,10 @@ public class SigninCustomerServlet extends HttpServlet {
             WholesaleCustomer user = svc.login(dto);
             // Lưu session
             HttpSession session = req.getSession(true);
-            session.setAttribute("currentUser", user);
+            session.setAttribute("accountId", user.getId());
+            session.setAttribute("accountType", "CUSTOMER");
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("name", user.getCompanyName());
 
             if (dto.isRememberMe()) {
                 Cookie cookie = new Cookie("JSESSIONID", session.getId());

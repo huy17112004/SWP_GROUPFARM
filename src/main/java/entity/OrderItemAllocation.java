@@ -22,7 +22,7 @@ public class OrderItemAllocation {
     private WholesaleOrderItem orderItem;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "StockLotID", nullable = false)
+    @JoinColumn(name = "StockLotID", nullable = true)
     private StockLot stockLot;
 
     @Column(name = "Quantity")
