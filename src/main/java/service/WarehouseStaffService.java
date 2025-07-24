@@ -1,6 +1,6 @@
-// src/main/java/service/WarehouseStaffService.java
 package service;
 
+import dao.WarehouseStaffDAO;
 import dto.WarehouseStaffRequestDTO;
 import entity.Warehouse;
 import entity.WarehouseStaff;
@@ -8,9 +8,21 @@ import org.mindrot.jbcrypt.BCrypt;
 import util.JpaUtil;
 
 import jakarta.persistence.EntityManager;
+import org.mindrot.jbcrypt.BCrypt;
+import util.JpaUtil;
+
 import java.util.Date;
 
 public class WarehouseStaffService {
+    public WarehouseStaff getWarehouseStaffById(int warehouseStaffId) {
+        EntityManager entityManager = JpaUtil.getEntityManager();
+        try {
+            WarehouseStaffDAO warehouseStaffDAO = new WarehouseStaffDAO(entityManager);
+            return warehouseStaffDAO.findById(warehouseStaffId);
+        } finally {
+            entityManager.close();
+        }
+    }
 
     public WarehouseStaff createStaff(WarehouseStaffRequestDTO dto) {
         EntityManager em = JpaUtil.getEntityManager();
@@ -77,5 +89,4 @@ public class WarehouseStaffService {
             em.close();
         }
     }
-
 }

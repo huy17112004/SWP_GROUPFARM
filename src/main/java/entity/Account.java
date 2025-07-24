@@ -23,10 +23,4 @@ public abstract class Account {
 
     @Column(name = "Password", nullable = false, length = 100)
     private String password;
-
-    @Column(name = "OTP", length = 10)
-    private String otp;
-    
-    @Column(name = "OTP_Expired_At")
-    private LocalDateTime otpExpiredAt;
 }

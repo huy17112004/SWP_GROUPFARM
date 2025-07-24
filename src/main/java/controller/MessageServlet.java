@@ -30,8 +30,8 @@ public class MessageServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         try {
             HttpSession session = req.getSession(false);
-            Integer accountId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
-            if (accountId == null) {
+            Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
+            if (userId == null) {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 gson.toJson(new MessageResponse("Bạn chưa đăng nhập!", false), resp.getWriter());
                 return;
@@ -41,7 +41,7 @@ public class MessageServlet extends HttpServlet {
             String json = reader.lines().collect(Collectors.joining());
             MessageRequestDTO requestDTO = gson.fromJson(json, MessageRequestDTO.class);
 
-            ChatMessageDTO savedMessage = messageService.saveMessage(accountId, requestDTO);
+            ChatMessageDTO savedMessage = messageService.saveMessage(userId, requestDTO);
 
             resp.setStatus(HttpServletResponse.SC_CREATED);
             gson.toJson(new MessageResponse("Lưu thành công!", true, savedMessage), resp.getWriter());
@@ -57,8 +57,8 @@ public class MessageServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         HttpSession session = req.getSession(false);
-        Integer accountId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
-        if (accountId == null) {
+        Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
+        if (userId == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             gson.toJson(new MessageResponse("Bạn chưa đăng nhập!", false), resp.getWriter());
             return;
@@ -79,14 +79,14 @@ public class MessageServlet extends HttpServlet {
             if (sinceParam != null && !sinceParam.isEmpty()) {
                 try {
                     LocalDateTime since = LocalDateTime.parse(sinceParam);
-                    messages = messageService.getMessagesByOrderIdSince(accountId, orderId, since);
+                    messages = messageService.getMessagesByOrderIdSince(userId, orderId, since);
                 } catch (DateTimeParseException ex) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     gson.toJson(new MessageResponse("Tham số 'since' không đúng định dạng thời gian ISO!", false), resp.getWriter());
                     return;
                 }
             } else {
-                messages = messageService.getMessagesByOrderId(accountId, orderId);
+                messages = messageService.getMessagesByOrderId(userId, orderId);
             }
             resp.setStatus(HttpServletResponse.SC_OK);
             gson.toJson( messages, resp.getWriter());

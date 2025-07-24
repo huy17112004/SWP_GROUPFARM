@@ -19,6 +19,7 @@ public class CartItemDTO {
     private String productImage;
     private BigDecimal wholesalePrice;
     private Integer quantity;
+    private BigDecimal totalPrice;
 
 }
 

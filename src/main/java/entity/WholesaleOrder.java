@@ -45,8 +45,8 @@ public class WholesaleOrder {
     @Column(name = "DealCompletedAt")
     private Date dealCompletedAt;
 
-    @Column(name = "ContractSignedAt")
-    private Date contractSignedAt;
+    @Column(name = "ShippedAt")
+    private LocalDateTime shippedAt;
 
     @Column(name = "DepositAmount", precision = 18, scale = 2)
     private BigDecimal depositAmount;
@@ -54,17 +54,13 @@ public class WholesaleOrder {
     @Column(name = "DeliveryDate")
     private LocalDateTime deliveryDate;
 
-    /* 1 WholesaleOrder ↔ 1 Contract */
-    @OneToOne(mappedBy = "wholesaleOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Contract contract;
-
     /* 1 WholesaleOrder ↔ n WholesaleOrderItem */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<WholesaleOrderItem> items;
 
     /* 1 WholesaleOrder ↔ n ShippingLog */
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<ShippingLog> shippingLogs;
+    @OneToOne(mappedBy = "order",fetch = FetchType.LAZY)
+    private ShippingLog shippingLog;
 
     /* 1 WholesaleOrder ↔ n OrderRisk */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
