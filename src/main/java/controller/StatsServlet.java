@@ -21,7 +21,6 @@ public class StatsServlet extends HttpServlet {
      private  final StatsService statsService = new StatsService();
      private final Gson gson = new Gson();
 
-
      @Override
      protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //          HttpSession session  = req.getSession(false);
@@ -29,9 +28,6 @@ public class StatsServlet extends HttpServlet {
 //               resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Admin not logged in");
 //               return;
 //          }
-
-          HttpSession session = req.getSession(true);
-          session.setAttribute("accountId", 2);
 
           String action = req.getParameter("action");
 

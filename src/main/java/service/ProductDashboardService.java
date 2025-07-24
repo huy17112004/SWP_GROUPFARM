@@ -21,7 +21,7 @@ public class ProductDashboardService {
         }
     }
 
-    public String deleteProduct(Long productId) {
+    public String deleteProduct(int productId) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -54,7 +54,7 @@ public class ProductDashboardService {
             tx.begin();
 
             ProductDashboardDAO dao = new ProductDashboardDAO(em);
-            Product p = dao.findByIdEntity((long) id);
+            Product p = dao.findByIdEntity(id);
             if (p == null) {
                 tx.rollback();
                 return null;

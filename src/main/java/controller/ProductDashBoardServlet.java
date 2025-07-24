@@ -20,7 +20,7 @@ public class ProductDashBoardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        //Kiểm tra session bắt buộc phải có accountId
+        //Kiểm tra session bắt buộc phải có accountId
 //        HttpSession session = req.getSession(false); // false: không tạo mới nếu không có
 //        if (session == null || session.getAttribute("accountId") == null) {
 //            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
@@ -28,11 +28,11 @@ public class ProductDashBoardServlet extends HttpServlet {
 //            resp.getWriter().write("{\"error\":\"Bạn chưa đăng nhập\"}");
 //            return;
 //        }
-        HttpSession session = req.getSession(true);
-        session.setAttribute("accountId", 1); // Giả lập user có ID = 1
-        String path = req.getPathInfo(); // "/related"
+//        HttpSession session = req.getSession(true);
+//        session.setAttribute("accountId", 1); // Giả lập user có ID = 1
+//        String path = req.getPathInfo(); // "/related"
 
-        if ("/related".equals(path)) {
+        if ("/related".equals(req.getPathInfo())) {
             Long productId = Long.parseLong(req.getParameter("productId"));
             List<ProductDashboardDTO> related = productService.getRelatedProducts(productId, 6);
             resp.setContentType("application/json;charset=UTF-8");
@@ -53,8 +53,13 @@ public class ProductDashBoardServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //  Giả lập đăng nhập nếu chưa có
-        HttpSession session = req.getSession(true);
-        session.setAttribute("accountId", 1); // giả lập user ID = 1
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("accountId") == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            resp.setContentType("application/json;charset=UTF-8");
+            resp.getWriter().write("{\"error\":\"Bạn chưa đăng nhập\"}");
+            return;
+        }
 
         String pathInfo = req.getPathInfo(); // "/5"
 
@@ -67,7 +72,7 @@ public class ProductDashBoardServlet extends HttpServlet {
         }
 
         try {
-            Long productId = Long.parseLong(pathInfo.substring(1)); // bỏ dấu "/"
+            int productId = Integer.parseInt(pathInfo.substring(1)); // bỏ dấu "/"
 
             String message = productService.deleteProduct(productId); // gọi service
             resp.setContentType("application/json;charset=UTF-8");
@@ -86,6 +91,13 @@ public class ProductDashBoardServlet extends HttpServlet {
 
     @Override 
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("accountId") == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.setContentType("application/json;charset=UTF-8");
+            resp.getWriter().write("{\"error\":\"Bạn chưa đăng nhập\"}");
+            return;
+        }
         resp.setContentType("application/json;charset=UTF-8");
         String pathInfo = req.getPathInfo(); // ví dụ "/5"
 

@@ -36,7 +36,7 @@ public class ProductDashboardDAO {
         }).collect(Collectors.toList());
     }
 
-    public Product findByIdEntity(Long id) {
+    public Product findByIdEntity(int id) {
         return em.find(Product.class, id);
     }
 

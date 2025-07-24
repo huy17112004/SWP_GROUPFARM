@@ -11,6 +11,28 @@
     <link rel="stylesheet" href="assets/css/dark.css">
     <link rel="stylesheet" href="assets/css/custom.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:...&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" href="assets/css/vendors/font-awesome.css">
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="assets/css/linearicon.css">
+    <!-- Themify icon css -->
+    <link rel="stylesheet" href="assets/css/vendors/themify.css">
+    <!-- Feather icon css -->
+    <link rel="stylesheet" href="assets/css/vendors/feather-icon.css">
+    <!-- Remixicon -->
+    <link rel="stylesheet" href="assets/css/remixicon.css">
+    <!-- DataTable -->
+    <link rel="stylesheet" href="assets/css/datatables.css">
+    <!-- Plugin -->
+    <link rel="stylesheet" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" href="assets/css/vendors/animate.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/css/vendors/bootstrap.css">
+    <!-- App style -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div class="page-wrapper">
@@ -177,28 +199,28 @@
                 </div>
 
                 <!-- Charts -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Trạng thái Đơn hàng</h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="orderStatusChart" height="300"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Tỷ lệ Thành công</h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="successRateChart" height="300"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6">-->
+<!--                        <div class="card">-->
+<!--                            <div class="card-header">-->
+<!--                                <h4 class="card-title">Trạng thái Đơn hàng</h4>-->
+<!--                            </div>-->
+<!--                            <div class="card-body">-->
+<!--                                <canvas id="orderStatusChart" height="300"></canvas>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6">-->
+<!--                        <div class="card">-->
+<!--                            <div class="card-header">-->
+<!--                                <h4 class="card-title">Tỷ lệ Thành công</h4>-->
+<!--                            </div>-->
+<!--                            <div class="card-body">-->
+<!--                                <canvas id="successRateChart" height="300"></canvas>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <!-- Order Details -->
                 <div class="row">
@@ -231,43 +253,43 @@
                 </div>
 
                 <!-- Order Timeline -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Timeline Đơn hàng</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline">
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-success"></div>
-                                        <div class="timeline-content">
-                                            <h6>Đơn hàng #12345</h6>
-                                            <p>Đã giao hàng thành công</p>
-                                            <small class="text-muted">2 giờ trước</small>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-warning"></div>
-                                        <div class="timeline-content">
-                                            <h6>Đơn hàng #12344</h6>
-                                            <p>Đang giao hàng</p>
-                                            <small class="text-muted">4 giờ trước</small>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-marker bg-danger"></div>
-                                        <div class="timeline-content">
-                                            <h6>Đơn hàng #12343</h6>
-                                            <p>Giao hàng thất bại</p>
-                                            <small class="text-muted">6 giờ trước</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="row">-->
+<!--                    <div class="col-md-12">-->
+<!--                        <div class="card">-->
+<!--                            <div class="card-header">-->
+<!--                                <h4 class="card-title">Timeline Đơn hàng</h4>-->
+<!--                            </div>-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="timeline">-->
+<!--                                    <div class="timeline-item">-->
+<!--                                        <div class="timeline-marker bg-success"></div>-->
+<!--                                        <div class="timeline-content">-->
+<!--                                            <h6>Đơn hàng #12345</h6>-->
+<!--                                            <p>Đã giao hàng thành công</p>-->
+<!--                                            <small class="text-muted">2 giờ trước</small>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="timeline-item">-->
+<!--                                        <div class="timeline-marker bg-warning"></div>-->
+<!--                                        <div class="timeline-content">-->
+<!--                                            <h6>Đơn hàng #12344</h6>-->
+<!--                                            <p>Đang giao hàng</p>-->
+<!--                                            <small class="text-muted">4 giờ trước</small>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="timeline-item">-->
+<!--                                        <div class="timeline-marker bg-danger"></div>-->
+<!--                                        <div class="timeline-content">-->
+<!--                                            <h6>Đơn hàng #12343</h6>-->
+<!--                                            <p>Giao hàng thất bại</p>-->
+<!--                                            <small class="text-muted">6 giờ trước</small>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

@@ -23,12 +23,9 @@ public class RevenueServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        HttpSession session = req.getSession(false);
 //        if (session == null || session.getAttribute("accountId") == null) {
-//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Admin not logged in");
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
 //            return;
 //        }
-
-        HttpSession session = req.getSession(true);
-        session.setAttribute("accountId", 1); // giả sử id 1 là admin
 
         try {
             // Lấy parameter period nếu có

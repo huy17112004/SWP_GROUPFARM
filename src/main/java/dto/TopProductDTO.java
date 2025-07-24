@@ -9,24 +9,19 @@ public class TopProductDTO {
     private BigDecimal totalRevenue;
     private String imageUrl;
     private int rank;
+    private BigDecimal price;
     
     public TopProductDTO() {
     }
-    
-    public TopProductDTO(int productId, String productName, int totalQuantitySold, BigDecimal totalRevenue) {
-        this.productId = productId;
-        this.productName = productName;
-        this.totalQuantitySold = totalQuantitySold;
-        this.totalRevenue = totalRevenue;
-    }
-    
-    public TopProductDTO(int productId, String productName, int totalQuantitySold, BigDecimal totalRevenue, String imageUrl, int rank) {
+
+    public TopProductDTO(int productId, String productName, int totalQuantitySold, BigDecimal totalRevenue, String imageUrl, int rank, BigDecimal price) {
         this.productId = productId;
         this.productName = productName;
         this.totalQuantitySold = totalQuantitySold;
         this.totalRevenue = totalRevenue;
         this.imageUrl = imageUrl;
         this.rank = rank;
+        this.price = price;
     }
     
     // Getters and Setters
@@ -76,5 +71,12 @@ public class TopProductDTO {
     
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
