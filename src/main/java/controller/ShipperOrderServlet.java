@@ -35,10 +35,10 @@ public class ShipperOrderServlet extends HttpServlet {
         resp.setContentType("application/json;charset=UTF-8");
         try {
             HttpSession session = req.getSession(false);
-            Integer accountId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+            Integer userId = (session != null) ? (Integer) session.getAttribute("userId") : null;
             String accountType = (session != null) ? (String) session.getAttribute("accountType") : null;
 
-            if (accountId == null) {
+            if (userId == null) {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write(gson.toJson(new MessageResponse("Bạn chưa đăng nhập!", false)));
                 return;
@@ -50,7 +50,7 @@ public class ShipperOrderServlet extends HttpServlet {
                 return;
             }
             WholesaleOrderDAO orderDao = new WholesaleOrderDAO(JpaUtil.getEntityManager());
-            List<WholesaleOrder> orders = orderDao.findAllByStatusAndShipper(accountId, "SHIPPING");
+            List<WholesaleOrder> orders = orderDao.findAllByStatusAndShipper(userId, "SHIPPING");
             List<OrderSellerDTO> dtos = orders.stream()
                     .map(SellerOrderService::mapToOrderSellerDTO)
                     .collect(Collectors.toList());

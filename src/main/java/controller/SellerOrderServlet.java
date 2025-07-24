@@ -25,7 +25,7 @@ public class SellerOrderServlet extends HttpServlet {
 
         // Check if user is logged in and is a seller
         HttpSession session = req.getSession(false);
-        Integer sellerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+        Integer sellerId = (session != null) ? (Integer) session.getAttribute("userId") : null;
         
         if (sellerId == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -50,7 +50,7 @@ public class SellerOrderServlet extends HttpServlet {
         
         // Check if user is logged in and is a seller
         HttpSession session = req.getSession(false);
-        Integer sellerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+        Integer sellerId = (session != null) ? (Integer) session.getAttribute("userId") : null;
         
         if (sellerId == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

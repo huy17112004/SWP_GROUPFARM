@@ -18,7 +18,6 @@ function addToCart() {
     }
 
     const cartItem = {
-        userId: 1, // Giả lập userId
         productId: parseInt(productId),
         quantity: quantity
     };
@@ -155,7 +154,6 @@ function updateQuantity(productId, change) {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            userId: 1, // giả lập userId
             productId: productId,
             quantity: newQty
         })

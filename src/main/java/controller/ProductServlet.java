@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.ProductService;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
         resp.setStatus(HttpServletResponse.SC_OK);
@@ -36,6 +37,12 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy tham số tìm kiếm
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("accountId") != null) {
+
+            System.out.println("asdfasdfasdfasdfasdf" + session.getAttribute("userId") + " " + session.getAttribute("accountId") + " " + session.getAttribute("username"));
+        }
+
         String categoryIdParam = request.getParameter("categoryId");
         String nameParam = request.getParameter("name");
         String sortType = request.getParameter("sortType");

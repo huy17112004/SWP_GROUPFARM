@@ -27,7 +27,7 @@ public class OrderServlet extends HttpServlet {
         if (path == null || path.equals("/")) {
             // Get all orders for current customer
             HttpSession session = req.getSession(false);
-            Integer customerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+            Integer customerId = (session != null) ? (Integer) session.getAttribute("userId") : null;
             if (customerId == null) {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.setContentType("application/json;charset=UTF-8");
@@ -76,7 +76,7 @@ public class OrderServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
-        Integer customerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+        Integer customerId = (session != null) ? (Integer) session.getAttribute("userId") : null;
         if (customerId == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(gson.toJson(
@@ -131,7 +131,7 @@ public class OrderServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         
         HttpSession session = req.getSession(false);
-        Integer customerId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+        Integer customerId = (session != null) ? (Integer) session.getAttribute("userId") : null;
         if (customerId == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.getWriter().write(gson.toJson(new MessageResponse("Bạn chưa đăng nhập!", false)));

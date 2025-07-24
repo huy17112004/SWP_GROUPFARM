@@ -14,7 +14,7 @@ public class AuthServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         response.setContentType("application/json");
 
-        if (session != null && session.getAttribute("accountId") != null) {
+        if (session != null && session.getAttribute("userId") != null) {
 
             response.getWriter().write("{\"loggedIn\": true, \"name\": \"" + session.getAttribute("name") + "\"}");
         } else {
