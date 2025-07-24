@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dto.OrderSellerDTO;
 import entity.WholesaleOrder;
 import jakarta.servlet.ServletException;
@@ -11,14 +12,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import service.SellerOrderService;
 import util.JpaUtil;
 import dao.WholesaleOrderDAO;
+import util.LocalDateTimeAdapter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet("/api/manager/orders")
 public class ManagerOrderServlet extends HttpServlet {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

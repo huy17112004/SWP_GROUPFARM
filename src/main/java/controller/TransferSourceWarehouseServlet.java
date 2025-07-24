@@ -43,7 +43,7 @@ public class TransferSourceWarehouseServlet extends HttpServlet {
             return;
         }
 
-        if (!"WAREHOUSE_STAFF".equals(accountType)) {
+        if (!"WAREHOUSE".equals(accountType)) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.getWriter().write(gson.toJson(new MessageResponse("Bạn không phải nhân viên kho!", false)));
             return;
