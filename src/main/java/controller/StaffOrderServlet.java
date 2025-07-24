@@ -33,7 +33,7 @@ public class StaffOrderServlet extends HttpServlet {
         resp.setContentType("application/json;charset=UTF-8");
         try {
             HttpSession session = req.getSession(false);
-            Integer accountId = (session != null) ? (Integer) session.getAttribute("accountId") : null;
+            Integer accountId = (session != null) ? (Integer) session.getAttribute("userId") : null;
             String accountType = (session != null) ? (String) session.getAttribute("accountType") : null;
 
             if (accountId == null) {
@@ -42,7 +42,7 @@ public class StaffOrderServlet extends HttpServlet {
                 return;
             }
 
-            if (!"WAREHOUSE_STAFF".equals(accountType)) {
+            if (!"WAREHOUSE".equals(accountType)) {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write(gson.toJson(new MessageResponse("Bạn không phải nhân viên kho!", false)));
                 return;

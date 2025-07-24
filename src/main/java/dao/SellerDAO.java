@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Admin;
 import entity.Seller;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -23,6 +24,10 @@ public class SellerDAO extends GenericDAO<Seller> {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public Seller findByAccountId(Integer accountId) {
+        return em.find(Seller.class, accountId);
     }
 
     public List<Seller> getActiveSellers() {

@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Manager;
+import entity.Seller;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
@@ -23,5 +24,8 @@ public class ManagerDAO extends GenericDAO<Manager> {
         } catch (NoResultException e) {
             return null;
         }
+    }
+    public Manager findByAccountId(Integer accountId) {
+        return em.find(Manager.class, accountId);
     }
 }

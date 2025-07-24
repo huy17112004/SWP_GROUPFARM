@@ -238,29 +238,13 @@
                                 <li class="back-btn"></li>
 
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" href="sidebar-shipper.html">
-                                        <i class="ri-home-line"></i>
-                                        <span>Dashboard</span>
+                                    <a class="sidebar-link sidebar-title link-nav active" href="order-list-seller.html">
+                                        <i class="ri-archive-line"></i>
+                                        <span>Quản lí đơn hàng</span>
                                     </a>
                                 </li>                              
 
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
-                                        <i class="ri-archive-line"></i>
-                                        <span>Orders</span>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li>
-                                            <a href="order-list.html">Order List</a>
-                                        </li>
-                                        <li>
-                                            <a href="order-detail.html">Order Detail</a>
-                                        </li>
-                                        <li>
-                                            <a href="order-tracking.html">Order Tracking</a>
-                                        </li>
-                                    </ul>
-                                </li>                         
+
 
                         <div class="right-arrow" id="right-arrow">
                             <i data-feather="arrow-right"></i>
@@ -456,7 +440,7 @@
                     if (xhr.status === 401) {
                         alert('Bạn chưa đăng nhập!');
                         // Redirect to login page
-                        window.location.href = '../login';
+                        window.location.href = 'login.html';
                     } else {
                         alert('Có lỗi xảy ra khi tải danh sách đơn hàng!');
                     }
@@ -476,6 +460,17 @@
                 `);
                 return;
             }
+
+            // Sắp xếp ưu tiên NEGOTIATING, DEPOSIT, CREATED lên đầu
+            orders.sort((a, b) => {
+                const priority = status => {
+                    if (status === 'NEGOTIATING') return 0;
+                    if (status === 'DEPOSIT') return 1;
+                    if (status === 'CREATED') return 2;
+                    return 3;
+                };
+                return priority(a.status) - priority(b.status);
+            });
 
             orders.forEach(order => {
                 const orderDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('vi-VN') : 'N/A';
