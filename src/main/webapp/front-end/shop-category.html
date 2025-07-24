@@ -340,7 +340,8 @@
 
                                 <!-- KẾT THÚC: Chọn số lượng -->
                                 <div class="modal-button">
-                                    <button onclick="addToCarts()" class="btn btn-md bg-dark cart-button text-white w-100">
+
+                                    <button onclick="addToCart()" class="btn btn-md bg-dark cart-button text-white w-100">
                                         Thêm vào giỏ hàng
                                     </button>
                                     <button onclick="location.href = 'product-image.html';"
@@ -701,6 +702,30 @@
                 document.getElementById('footer-placeholder').innerHTML = data;
                 feather.replace();
             });
+        // Xử lý khi mở modal
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewModal = document.getElementById('view');
+            if (viewModal) {
+                viewModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const productId = button.getAttribute('data-product-id');
+                    if (productId) {
+                        // Cập nhật URL với productId khi mở modal
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('productId', productId);
+                        window.history.replaceState({}, '', url);
+                    }
+                });
+
+                // Xử lý khi đóng modal
+                viewModal.addEventListener('hidden.bs.modal', function() {
+                    // Xóa productId khỏi URL khi đóng modal
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('productId');
+                    window.history.replaceState({}, '', url);
+                });
+            }
+        });
 
 
     </script>
