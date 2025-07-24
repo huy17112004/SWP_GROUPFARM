@@ -21,13 +21,13 @@ public class ProductDashBoardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //Kiểm tra session bắt buộc phải có accountId
-        HttpSession session = req.getSession(false); // false: không tạo mới nếu không có
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
-            resp.setContentType("application/json;charset=UTF-8");
-            resp.getWriter().write("{\"error\":\"Bạn chưa đăng nhập\"}");
-            return;
-        }
+//        HttpSession session = req.getSession(false); // false: không tạo mới nếu không có
+//        if (session == null || session.getAttribute("accountId") == null) {
+//            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+//            resp.setContentType("application/json;charset=UTF-8");
+//            resp.getWriter().write("{\"error\":\"Bạn chưa đăng nhập\"}");
+//            return;
+//        }
 //        HttpSession session = req.getSession(true);
 //        session.setAttribute("accountId", 1); // Giả lập user có ID = 1
 //        String path = req.getPathInfo(); // "/related"
@@ -72,7 +72,7 @@ public class ProductDashBoardServlet extends HttpServlet {
         }
 
         try {
-            Long productId = Long.parseLong(pathInfo.substring(1)); // bỏ dấu "/"
+            int productId = Integer.parseInt(pathInfo.substring(1)); // bỏ dấu "/"
 
             String message = productService.deleteProduct(productId); // gọi service
             resp.setContentType("application/json;charset=UTF-8");
