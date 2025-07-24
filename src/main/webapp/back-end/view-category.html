@@ -67,7 +67,9 @@
     <!-- page-wrapper start -->
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
         <!-- Page Header Start-->
-        <div id="header-placeholder"></div>
+        <div id="header-placeholder">
+            <div id="user-info" style="font-weight:bold; color:#178a3d; float:right; margin-right:24px;"></div>
+        </div>
         <!-- Page Header Ends-->
 
         <!-- Page Body start -->
@@ -450,6 +452,28 @@
             });
         </script>
 
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                fetch('http://localhost:8080/api/me', {
+                    method: 'GET',
+                    credentials: 'include'  // bắt buộc để gửi kèm JSESSIONID
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Not authenticated');
+                        return res.json();
+                    })
+                    .then(user => {
+                        // hiển thị tên + role lên header
+                        const infoEl = document.getElementById('user-info');
+                        infoEl.textContent = `${user.name || user.username} (${user.role})`;
+                    })
+                    .catch(err => {
+                        console.warn('Fetch /api/me failed:', err);
+                        // nếu muốn, redirect về login:
+                        // window.location.href = '/login.html';
+                    });
+            });
+        </script>
 
 
 </body>

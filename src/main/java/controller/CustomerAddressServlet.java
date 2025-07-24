@@ -29,7 +29,7 @@ public class CustomerAddressServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
+        if (session == null || session.getAttribute("userId") == null) {
             String json = gson.toJson(new MessageResponse("Unauthorized", false));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(json);
@@ -55,8 +55,8 @@ public class CustomerAddressServlet extends HttpServlet {
             return;
         }
 
-        int accountId = (Integer) session.getAttribute("accountId");
-        List<CustomerAddressListDTO> addressList = customerAddressService.getCustomerAddresses(accountId);
+        int userId = (Integer) session.getAttribute("userId");
+        List<CustomerAddressListDTO> addressList = customerAddressService.getCustomerAddresses(userId);
         String json = gson.toJson(addressList);
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(json);
@@ -69,16 +69,16 @@ public class CustomerAddressServlet extends HttpServlet {
             CustomerAddressDTO customerAddress = gson.fromJson(reader, CustomerAddressDTO.class);
 
             HttpSession session = request.getSession(false);
-            int accountId = (Integer) session.getAttribute("accountId");
+            int userId = (Integer) session.getAttribute("userId");
 
-            if (session == null || session.getAttribute("accountId") == null) {
+            if (session == null || session.getAttribute("userId") == null) {
                 String json = gson.toJson(new MessageResponse("Unauthorized", false));
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(json);
                 return;
             }
 
-            boolean ok = customerAddressService.addCustomerAddress(accountId,customerAddress.getStreet(),customerAddress.getWardID(),customerAddress.getLatitude(),customerAddress.getLongitude());
+            boolean ok = customerAddressService.addCustomerAddress(userId,customerAddress.getStreet(),customerAddress.getWardID(),customerAddress.getLatitude(),customerAddress.getLongitude());
             if (ok) {
                 String json = gson.toJson(new MessageResponse("Add customer address successfully!", true));
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -99,7 +99,7 @@ public class CustomerAddressServlet extends HttpServlet {
 
         // Kiểm tra session đăng nhập
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
+        if (session == null || session.getAttribute("userId") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(gson.toJson(new MessageResponse("Unauthorized", false)));
             return;
@@ -132,9 +132,9 @@ public class CustomerAddressServlet extends HttpServlet {
             return;
         }
 
-        int accountId = (Integer) session.getAttribute("accountId");
+        int userId = (Integer) session.getAttribute("userId");
         boolean ok = customerAddressService.updateCustomerAddress(
-                accountId,
+                userId,
                 addressId,
                 dto.getStreet(),
                 dto.getWardID(),
@@ -157,7 +157,7 @@ public class CustomerAddressServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
+        if (session == null || session.getAttribute("userId") == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(gson.toJson(new MessageResponse("Unauthorized", false)));
             return;
@@ -180,8 +180,8 @@ public class CustomerAddressServlet extends HttpServlet {
             return;
         }
 
-        int accountId = (Integer) session.getAttribute("accountId");
-        boolean ok = customerAddressService.deleteCustomerAddress(accountId, addressId);
+        int userId = (Integer) session.getAttribute("userId");
+        boolean ok = customerAddressService.deleteCustomerAddress(userId, addressId);
 
         if (ok) {
             response.setStatus(HttpServletResponse.SC_OK);

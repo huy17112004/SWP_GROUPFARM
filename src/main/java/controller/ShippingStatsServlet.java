@@ -26,10 +26,6 @@ public class ShippingStatsServlet extends HttpServlet {
 //            return;
 //        }
 
-        HttpSession session = req.getSession(true);
-        session.setAttribute("accountId", 1);  // Giả lập login
-        session.setAttribute("role", "admin");
-
         try {
             List<ShippingOrderDTO> summaries = statsService.getAllPendingOrShippedOrders();
             resp.setContentType("application/json;charset=UTF-8");

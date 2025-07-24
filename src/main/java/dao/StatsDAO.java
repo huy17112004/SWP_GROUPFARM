@@ -52,7 +52,7 @@ public class StatsDAO  extends GenericDAO{
         FROM WholesaleOrder o
         JOIN o.items i
         JOIN i.product p
-        WHERE o.status IN ('SHIPPED', 'PENDING')
+        WHERE o.status IN ('DELIVERED', 'CREATED')
     """;
 
         return em.createQuery(jpql, ShippingOrderDTO.class).getResultList();
@@ -74,7 +74,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'SHIPPED'";
+                "AND o.status = 'DELIVERED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfDay)
@@ -101,7 +101,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'SHIPPED'";
+                "AND o.status = 'DELIVERED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfWeek)
@@ -126,7 +126,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'SHIPPED'";
+                "AND o.status = 'DELIVERED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfMonth)
@@ -153,7 +153,7 @@ public class StatsDAO  extends GenericDAO{
 
         String jpql = "SELECT COALESCE(SUM(o.totalPrice), 0) FROM WholesaleOrder o " +
                 "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
-                "AND o.status = 'SHIPPED'";
+                "AND o.status = 'DELIVERED'";
 
         BigDecimal result = em.createQuery(jpql, BigDecimal.class)
                 .setParameter("startDate", startOfYear)
@@ -186,7 +186,7 @@ public class StatsDAO  extends GenericDAO{
                 "JOIN oi.order o " +
                 "WHERE o.createdAt >= :startDate " +
                 "AND o.createdAt < :endDate " +
-                "AND o.status = 'SHIPPED' " +
+                "AND o.status = 'DELIVERED' " +
                 "GROUP BY p.id, p.productName, p.retailPrice " +
                 "ORDER BY " + orderBy;
 
@@ -279,7 +279,7 @@ public class StatsDAO  extends GenericDAO{
     public int getTotalSoldQuantity() {
         String jpql = "SELECT COALESCE(SUM(oi.quantity), 0) FROM WholesaleOrderItem oi " +
                 "JOIN oi.order o " +
-                "WHERE o.status = 'SHIPPED'";
+                "WHERE o.status = 'DELIVERED'";
         Long totalSold = em.createQuery(jpql, Long.class).getSingleResult();
         return totalSold != null ? totalSold.intValue() : 0;
     }

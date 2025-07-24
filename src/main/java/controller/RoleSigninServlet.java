@@ -1,4 +1,3 @@
-// src/main/java/controller/RoleSigninServlet.java
 package controller;
 
 import com.google.gson.Gson;
@@ -22,11 +21,9 @@ public class RoleSigninServlet extends HttpServlet {
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String origin = req.getHeader("Origin");
-        // (Bạn có thể kiểm nếu origin nằm trong whitelist thì mới cho qua)
         resp.setHeader("Access-Control-Allow-Origin", origin);
         resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
-        // Cho phép front-end đọc trường redirectUrl:
         resp.setHeader("Access-Control-Expose-Headers", "Content-Type");
         resp.setStatus(HttpServletResponse.SC_OK);
     }
@@ -40,20 +37,29 @@ public class RoleSigninServlet extends HttpServlet {
         resp.setContentType("application/json; charset=UTF-8");
 
         try {
+            // 1. Parse DTO
             RoleSignInRequestDTO dto = gson.fromJson(req.getReader(), RoleSignInRequestDTO.class);
+
+            // 2. Thực hiện login
             Account acc = authService.loginWithRole(
                     dto.getUsername(),
                     dto.getPassword(),
                     dto.getRole()
             );
 
-            // Lưu session
+            // 3. Lưu session với nhiều attribute
             HttpSession session = req.getSession(true);
             session.setAttribute("currentAccount", acc);
+
             String role = dto.getRole().toUpperCase();
             session.setAttribute("role", role);
 
-            // Xác định URL redirect tùy role
+            // Thêm các thông tin chi tiết hơn
+            session.setAttribute("accountId",    acc.getId());
+            session.setAttribute("accountType",  role);
+            session.setAttribute("username",     acc.getUsername());
+
+            // 4. Xác định URL redirect theo role
             String ctx = req.getContextPath();
             String redirectUrl;
             switch (role) {
@@ -70,10 +76,10 @@ public class RoleSigninServlet extends HttpServlet {
                     redirectUrl = ctx + "/";
             }
 
-            // Trả về JSON kèm redirectUrl
+            // 5. Trả về JSON kèm redirectUrl
             Map<String,String> result = new HashMap<>();
-            result.put("message", "Đăng nhập thành công");
-            result.put("role", role);
+            result.put("message",     "Đăng nhập thành công");
+            result.put("role",        role);
             result.put("redirectUrl", redirectUrl);
 
             resp.setStatus(HttpServletResponse.SC_OK);

@@ -28,8 +28,9 @@
                     </div>
                 </div>
 
-                <div style="display:flex; justify-content:center; align-items:center; padding: 18px 0 14px 0; background: #fff; border-bottom: 2px solid #bdbdbd; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04); margin-bottom: 8px;">
-                  <span style="
+                <div
+                    style="display:flex; justify-content:center; align-items:center; padding: 18px 0 14px 0; background: #fff; border-bottom: 2px solid #bdbdbd; box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04); margin-bottom: 8px;">
+                    <span style="
                     font-size:2rem;
                     font-weight:900;
                     letter-spacing:2.5px;
@@ -37,8 +38,8 @@
                     text-shadow: 0 2px 8px #e0e0e0;
                     padding: 0 36px;
                   ">
-                    Quản lí hệ thống
-                  </span>
+                        Quản lí hệ thống
+                    </span>
                 </div>
                 <div class="nav-right col-6 pull-right right-header p-0">
                     <ul class="nav-menus">
@@ -53,37 +54,7 @@
                                 <span class="badge rounded-pill badge-theme">4</span>
                             </div>
                             <ul class="notification-dropdown onhover-show-div">
-                                <li>
-                                    <i class="ri-notification-line"></i>
-                                    <h6 class="f-18 mb-0">Notitications</h6>
-                                </li>
-                                <li>
-                                    <p>
-                                        <i class="fa fa-circle me-2 font-primary"></i>Delivery processing <span
-                                            class="pull-right">10 min.</span>
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <i class="fa fa-circle me-2 font-success"></i>Order Complete<span
-                                            class="pull-right">1 hr</span>
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <i class="fa fa-circle me-2 font-info"></i>Tickets Generated<span
-                                            class="pull-right">3 hr</span>
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <i class="fa fa-circle me-2 font-danger"></i>Delivery Complete<span
-                                            class="pull-right">6 hr</span>
-                                    </p>
-                                </li>
-                                <li>
-                                    <a class="btn btn-primary" href="javascript:void(0)">Check all notification</a>
-                                </li>
+                                <!-- ... -->
                             </ul>
                         </li>
 
@@ -92,16 +63,20 @@
                                 <i class="ri-moon-line"></i>
                             </div>
                         </li>
+                        <!-- CHỖ NÀY: Profile-nav đã chỉnh để lấy dữ liệu động -->
                         <li class="profile-nav onhover-dropdown pe-0 me-0">
                             <div class="media profile-media">
                                 <img class="user-profile rounded-circle" src="assets/images/users/4.jpg" alt="">
                                 <div class="user-name-hide media-body">
-                                    <span>Emay Walter</span>
-                                    <p class="mb-0 font-roboto">Admin<i class="middle ri-arrow-down-s-line"></i></p>
+                                    <!-- Thay bằng ID để script gán giá trị -->
+                                    <span id="user-name">Loading...</span>
+                                    <p class="mb-0 font-roboto">
+                                        <span id="user-role">…</span>
+                                        <i class="middle ri-arrow-down-s-line"></i>
+                                    </p>
                                 </div>
                             </div>
                             <ul class="profile-dropdown onhover-show-div">
-                                
                                 <li>
                                     <a href="profile-setting.html">
                                         <i data-feather="settings"></i>
@@ -132,9 +107,10 @@
                         <p>Are you sure you want to log out?</p>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         <div class="button-box">
-                            <button type="button" class="btn btn--no" data-bs-dismiss="modal">No</button>
-                            <button type="button" onclick="location.href = '../front-end/login.html';"
-                                class="btn  btn--yes btn-primary">Yes</button>
+                            <button type="button" class="btn--no btn btn-outline-secondary"
+                                data-bs-dismiss="modal">No</button>
+                            <button type="button" onclick="location.href = '../back-end/login.html';"
+                                class="btn--yes btn btn-primary">Yes</button>
                         </div>
                     </div>
                 </div>
@@ -144,6 +120,35 @@
 
         <!-- component-loader js -->
         <script src="components/component-loader.js"></script>
+
+        <!-- Script gọi API /api/me và hiển thị user info -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                fetch('http://localhost:8080/api/me', {
+                    method: 'GET',
+                    mode: 'cors',               // bật CORS
+                    credentials: 'include',     // gửi kèm JSESSIONID
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Not authenticated');
+                        return res.json();
+                    })
+                    .then(user => {
+                        document.getElementById('user-name').textContent = user.name;
+                        document.getElementById('user-role').textContent = user.role;
+                    })
+                    .catch(err => {
+                        console.warn(err);
+                        // Nếu chưa login, có thể redirect: 
+                        // window.location.href = '/YourAppContext/login.html';
+                        document.getElementById('user-name').textContent = '';
+                        document.getElementById('user-role').textContent = '';
+                    });
+            });
+        </script>
     </div>
 </body>
 

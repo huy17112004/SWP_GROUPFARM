@@ -46,7 +46,6 @@
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/chartist.css">
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/date-picker.css">
-
     <!-- Bootstrap css -->
     <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
 
@@ -167,69 +166,75 @@
             </div>
             <!-- Page Sidebar Ends-->
 
-            <div class="page-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-sm-8 m-auto">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="card-header-2">
-                                                <h5>Nhập lô hàng mới</h5>
-                                            </div>
-                                            <form id="importLotForm" class="theme-form theme-form-2 mega-form">
-                                                <!-- Chọn sản phẩm -->
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0">Sản phẩm</label>
-                                                    <div class="col-sm-9">
-                                                        <select id="productSelect" class="form-control" required>
-                                                            <option value="">-- Chọn sản phẩm --</option>
-                                                            <!-- option sinh động bởi JS -->
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Chọn kho -->
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0">Kho</label>
-                                                    <div class="col-sm-9">
-                                                        <select id="warehouseSelect" class="form-control" required>
-                                                            <option value="">-- Chọn kho --</option>
-                                                            <!-- option sinh động bởi JS -->
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Số lượng -->
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0">Số lượng</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="number" id="qtyInput" class="form-control" min="1"
-                                                            placeholder="Số lượng" required>
-                                                    </div>
-                                                </div>
-                                                <!-- Ngày nhập -->
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0">Ngày nhập</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="datetime-local" id="importDateInput"
-                                                            class="form-control" step="1" required>
-                                                    </div>
-                                                </div>
-                                                <!-- Hạn dùng -->
-                                                <div class="mb-4 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0">Hạn dùng</label>
-                                                    <div class="col-sm-9">
-                                                        <input type="datetime-local" id="expiredDateInput"
-                                                            class="form-control" step="1" required>
-                                                    </div>
-                                                </div>
-                                                <!-- Nút submit -->
-                                                <div class="card-submit-button">
-                                                    <button type="submit" class="btn btn-animation ms-auto">Thêm lô
-                                                        hàng</button>
-                                                </div>
-                                            </form>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-sm-8 m-auto" style="margin-top: 64px;">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-header-2">
+                                            <h5>Thêm nhân viên kho</h5>
                                         </div>
+                                        <form id="createStaffForm" class="theme-form theme-form-2 mega-form">
+                                            <!-- Username -->
+                                            <div class="mb-4 row align-items-center">
+                                                <label class="form-label-title col-sm-3 mb-0">Username</label>
+                                                <div class="col-sm-9">
+                                                    <input id="username" type="text" class="form-control"
+                                                        placeholder="Username" required>
+                                                </div>
+                                            </div>
+                                            <!-- Password -->
+                                            <div class="mb-4 row align-items-center">
+                                                <label class="form-label-title col-sm-3 mb-0">Mật khẩu</label>
+                                                <div class="col-sm-9">
+                                                    <input id="password" type="password" class="form-control"
+                                                        placeholder="Mật khẩu" required>
+                                                </div>
+                                            </div>
+                                            <!-- Name -->
+                                            <div class="mb-4 row align-items-center">
+                                                <label class="form-label-title col-sm-3 mb-0">Họ tên</label>
+                                                <div class="col-sm-9">
+                                                    <input id="name" type="text" class="form-control"
+                                                        placeholder="Họ tên" required>
+                                                </div>
+                                            </div>
+                                            <!-- Email -->
+                                            <div class="mb-4 row align-items-center">
+                                                <label class="form-label-title col-sm-3 mb-0">Email</label>
+                                                <div class="col-sm-9">
+                                                    <input id="email" type="email" class="form-control"
+                                                        placeholder="Email" required>
+                                                </div>
+                                            </div>
+                                            <!-- Phone -->
+                                            <div class="mb-4 row align-items-center">
+                                                <label class="form-label-title col-sm-3 mb-0">Số điện thoại</label>
+                                                <div class="col-sm-9">
+                                                    <input id="phone" type="text" class="form-control"
+                                                        placeholder="Số điện thoại" required>
+                                                </div>
+                                            </div>
+                                            <!-- Warehouse -->
+                                            <div class="mb-4 row align-items-center">
+                                                <label class="form-label-title col-sm-3 mb-0">Kho hàng</label>
+                                                <div class="col-sm-9">
+                                                    <select id="warehouseSelect" class="form-control" required>
+                                                        <option value="">-- Chọn kho --</option>
+                                                        <!-- Options sẽ được render từ JS -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- Submit -->
+                                            <div class="card-submit-button text-end">
+                                                <button type="submit" class="btn btn-primary ms-auto">Thêm nhân
+                                                    viên</button>
+                                            </div>
+                                            <!-- Error/Success -->
+                                            <div id="staffFormMessage" class="mt-3"></div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -237,6 +242,21 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- New Product Add End -->
+
+            <!-- footer Start -->
+            <div class="container-fluid">
+                <footer class="footer">
+                    <div class="row">
+                        <div class="col-md-12 footer-copyright text-center">
+                            <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- footer En -->
         </div>
         <!-- Container-fluid End -->
     </div>
@@ -292,120 +312,69 @@
 
     <!-- component-loader js -->
     <script src="components/component-loader.js"></script>
-    
     <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                fetch('http://localhost:8080/api/me', {
-                    method: 'GET',
-                    credentials: 'include'  // bắt buộc để gửi kèm JSESSIONID
-                })
-                    .then(res => {
-                        if (!res.ok) throw new Error('Not authenticated');
-                        return res.json();
-                    })
-                    .then(user => {
-                        // hiển thị tên + role lên header
-                        const infoEl = document.getElementById('user-info');
-                        infoEl.textContent = `${user.name || user.username} (${user.role})`;
-                    })
-                    .catch(err => {
-                        console.warn('Fetch /api/me failed:', err);
-                        // nếu muốn, redirect về login:
-                        // window.location.href = '/login.html';
-                    });
-            });
-        </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const apiStockLot = 'http://localhost:8080/api/stocklots';
-            const apiProducts = 'http://localhost:8080/api/product-view';
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lấy danh sách kho và render dropdown
             const apiWarehouses = 'http://localhost:8080/api/warehouses-detail';
 
-            // 1) Load sản phẩm
-            fetch(apiProducts)
-                .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-                .then(products => {
-                    const sel = document.getElementById('productSelect');
-                    products.forEach(p => {
-                        const opt = document.createElement('option');
-                        opt.value = p.productId ?? p.id;
-                        opt.textContent = p.productName ?? p.name;
-                        sel.appendChild(opt);
-                    });
-                })
-                .catch(console.error);
-
-            // 2) Load kho
             fetch(apiWarehouses)
-                .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(r => {
+                    if (!r.ok) throw new Error(r.status);
+                    return r.json();
+                })
                 .then(warehouses => {
                     const sel = document.getElementById('warehouseSelect');
-                    warehouses.forEach(w => {
-                        const opt = document.createElement('option');
-                        opt.value = w.warehouseId ?? w.id;
-                        opt.textContent = w.warehouseName ?? w.name;
-                        sel.appendChild(opt);
-                    });
+                    // Lọc chỉ các kho chưa có staff
+                    warehouses
+                        .filter(w => !w.staffName) // hoặc w.staffName == null || w.staffName == ""
+                        .forEach(w => {
+                            const opt = document.createElement('option');
+                            opt.value = w.warehouseId ?? w.id;
+                            opt.textContent = w.warehouseName ?? w.name;
+                            sel.appendChild(opt);
+                        });
                 })
                 .catch(console.error);
 
-            // 3) Helper: ép có giây và chuyển sang ISO-8601 với Z
-            function toIsoString(raw) {
-                // raw = "YYYY-MM-DDThh:mm" hoặc "YYYY-MM-DDThh:mm:ss"
-                let v = raw;
-                if (v.length === 16) v += ':00';        // thêm ":00" nếu chỉ tới phút
-                return new Date(v).toISOString();      // => "2025-07-16T05:15:00.000Z"
-            }
-
-            // 4) Submit form
-            document.getElementById('importLotForm').addEventListener('submit', e => {
+            // Xử lý submit form
+            document.getElementById('createStaffForm').addEventListener('submit', function (e) {
                 e.preventDefault();
+                const messageDiv = document.getElementById('staffFormMessage');
+                messageDiv.innerHTML = '';
 
-                const productId = document.getElementById('productSelect').value;
-                const warehouseId = document.getElementById('warehouseSelect').value;
-                const quantity = document.getElementById('qtyInput').value;
-                const importRaw = document.getElementById('importDateInput').value;
-                const expiredRaw = document.getElementById('expiredDateInput').value;
-
-                if (!productId || !warehouseId || !quantity || !importRaw || !expiredRaw) {
-                    return alert('Vui lòng điền đầy đủ thông tin!');
-                }
-
-                const lot = {
-                    productId: Number(productId),
-                    warehouseId: Number(warehouseId),
-                    quantity: Number(quantity),
-                    importDate: toIsoString(importRaw),
-                    expiredDate: toIsoString(expiredRaw)
+                // Lấy dữ liệu từ form
+                const dto = {
+                    username: document.getElementById('username').value.trim(),
+                    rawPassword: document.getElementById('password').value,
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    warehouseId: parseInt(document.getElementById('warehouseSelect').value)
                 };
 
-                fetch(apiStockLot, {
+                // Gửi API
+                fetch('/api/warehouse-staff/create', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(lot)
+                    body: JSON.stringify(dto)
                 })
                     .then(async res => {
-                        const text = await res.text();
-                        if (!res.ok) {
-                            console.error('Server 500 response:', text);
-                            throw new Error(`HTTP ${res.status}: ${text}`);
+                        const data = await res.json();
+                        if (res.ok) {
+                            messageDiv.innerHTML = `<div class="alert alert-success">${data.message || 'Thêm nhân viên thành công!'}</div>`;
+                            // Có thể reset form hoặc chuyển hướng tuỳ ý
+                            this.reset();
+                        } else {
+                            messageDiv.innerHTML = `<div class="alert alert-danger">${data.error || 'Lỗi không xác định!'}</div>`;
                         }
-                        return JSON.parse(text);
-                    })
-                    .then(data => {
-                        alert('Thêm lô hàng thành công!');
-                        document.getElementById('importLotForm').reset();
                     })
                     .catch(err => {
-                        console.error('Create stocklot failed:', err);
-                        alert('Lỗi khi thêm lô hàng:\n' + err.message);
+                        messageDiv.innerHTML = `<div class="alert alert-danger">Lỗi kết nối server!</div>`;
                     });
             });
         });
+
     </script>
-
-
 
 
 </body>
