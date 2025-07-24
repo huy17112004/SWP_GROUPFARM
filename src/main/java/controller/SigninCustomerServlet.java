@@ -39,6 +39,7 @@ public class SigninCustomerServlet extends HttpServlet {
             WholesaleCustomer user = svc.login(dto);
             // Lưu session
             HttpSession session = req.getSession(true);
+            session.setAttribute("userId", user.getId());
             session.setAttribute("accountId", user.getId());
             session.setAttribute("accountType", "CUSTOMER");
             session.setAttribute("username", user.getUsername());

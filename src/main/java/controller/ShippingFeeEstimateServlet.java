@@ -26,9 +26,9 @@ public class ShippingFeeEstimateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            // Lấy accountId từ session
-            Integer accountId = (Integer) req.getSession().getAttribute("accountId");
-            if (accountId == null) {
+            // Lấy userId từ session
+            Integer userId = (Integer) req.getSession().getAttribute("userId");
+            if (userId == null) {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write("Chưa đăng nhập.");
                 return;
@@ -38,7 +38,7 @@ public class ShippingFeeEstimateServlet extends HttpServlet {
 
             // Tính phí vận chuyển
             double avgSpeedKmph = 50.0;
-            BigDecimal shippingFee = shippingService.calculateEstimateShippingFee(accountId, addressId, LocalDateTime.parse("2025-12-30T14:30:00"), avgSpeedKmph);
+            BigDecimal shippingFee = shippingService.calculateEstimateShippingFee(userId, addressId, LocalDateTime.parse("2025-12-30T14:30:00"), avgSpeedKmph);
 
             // Trả kết quả JSON về client
             resp.setContentType("application/json");
