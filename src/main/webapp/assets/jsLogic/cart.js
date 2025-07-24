@@ -83,8 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
         .then(res => {
-            if (!res.ok) throw new Error("Không thể lấy dữ liệu giỏ hàng.");
-            return res.json();
         })
         .then(cartItems => {
             const tbody = document.getElementById("cart-table-body");
