@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.ProductService;
 
 import java.io.IOException;
@@ -21,7 +22,19 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("accountId") == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
+            return;
+        }
+
+
+        Object accountId = session.getAttribute("accountId");
+        if (!(accountId instanceof Integer || accountId instanceof Long)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
+            return;
+        }
         String pathInfo = request.getPathInfo(); //
 
         response.setContentType("application/json;charset=UTF-8");
@@ -30,7 +43,7 @@ public class ProductDetailServlet extends HttpServlet {
         try {
             if (pathInfo == null || pathInfo.equals("/")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"error\":\"Missing product ID in URL.\"}");
+                response.getWriter().write("{\"error\":\"ID sản phẩm là bắt buộc.\"}");
                 return;
             }
 
@@ -43,7 +56,7 @@ public class ProductDetailServlet extends HttpServlet {
                 response.getWriter().write(gson.toJson(dto));
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                response.getWriter().write("{\"error\":\"Product not found.\"}");
+                response.getWriter().write("{\"error\":\"Sản phẩm không tìm thấy .\"}");
             }
 
         } catch (NumberFormatException e) {

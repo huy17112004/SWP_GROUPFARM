@@ -113,54 +113,52 @@ public class  StatsService {
 
 
     // sản phẩm bán chạy hôm nay
-    public List<TopProductDTO> getTopProductsToday(int limit) {
+    public List<TopProductDTO> getTopProductsToday(int limit, String sortBy) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             StatsDAO statsDAO = new StatsDAO(em);
-            return statsDAO.getTopProductsToday(limit);
+            return statsDAO.getTopProductsToday(limit, sortBy);
         } finally {
             if (em != null && em.isOpen()) em.close();
         }
     }
 
     // sản phẩm bán chạy hàng tuần
-    public List<TopProductDTO> getTopProductsThisWeek(int limit) {
+    public List<TopProductDTO> getTopProductsThisWeek(int limit, String sortBy) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             StatsDAO statsDAO = new StatsDAO(em);
-            return statsDAO.getTopProductsThisWeek(limit);
+            return statsDAO.getTopProductsThisWeek(limit, sortBy);
         } finally {
             if (em != null && em.isOpen()) em.close();
         }
     }
 
     // sản phẩm bán chạy tháng
-    public List<TopProductDTO> getTopProductsThisMonth(int limit) {
+    public List<TopProductDTO> getTopProductsThisMonth(int limit, String sortBy) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             StatsDAO statsDAO = new StatsDAO(em);
-            return statsDAO.getTopProductsThisMonth(limit);
+            return statsDAO.getTopProductsThisMonth(limit, sortBy);
         } finally {
             if (em != null && em.isOpen()) em.close();
         }
     }
 
     // lấy sản phẩm bán chạy tùy chỉnh theo thời gian
-    public List<TopProductDTO> getTopProductsByPeriod(String period, int limit) {
+    public List<TopProductDTO> getTopProductsByPeriod(String period, int limit, String sortBy) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             StatsDAO statsDAO = new StatsDAO(em);
-            
             switch (period.toLowerCase()) {
                 case "today":
-                    return statsDAO.getTopProductsToday(limit);
+                    return statsDAO.getTopProductsToday(limit, sortBy);
                 case "week":
-                    return statsDAO.getTopProductsThisWeek(limit);
+                    return statsDAO.getTopProductsThisWeek(limit, sortBy);
                 case "month":
-                    return statsDAO.getTopProductsThisMonth(limit);
+                    return statsDAO.getTopProductsThisMonth(limit, sortBy);
                 default:
-                    // Mặc định lấy top sản phẩm tháng này
-                    return statsDAO.getTopProductsThisMonth(limit);
+                    return statsDAO.getTopProductsThisMonth(limit, sortBy);
             }
         } finally {
             if (em != null && em.isOpen()) em.close();
@@ -196,5 +194,25 @@ public class  StatsService {
         }
     }
 
+    // Lấy top sản phẩm bán chạy theo thời gian và kiểu sắp xếp
+    public List<TopProductDTO> getTopProducts(String period, int limit, String sortBy) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            StatsDAO statsDAO = new StatsDAO(em);
+            if (period == null || period.isEmpty()) period = "month";
+            if (sortBy == null || sortBy.isEmpty()) sortBy = "quantity";
+            switch (period.toLowerCase()) {
+                case "today":
+                    return statsDAO.getTopProductsToday(limit, sortBy);
+                case "week":
+                    return statsDAO.getTopProductsThisWeek(limit, sortBy);
+                case "month":
+                default:
+                    return statsDAO.getTopProductsThisMonth(limit, sortBy);
+            }
+        } finally {
+            if (em != null && em.isOpen()) em.close();
+        }
+    }
 }
 

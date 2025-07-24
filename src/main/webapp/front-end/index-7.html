@@ -536,7 +536,6 @@
     <script src="../assets/js/theme-setting.js"></script>
 
     <script src="../assets/jsLogic/wishList.js"></script>
-    <script src="../assets/jsLogic/cart.js"></script>
  
 
     
@@ -681,6 +680,42 @@
             }
         });
 
+    </script>
+    <script>  // Quang Huy
+        // Xử lý click vào nút wishlist
+        document.body.addEventListener('click', function (e) {
+        const button = e.target.closest('.wishlist-btn');
+        if (!button) return;
+
+        const productId = button.getAttribute('data-product-id');
+        if (!productId) return;
+
+        fetch('/api/wishlist', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+    },
+        body: JSON.stringify({
+        productId: parseInt(productId)
+    })
+    })
+        .then(res => res.json())
+        .then(data => {
+        if (data.success) {
+        alert("💖 Đã thêm vào wishlist!");
+        // Optional: chuyển sang wishlist.html
+        // window.location.href = "/wishlist.html";
+        // Optional: đổi màu trái tim
+        button.querySelector('i')?.classList.add('text-danger');
+    } else {
+        alert("❌ Không thể thêm: " + (data.message || 'Lỗi'));
+    }
+    })
+        .catch(err => {
+        console.error(err);
+        alert("❌ Lỗi hệ thống khi thêm vào wishlist.");
+    });
+    });
     </script>
 
     <script>

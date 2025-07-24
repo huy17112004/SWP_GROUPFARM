@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Top Sản Phẩm</title>
+
+    <!-- Google font-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="assets/css/linearicon.css">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+
+    <!-- Feather icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+
+    <!-- Data Table css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/datatables.css">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+    <style>
+        .page-body {
+            padding: 24px;
+            background: #f8fafb;
+            min-height: calc(100vh - 60px);
+            margin-top: 80px;
+        }
+
+        .dashboard-order {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-order::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0da487, #4CAF50);
+        }
+
+        /* Title Section */
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .title h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #0da487, #4CAF50);
+            border-radius: 2px;
+        }
+
+        .title-leaf {
+            display: flex;
+            align-items: center;
+        }
+
+        .title-leaf svg {
+            width: 30px;
+            height: 30px;
+            fill: #0da487;
+            opacity: 0.8;
+        }
+
+        /* Filter Select */
+        .mb-3 {
+            margin-bottom: 24px !important;
+        }
+
+        #order-status-filter-select {
+            background: #ffffff;
+            border: 2px solid #e0f2f1;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #0da487;
+            font-weight: 600;
+            min-width: 200px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(13, 164, 135, 0.05);
+            cursor: pointer;
+            font-size: 0.95rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230da487' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 40px;
+        }
+
+        #order-status-filter-select:hover {
+            border-color: #0da487;
+            box-shadow: 0 4px 15px rgba(13, 164, 135, 0.1);
+            transform: translateY(-1px);
+        }
+
+        #order-status-filter-select:focus {
+            border-color: #0da487;
+            box-shadow: 0 0 0 3px rgba(13, 164, 135, 0.15);
+            outline: none;
+        }
+
+        /* Table Container */
+        .order-tab {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.03);
+        }
+
+        .table-responsive {
+            margin: -1px;
+            max-height: calc(56px * 10 + 60px); /* Chiều cao cho header + 10 rows */
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Custom Scrollbar Styling */
+        .table-responsive::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #0da487;
+            border-radius: 10px;
+            border: 2px solid #f1f1f1;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #0a8c6f;
+        }
+
+        /* Đảm bảo header luôn hiển thị khi cuộn */
+        .order-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f8fff8;
+        }
+
+        .order-table thead::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0da487, #4CAF50);
+        }
+
+        /* Table Styles */
+        .order-table {
+            margin: 0;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        /* Table Header */
+        .order-table thead th {
+            background: #f8fff8;
+            color: #0da487;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            padding: 16px;  /* Giảm padding của header */
+            border-bottom: 2px solid #e0f2f1;
+            text-align: left;
+            white-space: nowrap;
+            height: 60px; /* Cố định chiều cao header */
+        }
+
+        .order-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* Animation cho hover state */
+        @keyframes rowHover {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-2px) scale(1.01);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .order-table tbody tr:hover {
+            animation: rowHover 0.3s ease;
+            background-color: #f8fff8;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .order-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        /* Table Body Rows */
+        .order-table tbody td {
+            padding: 16px;  /* Giảm padding của cells */
+            vertical-align: middle;
+            color: #2c3e50;
+            font-size: 0.95rem;
+            border: none;
+            height: 56px; /* Cố định chiều cao mỗi row */
+        }
+
+        /* ID Column */
+        .order-table td:first-child {
+            font-weight: 700;
+            color: #0da487;
+            font-size: 1rem;
+        }
+
+        /* Product Name Column */
+        .order-table td:nth-child(2) {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Price Column */
+        .order-table td:nth-child(3) {
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        /* Status Column */
+        .order-table td:last-child {
+            font-weight: 600;
+        }
+
+        .order-table td:last-child[data-status="SHIPPED"] {
+            color: #4CAF50;
+        }
+
+        .order-table td:last-child[data-status="PENDING"] {
+            color: #FFA726;
+        }
+
+        /* Empty State */
+        .order-table tbody tr.no-data td {
+            padding: 48px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            background: #f8fff8;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .page-body {
+                padding: 16px;
+                margin-top: 60px;
+            }
+
+            .dashboard-order {
+                padding: 24px;
+            }
+
+            .title h2 {
+                font-size: 1.5rem;
+            }
+
+            .table-responsive {
+                max-height: calc(56px * 8 + 60px); /* Hiển thị 8 rows trên tablet */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title h2 {
+                font-size: 1.3rem;
+            }
+
+            #order-status-filter-select {
+                min-width: 180px;
+                padding: 10px 15px;
+            }
+
+            .table-responsive {
+                max-height: calc(56px * 6 + 60px); /* Hiển thị 6 rows trên mobile lớn */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-body {
+                padding: 12px;
+                margin-top: 50px;
+            }
+
+            .dashboard-order {
+                padding: 16px;
+            }
+
+            .title {
+                margin-bottom: 24px;
+            }
+
+            .order-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .order-table thead th {
+                font-size: 0.8rem;
+                padding: 12px 8px;
+            }
+
+            .order-table tbody td {
+                padding: 12px 8px;
+                font-size: 0.85rem;
+            }
+
+            .table-responsive {
+                max-height: calc(56px * 5 + 60px); /* Hiển thị 5 rows trên mobile nhỏ */
+            }
+
+            /* Custom scrollbar for mobile */
+            .table-responsive::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- tap on top start-->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end-->
+
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div id="header-placeholder"></div>
+        <!-- Page Header Ends-->
+
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="index.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="index.html">
+                            <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                            <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png"
+                                alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="reports.html">
+                                        <i class="ri-home-line"></i>
+                                        <span>Dashboard</span>
+                                    </a>
+                                </li>
+
+                               <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-archive-line"></i>
+                                        <span>Báo Cáo Giao Hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="shipping-status.html">Trạng Thái Các Đơn Hàng</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-price-tag-3-line"></i>
+                                        <span>Top Sản Phẩm</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="top-product.html">Chi Tiết Top Sản Phẩm</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+
+            <!-- Container-fluid starts-->
+            <div class="page-body">
+                <div class="dashboard-order">
+                    <div class="title">
+                        <h2>Tất Cả Đơn Hàng</h2>
+                        <span class="title-leaf title-leaf-gray">
+                                            <svg class="icon-width bg-gray">
+                                                <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                            </svg>
+                                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <select id="order-status-filter-select" class="form-select" style="width: 200px; display: inline-block;">
+                            <option value="ALL">Tất cả</option>
+                            <option value="SHIPPED">Shipped</option>
+                            <option value="PENDING">Pending</option>
+                        </select>
+                    </div>
+                    <div class="order-tab dashboard-bg-box">
+                        <div class="table-responsive">
+                        </div>
+                        <table class="table order-table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Tổng giá</th>
+                                <th scope="col">Trạng thái</th>
+                            </tr>
+                            </thead>
+                            <tbody id="all-order-body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <div class="container-fluid">
+                    <!-- footer start-->
+                    <footer class="footer">
+                        <div class="row">
+                            <div class="col-md-12 footer-copyright text-center">
+                                <p class="mb-0">Bản quyền 2022 © Fastkart theme by pixelstrap</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- page-wrapper End-->
+
+    <!-- latest js -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap js -->
+    <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- feather icon js -->
+    <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script src="assets/js/scrollbar/simplebar.js"></script>
+    <script src="assets/js/scrollbar/custom.js"></script>
+
+    <!-- Sidebar js -->
+    <script src="assets/js/config.js"></script>
+
+    <!-- customizer js -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Plugins js -->
+    <script src="assets/js/sidebar-menu.js"></script>
+    <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="assets/js/notify/index.js"></script>
+
+    <!-- sidebar effect -->
+    <script src="assets/js/sidebareffect.js"></script>
+
+    <!-- Theme js -->
+    <script src="assets/js/script.js"></script>
+
+    <!-- component-loader js -->
+    <script src="components/component-loader.js"></script>
+    <script src="../assets/jsLogic/productPagination.js"></script>
+    <script src="../assets/jsLogic/orderPagination.js"></script>
+    <!-- Custom js for top products -->
+
+</html> 
