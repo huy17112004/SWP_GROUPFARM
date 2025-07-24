@@ -52,15 +52,15 @@ export function renderProducts(containerId, products) {
                 <i data-feather="eye"></i>
               </a>
             </li>
-            <li title="Compare">
-              <a href="compare.html"><i data-feather="refresh-cw"></i></a>
-            </li>
-            
-            <!--Quang Huy-->
-             <li title="Wishlist">
-             <button class="wishlist-btn" data-product-id="${prod.productId}" style="all:unset;cursor:pointer;">
-                      <i data-feather="heart"></i>
-               </button>
+            <li title="Add to Cart">
+    <a href="javascript:void(0)" class="add-to-cart-btn" data-product-id="${prod.productId}">
+      <i data-feather="shopping-cart"></i>
+    </a>
+  </li>
+            <li title="Wishlist">
+                <a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-target="#wishlist" data-bs-placement="top" data-product-id="${prod.productId}" class="notifi-wishlist">
+                    <i data-feather="heart"></i>
+                </a>
             </li>
              <!--Quang Huy-->
           </ul>
@@ -70,11 +70,8 @@ export function renderProducts(containerId, products) {
             <h6 class="name">${prod.productName}</h6>
           </a>
           <h6 class="sold weight text-content fw-normal">1KG</h6>
-          <h6 class="price theme-color">${prod.retailPrice} VNĐ</h6>
+          <h6 class="price theme-color">${Number(prod.retailPrice).toLocaleString('vi-VN')} ₫</h6>
           <div class="add-to-cart-btn-2 addtocart_btn">
-            <button class="btn addcart-button btn buy-button">
-              <i class="fa-solid fa-plus"></i>
-            </button>
             <div class="cart_qty qty-box-2">
               <div class="input-group">
                 <button type="button" class="qty-left-minus" data-type="minus">
@@ -118,25 +115,27 @@ export function renderProductsInShopCategory(productsOrObj) {
                                         </a>
 
                                         <ul class="product-option">
-                                            <li data-bs-toggle="tooltip" data-bs-placement="top" title="View">
-                                                <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                    data-bs-target="#view" data-product-id="${prod.productId}">
-                                                    <i data-feather="eye"></i>
-                                                </a>
-                                            </li>
-
-                                            <li data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
-                                                <a href="compare.html">
-                                                    <i data-feather="refresh-cw"></i>
-                                                </a>
-                                            </li>
-                                <!--quang huy thêm -->
-                                            <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                                <button class="wishlist-btn" data-product-id="${prod.productId}" style="all:unset;cursor:pointer;">
-                                                    <i data-feather="heart"></i>
-                                                </button>
-                                            </li>
-                                <!--quang huy thêm -->
+                                            <li title="View">
+              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view"
+                data-id="${prod.productId}"
+                data-name="${prod.productName}"
+                data-price="${prod.wholesalePrice}"
+                data-category-name="${prod.categoryName}"
+                data-desc="${prod.description || ''}"
+                >
+                <i data-feather="eye"></i>
+              </a>
+            </li>
+            <li title="Add to Cart">
+    <a href="javascript:void(0)" class="add-to-cart-btn" data-product-id="${prod.productId}">
+      <i data-feather="shopping-cart"></i>
+    </a>
+  </li>
+            <li title="Wishlist">
+                <a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-target="#wishlist" data-bs-placement="top" data-product-id="${prod.productId}" class="notifi-wishlist">
+                    <i data-feather="heart"></i>
+                </a>
+            </li>
                             
                                         </ul>
                                     </div>
@@ -148,29 +147,8 @@ export function renderProductsInShopCategory(productsOrObj) {
                                             <h5 class="name">${prod.productName}</h5>
                                         </a>
                                         <h6 class="unit">1KG</h6>
-                                        <h5 class="price"><span class="theme-color">${prod.wholesalePrice}VNĐ</span> <del>${prod.retailPrice}VNĐ</del>
+                                        <h5 class="price"><span class="theme-color">${Number(prod.wholesalePrice).toLocaleString('vi-VN')} ₫</span> <del>${Number(prod.retailPrice).toLocaleString('vi-VN')} ₫</del>
                                         </h5>
-                                        <div class="add-to-cart-box bg-white">
-                                            <button class="btn btn-add-cart addcart-button">Add
-                                                <span class="add-icon bg-light-gray">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                </span>
-                                            </button>
-                                            <div class="cart_qty qty-box">
-                                                <div class="input-group bg-white">
-                                                    <button type="button" class="qty-left-minus bg-gray"
-                                                        data-type="minus" data-field="">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                    <input class="form-control input-number qty-input" type="text"
-                                                        name="quantity" value="0">
-                                                    <button type="button" class="qty-right-plus bg-gray"
-                                                        data-type="plus" data-field="">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +181,7 @@ export function attachQuickViewEvents(productsOrObj) {
             if (title) title.textContent = prod.productName;
             // Giá
             const price = modal.querySelector('.price');
-            if (price) price.textContent = prod.wholesalePrice + ' VNĐ';
+            if (price) price.textContent = Number(prod.wholesalePrice).toLocaleString('vi-VN') + ' ₫';
             // Mô tả
             const desc = modal.querySelector('.product-detail p');
             if (desc) desc.textContent = prod.description || '';

@@ -17,7 +17,6 @@
         <class>entity.Warehouse</class>
         <class>entity.Cart</class>
         <class>entity.Category</class>
-        <class>entity.Contract</class>
         <class>entity.OrderRisk</class>
         <class>entity.Product</class>
         <class>entity.ProductImage</class>

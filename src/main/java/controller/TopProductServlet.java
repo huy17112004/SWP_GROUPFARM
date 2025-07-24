@@ -21,11 +21,11 @@ public class TopProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
+//        HttpSession session = req.getSession(false);
+//        if (session == null || session.getAttribute("accountId") == null) {
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
+//            return;
+//        }
 
         try {
             // Lấy parameters
