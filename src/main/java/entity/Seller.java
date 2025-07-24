@@ -20,7 +20,7 @@ public class Seller extends Account {
     @Column(name = "Email", nullable = false, length = 100)
     private String email;
 
-    @Column(name = "Phone", nullable = false, length = 20)
+    @Column(name = "Phone",columnDefinition = "NVARCHAR(100)", nullable = false, length = 20)
     private String phone;
 
     @Column(name = "CreateAt", nullable = false)
