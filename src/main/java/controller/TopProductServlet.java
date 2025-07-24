@@ -23,19 +23,15 @@ public class TopProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        HttpSession session = req.getSession(false);
 //        if (session == null || session.getAttribute("accountId") == null) {
-//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Admin not logged in");
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
 //            return;
 //        }
 
-        //  Giả lập đăng nhập admin với accountId = 1
-        HttpSession session = req.getSession(true); // true = tạo session nếu chưa có
-        session.setAttribute("accountId", 1);
-        session.setAttribute("role", "admin");
-        
         try {
             // Lấy parameters
             String period = req.getParameter("period"); // today, week, month
             String limitStr = req.getParameter("limit"); // số lượng sản phẩm muốn lấy
+            String sortBy = req.getParameter("sortBy"); // quantity | revenue
             
             // Mặc định
             int limit = 10; // mặc định lấy top 10
@@ -54,10 +50,11 @@ public class TopProductServlet extends HttpServlet {
             
             if (period != null && !period.trim().isEmpty()) {
                 // Lấy theo thời gian cụ thể
-                topProducts = statsService.getTopProductsByPeriod(period, limit);
-            } else {
+                topProducts = statsService.getTopProductsByPeriod(period, limit, sortBy);
+            }
+                else {
                 // Mặc định lấy top sản phẩm tháng này
-                topProducts = statsService.getTopProductsThisMonth(limit);
+                topProducts = statsService.getTopProductsThisMonth(limit, sortBy);
             }
             
             resp.setContentType("application/json;charset=UTF-8");
