@@ -299,6 +299,8 @@
                 const orderId = $(this).data('order-id');
                 if (confirm('Bạn chắc chắn muốn xác nhận giao hàng thành công cho đơn này?')) {
                     confirmDelivery(orderId);
+                    alert('Xác nhận giao hàng thành công!');
+                    window.location.reload();
                 }
             });
         });
@@ -525,13 +527,9 @@
             $.ajax({
                 url: '../api/shipper/confirm-order?orderId=' + orderId,
                 method: 'POST',
-                success: function() {
-                    alert('Xác nhận giao hàng thành công!');
-                    loadManagerOrders();
+                success: function(response, status, xhr) {
+
                 },
-                error: function(xhr) {
-                    alert('Xác nhận thất bại!\n' + xhr.responseText);
-                }
             });
         }
 

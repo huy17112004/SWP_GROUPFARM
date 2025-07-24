@@ -55,7 +55,8 @@ public class RoleSigninServlet extends HttpServlet {
             session.setAttribute("role", role);
 
             // Thêm các thông tin chi tiết hơn
-            session.setAttribute("accountId",    acc.getId());
+            session.setAttribute("userId", acc.getId());
+            session.setAttribute("accountId", acc.getId());
             session.setAttribute("accountType",  role);
             session.setAttribute("username",     acc.getUsername());
 
@@ -63,14 +64,17 @@ public class RoleSigninServlet extends HttpServlet {
             String ctx = req.getContextPath();
             String redirectUrl;
             switch (role) {
-                case "ADMIN":
-                    redirectUrl = ctx + "/back-end/view-category.html";
+                case "SELLER":
+                    redirectUrl = ctx + "/back-end/order-list-seller.html";
+                    break;
+                case "MANAGER":
+                    redirectUrl = ctx + "/back-end/reports.html";
                     break;
                 case "WAREHOUSE":
-                    redirectUrl = ctx + "/back-end/add-new-stoklot.html";
+                    redirectUrl = ctx + "/back-end/warehouse-stocktransfer-management.html";
                     break;
                 case "SHIPPER":
-                    redirectUrl = ctx + "/shipper/dashboard.html";
+                    redirectUrl = ctx + "/back-end/shipper-order-confirmation.html";
                     break;
                 default:
                     redirectUrl = ctx + "/";

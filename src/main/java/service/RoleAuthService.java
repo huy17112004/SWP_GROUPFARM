@@ -18,8 +18,12 @@ public class RoleAuthService {
             }
 
             switch (role.toUpperCase()) {
-                case "ADMIN":
-                    if (new AdminDAO(em).findByAccountId(acc.getId()) == null)
+                case "SELLER":
+                    if (new SellerDAO(em).findByAccountId(acc.getId()) == null)
+                        throw new IllegalStateException("Bạn không có quyền truy cập với vai trò quản lí");
+                    break;
+                case "MANAGER":
+                    if (new ManagerDAO(em).findByAccountId(acc.getId()) == null)
                         throw new IllegalStateException("Bạn không có quyền truy cập với vai trò quản lí");
                     break;
                 case "WAREHOUSE":
