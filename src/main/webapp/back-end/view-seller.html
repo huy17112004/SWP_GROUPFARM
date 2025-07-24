@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <!-- meta data -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Fastkart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, Fastkart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Fastkart - Add New Product</title>
+
+    <!-- Google font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="assets/css/linearicon.css">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/font-awesome.css">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/themify.css">
+
+    <!--Dropzon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/dropzone.css">
+
+    <!-- Feather icon css-->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/feather-icon.css">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/remixicon.css">
+
+    <!-- Select2 css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/select2.min.css">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/animate.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/chartist.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/date-picker.css">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap.css">
+
+    <!-- Bootstrap-tag input css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/vendors/bootstrap-tagsinput.css">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+    <!-- tap on top start -->
+    <div class="tap-top">
+        <span class="lnr lnr-chevron-up"></span>
+    </div>
+    <!-- tap on tap end -->
+
+    <!-- page-wrapper start -->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+        <!-- Page Header Start-->
+        <div id="header-placeholder">
+            <div id="user-info" style="font-weight:bold; color:#178a3d; float:right; margin-right:24px;"></div>
+        </div>
+        <!-- Page Header Ends-->
+
+        <!-- Page Body start -->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <div class="sidebar-wrapper">
+                <div id="sidebarEffect"></div>
+                <div>
+                    <div class="logo-wrapper logo-wrapper-center">
+                        <a href="index.html" data-bs-original-title="" title="">
+                            <img class="img-fluid for-white" src="assets/images/logo/full-white.png" alt="logo">
+                        </a>
+                        <div class="back-btn">
+                            <i class="fa fa-angle-left"></i>
+                        </div>
+                        <div class="toggle-sidebar">
+                            <i class="ri-apps-line status_toggle middle sidebar-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="logo-icon-wrapper">
+                        <a href="index.html">
+                            <img class="img-fluid main-logo main-white" src="assets/images/logo/1-white.png" alt="logo">
+                            <img class="img-fluid main-logo main-dark" src="assets/images/logo/logo-white.png"
+                                alt="logo">
+                        </a>
+                    </div>
+                    <nav class="sidebar-main">
+                        <div class="left-arrow" id="left-arrow">
+                            <i data-feather="arrow-left"></i>
+                        </div>
+                        <div id="sidebar-menu">
+                            <ul class="sidebar-links" id="simple-bar">
+                                <li class="back-btn"></li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                        <i class="ri-home-line"></i>
+                                        <span>Quản lí </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Sản phẩm</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-product.html">Danh sách các sản phẩm</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-product.html">Thêm sản phẩm</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-list-check-2"></i>
+                                        <span>Loại sản phẩm</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-category.html">Danh sách các loại sản phẩm</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-list-check-2"></i>
+                                        <span>Lô hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="product.html">Danh sách thông tin các lô hàng</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-stoklot.html">Thêm lô hàng</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Kho</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-warehouse.html">Quản lí danh sách kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-user-3-line"></i>
+                                        <span>Nhân viên</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-staff.html">Danh sách nhân viên kho</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-staff.html">Thêm tài khoản</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-arrow" id="right-arrow">
+                            <i data-feather="arrow-right"></i>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- Page Sidebar Ends-->
+
+            <div class="page-body">
+                <div class="card mb-5">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-uppercase text-primary display-6 mb-0" style="letter-spacing:1px;">
+                                <i class="ri-user-3-line me-2"></i>Quản lý tài khoản người bán
+                            </h5>
+                            <input id="sellerSearchInput" class="form-control" style="max-width: 300px;"
+                                placeholder="Tìm kiếm theo tên người bán...">
+                            <!-- Nếu muốn thêm mới: <button id="openSellerModalBtn" class="btn btn-sm btn-primary">Thêm mới</button> -->
+                        </div>
+                        <table class="table table-bordered" id="sellersTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tài khoản</th>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Thêm/Sửa Seller -->
+<div class="modal fade" id="sellerModal" tabindex="-1" aria-labelledby="sellerModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="sellerModalForm">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sellerModalLabel">Sửa tài khoản người bán</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="sellerIdModal">
+                <label for="usernameSellerModal" class="form-label">Username</label>
+                <input id="usernameSellerModal" type="text" class="form-control mb-2" placeholder="Username" required readonly>
+
+                <label for="passwordSellerModal" class="form-label">Mật khẩu (để trống nếu không đổi)</label>
+                <input id="passwordSellerModal" type="password" class="form-control mb-2" placeholder="Mật khẩu">
+
+                <label for="nameSellerModal" class="form-label">Họ tên</label>
+                <input id="nameSellerModal" type="text" class="form-control mb-2" placeholder="Họ tên" required>
+
+                <label for="emailSellerModal" class="form-label">Email</label>
+                <input id="emailSellerModal" type="email" class="form-control mb-2" placeholder="Email" required>
+
+                <label for="phoneSellerModal" class="form-label">Số điện thoại</label>
+                <input id="phoneSellerModal" type="text" class="form-control mb-2" placeholder="Số điện thoại" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Huỷ</button>
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+            <!-- Page Body End -->
+        </div>
+        <!-- page-wrapper End -->
+
+        <!-- latest js -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+        <!-- Bootstrap js -->
+        <script src="assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+        <!-- feather icon js -->
+        <script src="assets/js/icons/feather-icon/feather.min.js"></script>
+        <script src="assets/js/icons/feather-icon/feather-icon.js"></script>
+
+        <!-- scrollbar simplebar js -->
+        <script src="assets/js/scrollbar/simplebar.js"></script>
+        <script src="assets/js/scrollbar/custom.js"></script>
+
+        <!-- Sidebar js -->
+        <script src="assets/js/config.js"></script>
+
+        <!-- bootstrap tag-input js -->
+        <script src="assets/js/bootstrap-tagsinput.min.js"></script>
+        <script src="assets/js/sidebar-menu.js"></script>
+
+        <!-- customizer js -->
+        <script src="assets/js/customizer.js"></script>
+
+        <!--Dropzon js -->
+        <script src="assets/js/dropzone/dropzone.js"></script>
+        <script src="assets/js/dropzone/dropzone-script.js"></script>
+
+        <!-- Plugins js -->
+        <script src="assets/js/notify/bootstrap-notify.min.js"></script>
+        <script src="assets/js/notify/index.js"></script>
+
+        <!-- ck editor js -->
+        <script src="assets/js/ckeditor.js"></script>
+        <script src="assets/js/ckeditor-custom.js"></script>
+
+        <!-- select2 js -->
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/select2-custom.js"></script>
+
+        <!-- sidebar effect -->
+        <script src="assets/js/sidebareffect.js"></script>
+
+        <!-- Theme js -->
+        <script src="assets/js/script.js"></script>
+
+        <!-- component-loader js -->
+        <script src="components/component-loader.js"></script>
+
+        <script>
+            const apiSellers = 'http://localhost:8080/api/seller';
+
+let allSellers = [];
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Tải danh sách Seller và hiển thị
+    function loadSellers() {
+        fetch(apiSellers)
+            .then(r => r.json())
+            .then(sellers => {
+                allSellers = sellers;
+                renderSellerTable(sellers);
+            });
+    }
+    loadSellers();
+
+    // Hiển thị bảng Seller
+    function renderSellerTable(sellers) {
+        const tbody = document.querySelector('#sellersTable tbody');
+        tbody.innerHTML = '';
+        sellers.forEach(seller => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${seller.id}</td>
+                <td>${seller.username}</td>
+                <td>${seller.name}</td>
+                <td>${seller.email}</td>
+                <td>${seller.phone}</td>
+                <td>${seller.status}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-1 edit-seller-btn" data-id="${seller.id}">
+                        <i class="ri-edit-2-line"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger delete-seller-btn" data-id="${seller.id}">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Tìm kiếm Seller theo tên
+    document.getElementById('sellerSearchInput').addEventListener('input', function () {
+        const val = this.value.trim().toLowerCase();
+        renderSellerTable(allSellers.filter(s => s.name.toLowerCase().includes(val)));
+    });
+
+    // Xóa Seller
+    document.querySelector('#sellersTable').addEventListener('click', function (e) {
+        if (e.target.closest('.delete-seller-btn')) {
+            const id = e.target.closest('.delete-seller-btn').dataset.id;
+            if (confirm('Bạn có chắc muốn xóa tài khoản này?')) {
+                fetch(`${apiSellers}/delete?id=${id}`, {
+                    method: 'POST'
+                })
+                .then(r => r.json())
+                .then(rs => {
+                    alert(rs.message || 'Đã xóa!');
+                    loadSellers();
+                });
+            }
+        }
+    });
+
+    // Sửa Seller: Mở modal, điền dữ liệu
+    document.querySelector('#sellersTable').addEventListener('click', function (e) {
+        if (e.target.closest('.edit-seller-btn')) {
+            const id = e.target.closest('.edit-seller-btn').dataset.id;
+            const seller = allSellers.find(s => s.id == id);
+            document.getElementById('sellerModalLabel').textContent = "Sửa tài khoản người bán";
+            document.getElementById('sellerIdModal').value = seller.id;
+            document.getElementById('usernameSellerModal').value = seller.username;
+            document.getElementById('usernameSellerModal').readOnly = true;
+            document.getElementById('passwordSellerModal').value = '';
+            document.getElementById('nameSellerModal').value = seller.name;
+            document.getElementById('emailSellerModal').value = seller.email;
+            document.getElementById('phoneSellerModal').value = seller.phone;
+            new bootstrap.Modal(document.getElementById('sellerModal')).show();
+        }
+    });
+
+    // Submit form modal Sửa Seller
+    document.getElementById('sellerModalForm').onsubmit = function (e) {
+        e.preventDefault();
+        const id = document.getElementById('sellerIdModal').value;
+        const dto = {
+            username: document.getElementById('usernameSellerModal').value.trim(),
+            rawPassword: document.getElementById('passwordSellerModal').value,
+            name: document.getElementById('nameSellerModal').value.trim(),
+            email: document.getElementById('emailSellerModal').value.trim(),
+            phone: document.getElementById('phoneSellerModal').value.trim()
+        };
+        let url = `${apiSellers}/update?id=${id}`;
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dto)
+        })
+        .then(r => r.json())
+        .then(rs => {
+            if (rs.error) {
+                alert(rs.error);
+            } else {
+                alert(rs.message || 'Cập nhật thành công!');
+                bootstrap.Modal.getInstance(document.getElementById('sellerModal')).hide();
+                loadSellers();
+            }
+        });
+    };
+
+    // Nếu muốn thêm mới Seller cũng dùng modal này, chỉ cần thêm nút và sửa logic, hỏi mình nếu cần!
+});
+
+        </script>
+
+
+
+
+</body>
+
+</html>
