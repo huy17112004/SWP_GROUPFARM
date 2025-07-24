@@ -1,13 +1,11 @@
 package service;
 
-import dao.ShippingRequirementDAO;
-import dao.StatsDAO;
-import dao.WarehouseDAO;
+import dao.*;
 import dto.ShippingStatsDTO;
-import entity.Address;
-import entity.Cart;
-import entity.Warehouse;
+import dto.StockTransferResponseDTO;
+import entity.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import util.JpaUtil;
 
 import java.math.BigDecimal;
@@ -91,6 +89,58 @@ public class ShippingService {
                 .orElse(null);
     }
 
+    public BigDecimal calculateEstimateShippingFee(int accountId, int addressId, LocalDateTime deliveryDate, double avgSpeedKmph) {
+        EntityManager em = JpaUtil.getEntityManager();
+        WarehouseDAO warehouseDAO = new WarehouseDAO(em);
+        AddressDAO addressDAO = new AddressDAO(em);
+        CartDAO cartDAO = new CartDAO(em);
+        List<Cart> carts = cartDAO.findAllByCustomerId(accountId);
+        Address deliveryAddress = addressDAO.findById(addressId);
+        float latitude =  deliveryAddress.getLatitude();
+        float longitude = deliveryAddress.getLongitude();
+        List<Warehouse> warehouses = warehouseDAO.findAll();
+        Warehouse destWarehouse = findNearestWarehouseOnTime(
+                warehouses, latitude, longitude, deliveryDate, avgSpeedKmph
+        );
+
+        double distanceKm = haversine(
+                destWarehouse.getAddress().getLatitude(),
+                destWarehouse.getAddress().getLongitude(),
+                latitude, longitude);
+
+        return calculateShippingFee(distanceKm, carts, em);
+    }
+
+
+    public boolean exportOrderToShipper(int orderId, int shipperId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        WholesaleOrderDAO wholesaleOrderDAO = new WholesaleOrderDAO(em);
+        ShipperDAO shipperDAO = new ShipperDAO(em);
+        ShippingLogDAO shippingLogDAO = new ShippingLogDAO(em);
+        Shipper shipper = shipperDAO.findById(shipperId);
+        WholesaleOrder order = wholesaleOrderDAO.findById(orderId);
+        try {
+            tx.begin();
+            order.setStatus("SHIPPING");
+            order.getItems()
+                    .forEach(item -> {
+                        item.getOrderItemAllocations().forEach(orderItemAllocation -> {
+                            orderItemAllocation.getStockLot().setQuantity(orderItemAllocation.getStockLot().getQuantity() - orderItemAllocation.getQuantity());
+                            orderItemAllocation.setStockLot(null);
+                        });
+                    });
+            ShippingLog shippingLog = new ShippingLog();
+            shippingLog.setShipper(shipper);
+            shippingLog.setOrder(order);
+            shippingLogDAO.save(shippingLog);
+            tx.commit();
+            return true;
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        }
+    }
 
 
 

@@ -19,26 +19,29 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
+//        HttpSession session = req.getSession(false);
+//        if (session == null || session.getAttribute("accountId") == null) {
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+//            return;
+//        }
+//
+//        Object accountId = session.getAttribute("accountId");
+//        Long userId;
+//        if (accountId instanceof Integer) {
+//            userId = ((Integer) accountId).longValue();
+//        } else if (accountId instanceof Long) {
+//            userId = (Long) accountId;
+//        } else {
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+//            return;
+//        }
 
-        Object accountId = session.getAttribute("accountId");
-        Long userId;
-        if (accountId instanceof Integer) {
-            userId = ((Integer) accountId).longValue();
-        } else if (accountId instanceof Long) {
-            userId = (Long) accountId;
-        } else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
-            return;
-        }
-
+        Long userId = 1L;
         try {
             List<CartItemDTO> cartItems = cartService.getCartByUserId(userId);
             // Trả JSON
+
+
             resp.setContentType("application/json;charset=UTF-8");
             new Gson().toJson(cartItems, resp.getWriter());
 
@@ -54,22 +57,24 @@ public class CartServlet extends HttpServlet {
         BufferedReader reader = req.getReader();
         CartItemDTO dto = gson.fromJson(reader, CartItemDTO.class);
 
-        HttpSession session = req.getSession(false);
-        if(session == null|| session.getAttribute("accountId") == null){
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
+//        HttpSession session = req.getSession(false);
+//        if(session == null|| session.getAttribute("accountId") == null){
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+//            return;
+//        }
+//
+//        Object accountId = session.getAttribute("accountId");
+//        Long userId;
+//        if (accountId instanceof Integer) {
+//            userId = ((Integer) accountId).longValue();
+//        } else if (accountId instanceof Long) {
+//            userId = (Long) accountId;
+//        } else {
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+//            return;
+//        }
 
-        Object accountId = session.getAttribute("accountId");
-        Long userId;
-        if (accountId instanceof Integer) {
-            userId = ((Integer) accountId).longValue();
-        } else if (accountId instanceof Long) {
-            userId = (Long) accountId;
-        } else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-            return;
-        }
+        dto.setUserId(1L);
 
         try {
             Cart cart = cartService.addToCart(dto);
@@ -86,36 +91,38 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        HttpSession session  = req.getSession();
-
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
+//        HttpSession session  = req.getSession();
+//
+//        if (session == null || session.getAttribute("accountId") == null) {
+//            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+//            return;
+//        }
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID sản phẩm là bắt buộc");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is required");
             return;
         }
         try {
+//            Long productId = Long.parseLong(pathInfo.substring(1));
+//
+//            Object accountIdObj = session.getAttribute("accountId");
+//            long userId;
+//            if (accountIdObj instanceof Integer) {
+//                userId = ((Integer) accountIdObj).longValue();
+//            } else if (accountIdObj instanceof Long) {
+//                userId = (Long) accountIdObj;
+//            } else {
+//                resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+//                return;
+//            }
             Long productId = Long.parseLong(pathInfo.substring(1));
-
-            Object accountIdObj = session.getAttribute("accountId");
-            long userId;
-            if (accountIdObj instanceof Integer) {
-                userId = ((Integer) accountIdObj).longValue();
-            } else if (accountIdObj instanceof Long) {
-                userId = (Long) accountIdObj;
-            } else {
-                resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-                return;
-            }
-            cartService.removeFromCart(productId, userId);
+            cartService.removeFromCart(productId, 1L);
+//            cartService.removeFromCart(productId, userId);
             resp.setContentType("application/json;charset=UTF-8");
             resp.getWriter().write("{\"message\":\"Sản phẩm được xóa thành công\",\"success\":true}");
 
         } catch (NumberFormatException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID sản phẩm không hợp lệ");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product ID");
         } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\",\"success\":false}");
@@ -125,28 +132,13 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
-
-        Object accountId = session.getAttribute("accountId");
-        Long userId;
-        if (accountId instanceof Integer) {
-            userId = ((Integer) accountId).longValue();
-        } else if (accountId instanceof Long) {
-            userId = (Long) accountId;
-        } else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-            return;
-        }
-
         Gson gson = new Gson();
         CartItemDTO dto = gson.fromJson(req.getReader(), CartItemDTO.class);
-        
+
+        dto.setUserId(1L); // Tạm hard-code
+
         try {
-            boolean updated = cartService.updateQuantity(userId, dto.getProductId(), dto.getQuantity());
+            boolean updated = cartService.updateQuantity(dto.getUserId(), dto.getProductId(), dto.getQuantity());
 
             resp.setContentType("application/json;charset=UTF-8");
             if (updated) {

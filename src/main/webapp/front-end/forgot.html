@@ -1616,9 +1616,52 @@
 
     <!-- script js -->
     <script src="../assets/js/script.js"></script>
+    <script>
+        // ../assets/jsLogic/forgot.js
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('forgotForm');
+            // tạo container để hiển thị alert
+            const alertContainer = document.createElement('div');
+            form.prepend(alertContainer);
 
-    <!-- theme setting js -->
-    <script src="../assets/jsLogic/forgotPassword.js"></script>
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                alertContainer.innerHTML = '';
+
+                const email = document.getElementById('email').value.trim();
+                if (!email) {
+                    return showAlert('Vui lòng nhập email của bạn.', 'danger');
+                }
+
+                try {
+                    const resp = await fetch('http://localhost:8080/forgot-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    const data = await resp.json();
+                    if (resp.ok) {
+                        showAlert(data.message, 'success');
+                    } else {
+                        showAlert(data.error || 'Không gửi được link đặt lại mật khẩu.', 'danger');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showAlert('Không thể kết nối đến server.', 'danger');
+                }
+            });
+
+            function showAlert(msg, type = 'info') {
+                alertContainer.innerHTML = '';
+                const div = document.createElement('div');
+                div.className = `alert alert-${type} mt-2`;
+                div.textContent = msg;
+                alertContainer.append(div);
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>

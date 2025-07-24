@@ -3,10 +3,12 @@ package service;
 import dao.StockLotDAO;
 import dao.StockTransferDAO;
 import dao.WholesaleOrderDAO;
+import dto.StockTransferRequestDTO;
 import dto.StockTransferResponseDTO;
 import entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import util.JpaUtil;
 
 import java.time.LocalDateTime;
@@ -24,7 +26,7 @@ public class StockTransferService {
             StockTransferDAO stockTransferDAO = new StockTransferDAO(em);
 
             WholesaleOrder order = wholesaleOrderDAO.findById(orderId);
-            order.setStatus("CONSOLIDATING");
+            order.setStatus("PROCESSING");
             List<StockTransfer> stockTransfers = new ArrayList<>();
             order.getItems().forEach(item -> {
                 item.getOrderItemAllocations().forEach(orderItemAllocation -> {
@@ -81,7 +83,7 @@ public class StockTransferService {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            stockTransfer.setStatus("EXPORTED");
+            stockTransfer.setStatus("DELIVERING");
             stockTransfer.getItems()
                     .forEach(item -> {
                         OrderItemAllocation orderItemAllocation = item.getOrderItemAllocation();
@@ -106,6 +108,7 @@ public class StockTransferService {
         try {
             tx.begin();
             stockTransfer.setStatus("COMPLETED");
+            stockTransfer.setCompletedAt(LocalDateTime.now());
             stockTransfer.getItems()
                     .forEach(item -> {
                         StockLot stockLot = new StockLot();
@@ -114,7 +117,7 @@ public class StockTransferService {
                         stockLot.setWarehouse(stockTransfer.getDestinationWarehouse());
                         stockLot.setImportDate(item.getStockLot().getImportDate());
                         stockLot.setExpiredDate(item.getStockLot().getExpiredDate());
-                        stockLotDAO.save(stockLot);
+                        stockLotDAO.create(stockLot);
                         item.setStockLot(stockLot);
                         item.getOrderItemAllocation().setStockLot(stockLot);
                     });
@@ -124,6 +127,32 @@ public class StockTransferService {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             throw e;
+        }
+    }
+
+    public List<StockTransferRequestDTO> findBySourceWarehouseAndStatuses(int warehouseId, List<String> statuses) {
+        EntityManager em = JpaUtil.getEntityManager();
+        StockTransferDAO stockTransferDAO = new StockTransferDAO(em);
+        try {
+            return stockTransferDAO.findBySourceWarehouseAndStatuses(warehouseId, statuses)
+                    .stream()
+                    .map(StockTransferRequestDTO::new)
+                    .collect(Collectors.toList());
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<StockTransferRequestDTO> findByDestinationWarehouseAndStatuses(int warehouseId, List<String> statuses) {
+        EntityManager em = JpaUtil.getEntityManager();
+        StockTransferDAO stockTransferDAO = new StockTransferDAO(em);
+        try {
+            return stockTransferDAO.findByDestinationWarehouseAndStatuses(warehouseId, statuses)
+                    .stream()
+                    .map(StockTransferRequestDTO::new)
+                    .collect(Collectors.toList());
+        } finally {
+            em.close();
         }
     }
 }

@@ -22,28 +22,14 @@ public class WishListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
-
-        Object accountId = session.getAttribute("accountId");
-        Long userId;
-        if (accountId instanceof Integer) {
-            userId = ((Integer) accountId).longValue();
-        } else if (accountId instanceof Long) {
-            userId = (Long) accountId;
-        } else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-            return;
-        }
+        Long userId = 1L; // giả định hoặc thay bằng session nếu mở
 
         try {
             List<WishListDTO> wishList = wishlistService.getWishlistByCustomerId(userId.intValue());
 
             resp.setContentType("application/json;charset=UTF-8");
-            gson.toJson(wishList, resp.getWriter());
+            new Gson().toJson(wishList, resp.getWriter());
+
         } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
@@ -52,28 +38,11 @@ public class WishListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
-
-        Object accountId = session.getAttribute("accountId");
-        Long userId;
-        if (accountId instanceof Integer) {
-            userId = ((Integer) accountId).longValue();
-        } else if (accountId instanceof Long) {
-            userId = (Long) accountId;
-        } else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-            return;
-        }
-
-
         Gson gson = new Gson();
         BufferedReader reader = req.getReader();
         WishListDTO dto = gson.fromJson(reader, WishListDTO.class);
 
+        dto.setCustomerId(1L);
 
         try {
             wishlistService.addToWishlist(dto);
@@ -89,32 +58,16 @@ public class WishListServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
-
-        Object accountId = session.getAttribute("accountId");
-        Long userId;
-        if (accountId instanceof Integer) {
-            userId = ((Integer) accountId).longValue();
-        } else if (accountId instanceof Long) {
-            userId = (Long) accountId;
-        } else {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-            return;
-        }
-
         String pathInfo = req.getPathInfo();
+
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID sản phẩm là bắt buộc");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is required");
             return;
         }
         try {
             int productId = Integer.parseInt(pathInfo.substring(1));
 
-            wishlistService.removeFromWishlist(userId.intValue(), productId);
+            wishlistService.removeFromWishlist(1, productId);
             resp.setContentType("application/json;charset=UTF-8");
             resp.getWriter().write("{\"message\":\"Sản phẩm được xóa thành công\",\"success\":true}");
         } catch (NumberFormatException e) {
