@@ -22,7 +22,22 @@ public class WishListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Long userId = 1L; // giả định hoặc thay bằng session nếu mở
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+            return;
+        }
+//
+        Object accountId = session.getAttribute("userId");
+        Long userId;
+        if (accountId instanceof Integer) {
+            userId = ((Integer) accountId).longValue();
+        } else if (accountId instanceof Long) {
+            userId = (Long) accountId;
+        } else {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+            return;
+        }
 
         try {
             List<WishListDTO> wishList = wishlistService.getWishlistByCustomerId(userId.intValue());
@@ -41,8 +56,24 @@ public class WishListServlet extends HttpServlet {
         Gson gson = new Gson();
         BufferedReader reader = req.getReader();
         WishListDTO dto = gson.fromJson(reader, WishListDTO.class);
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+            return;
+        }
+//
+        Object accountId = session.getAttribute("userId");
+        Long userId;
+        if (accountId instanceof Integer) {
+            userId = ((Integer) accountId).longValue();
+        } else if (accountId instanceof Long) {
+            userId = (Long) accountId;
+        } else {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+            return;
+        }
 
-        dto.setCustomerId(1L);
+        dto.setCustomerId(userId);
 
         try {
             wishlistService.addToWishlist(dto);
@@ -59,6 +90,25 @@ public class WishListServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
+        Gson gson = new Gson();
+        BufferedReader reader = req.getReader();
+        WishListDTO dto = gson.fromJson(reader, WishListDTO.class);
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
+            return;
+        }
+//
+        Object accountId = session.getAttribute("userId");
+        Long userId;
+        if (accountId instanceof Integer) {
+            userId = ((Integer) accountId).longValue();
+        } else if (accountId instanceof Long) {
+            userId = (Long) accountId;
+        } else {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session data");
+            return;
+        }
 
         if (pathInfo == null || pathInfo.equals("/")) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is required");
@@ -67,7 +117,7 @@ public class WishListServlet extends HttpServlet {
         try {
             int productId = Integer.parseInt(pathInfo.substring(1));
 
-            wishlistService.removeFromWishlist(1, productId);
+            wishlistService.removeFromWishlist(userId.intValue(), productId);
             resp.setContentType("application/json;charset=UTF-8");
             resp.getWriter().write("{\"message\":\"Sản phẩm được xóa thành công\",\"success\":true}");
         } catch (NumberFormatException e) {

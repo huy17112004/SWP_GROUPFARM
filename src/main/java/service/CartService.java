@@ -49,6 +49,9 @@ public class CartService {
             dto.setProductName(p.getProductName());
             dto.setWholesalePrice(p.getWholesalePrice());
             dto.setQuantity(cart.getQuantity());
+            if (p.getImages() != null && !p.getImages().isEmpty()) {
+                dto.setProductImage(p.getImages().get(0).getImageUrl());
+            }
             dto.setTotalPrice(p.getWholesalePrice().multiply(new BigDecimal(cart.getQuantity())));
 
             result.add(dto);

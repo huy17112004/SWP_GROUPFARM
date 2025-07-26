@@ -24,10 +24,6 @@ public class Warehouse {
     @Column(name = "WarehousePhone", columnDefinition = "NVARCHAR(15)", nullable = false, length = 12)
     private String warehousePhone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "WarehouseManagerID")
-    private WarehouseManager warehouseManager;
-
     @OneToOne(mappedBy = "warehouse", orphanRemoval = true,fetch = FetchType.LAZY)
     private WarehouseStaff warehouseStaff;
 

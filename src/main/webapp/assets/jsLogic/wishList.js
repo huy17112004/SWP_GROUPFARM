@@ -69,7 +69,7 @@ function addToCartFromWishlist(productId) {
         body: JSON.stringify({ productId: productId, quantity: 1 })
     })
         .then(res => {
-            alert("✅ Đã thêm vào giỏ hàng!");
+            alert("Đã thêm vào giỏ hàng!");
             window.location.href = 'cart.html';
         })
         .catch(err => {
@@ -108,7 +108,7 @@ function addToWishlist() {
             return response.json();
         })
         .then(data => {
-            alert('❤️ Đã thêm vào danh yêu thích!');
+            alert('Đã thêm vào danh yêu thích!');
             window.location.href = 'wishlist.html';
         })
         .catch(error => {

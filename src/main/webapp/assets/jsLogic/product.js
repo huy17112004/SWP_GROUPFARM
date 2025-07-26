@@ -19,7 +19,6 @@
             // Hiển thị mô tả, danh mục, hình ảnh
             document.getElementById("description").innerText = data.description;
             document.getElementById("categoryName").innerText = data.categoryName;
-            document.getElementById("productImage").src = data.imageUrl;
 
             // Breadcrumb
             document.getElementById("breadcrumbTitle").innerText = data.productName;
@@ -50,49 +49,60 @@
                     quantityInput.value = currentQty;
                 }
             });
+            const mainSlider = $('#main-slider');
+            const thumbSlider = $('#thumb-slider');
+
+            if (data.imageUrl?.length) {
+                // Gỡ slick cũ nếu đã init
+                if (mainSlider.hasClass('slick-initialized')) mainSlider.slick('unslick');
+                if (thumbSlider.hasClass('slick-initialized')) thumbSlider.slick('unslick');
+
+                // Xóa nội dung cũ
+                mainSlider.empty();
+                thumbSlider.empty();
+
+                // Thêm ảnh mới
+                data.imageUrl.forEach((url, index) => {
+                    mainSlider.append(`
+            <div>
+                <div class="slider-image">
+                    <img src="${url}" class="img-fluid image_zoom_cls-${index} blur-up lazyload" alt="">
+                </div>
+            </div>
+        `);
+                    thumbSlider.append(`
+            <div>
+                <div class="sidebar-image">
+                    <img src="${url}" class="img-fluid blur-up lazyload" alt="">
+                </div>
+            </div>
+        `);
+                });
+
+                // Khởi tạo lại slick
+                mainSlider.slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    fade: true,
+                    asNavFor: '#thumb-slider'
+                });
+
+                thumbSlider.slick({
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    asNavFor: '#main-slider',
+                    dots: false,
+                    centerMode: true,
+                    focusOnSelect: true
+                });
+            }
         })
 
         .catch(err => {
             console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
         });
-        //  Gọi thêm API load danh sách ảnh theo productId
-        fetch(`/api/product-images?productId=${productId}`)
-            .then(res => res.json())
-            .then(images => {
-                const mainSlider = document.getElementById("main-slider");
-                const thumbSlider = document.getElementById("thumb-slider");
-
-                if (!mainSlider || !thumbSlider || images.length === 0) return;
-
-                mainSlider.innerHTML = "";
-                thumbSlider.innerHTML = "";
-
-                images.forEach((url, index) => {
-                    mainSlider.innerHTML += `
-                        <div>
-                            <div class="slider-image">
-                                <img src="${url}" data-zoom-image="${url}"
-                                     class="img-fluid image_zoom_cls-${index} blur-up lazyload" alt="Ảnh sản phẩm">
-                            </div>
-                        </div>
-                    `;
-
-                    thumbSlider.innerHTML += `
-                        <div>
-                            <div class="sidebar-image">
-                                <img src="${url}" class="img-fluid blur-up lazyload" alt="thumb">
-                            </div>
-                        </div>
-                    `;
-                });
-
-                // (Tùy bạn: nếu dùng slick slider thì gọi lại .slick() ở đây)
-            })
-            .catch(err => {
-                console.error("Lỗi khi tải ảnh sản phẩm:", err);
-            });
     }
-
 
 
         function loadTotalProducts() {

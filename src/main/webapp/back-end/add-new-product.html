@@ -133,6 +133,17 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Kho</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-warehouse.html">Quản lí danh sách kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title" href="javascript:void(0)">
@@ -298,21 +309,18 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- Image URLs input & list -->
+                                                <!-- Image Upload -->
                                                 <div class="mb-2 row align-items-center">
-                                                    <label class="form-label-title col-sm-3 mb-0"> Hình ảnh</label>
-                                                    <div class="col-sm-8">
-                                                        <input id="newImageUrl" type="url" class="form-control"
-                                                            placeholder="https://example.com/…">
-                                                    </div>
-                                                    <div class="col-sm-1">
-                                                        <button id="addImageUrlBtn" type="button"
-                                                            class="btn btn-outline-secondary">+</button>
+                                                    <label class="form-label-title col-sm-3 mb-0">Hình ảnh</label>
+                                                    <div class="col-sm-9">
+                                                        <input id="imageFiles" type="file" class="form-control" 
+                                                               multiple accept="image/*" 
+                                                               placeholder="Chọn nhiều file ảnh...">
                                                     </div>
                                                 </div>
                                                 <div class="mb-4 row">
                                                     <div class="offset-sm-3 col-sm-9">
-                                                        <ul id="imageUrlList" class="list-group"></ul>
+                                                        <div id="imagePreview" class="row"></div>
                                                     </div>
                                                 </div>
 
@@ -359,15 +367,6 @@
                 <!-- New Product Add End -->
 
                 <!-- footer Start -->
-                <div class="container-fluid">
-                    <footer class="footer">
-                        <div class="row">
-                            <div class="col-md-12 footer-copyright text-center">
-                                <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
                 <!-- footer En -->
             </div>
             <!-- Container-fluid End -->
@@ -427,12 +426,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const categorySelect = document.getElementById('categorySelect');
-            const imageList = document.getElementById('imageUrlList');
-            const addImageBtn = document.getElementById('addImageUrlBtn');
-            const newImageInput = document.getElementById('newImageUrl');
+            const imageFilesInput = document.getElementById('imageFiles');
+            const imagePreview = document.getElementById('imagePreview');
             const form = document.getElementById('createProductForm');
 
-            let imageUrls = [];
+            let selectedFiles = [];
 
             // 1. Load categories
             fetch('http://localhost:8080/api/categories')
@@ -447,100 +445,97 @@
                 })
                 .catch(console.error);
 
-            // 2. Thêm URL vào list
-            addImageBtn.addEventListener('click', () => {
-                const url = newImageInput.value.trim();
-                if (!url) return;
-                imageUrls.push(url);
-
-                const li = document.createElement('li');
-                li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                li.textContent = url;
-
-                const rm = document.createElement('button');
-                rm.type = 'button';
-                rm.className = 'btn btn-sm btn-outline-danger';
-                rm.textContent = '×';
-                rm.onclick = () => {
-                    imageUrls = imageUrls.filter(u => u !== url);
-                    li.remove();
-                };
-
-                li.appendChild(rm);
-                imageList.appendChild(li);
-                newImageInput.value = '';
+            // 2. Xử lý khi chọn file ảnh
+            imageFilesInput.addEventListener('change', (e) => {
+                const files = Array.from(e.target.files);
+                selectedFiles = files;
+                
+                // Xóa preview cũ
+                imagePreview.innerHTML = '';
+                
+                // Tạo preview cho từng file
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-3 col-sm-4 col-6 mb-3';
+                        
+                        col.innerHTML = `
+                            <div class="card">
+                                <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;" alt="Preview">
+                                <div class="card-body p-2">
+                                    <small class="text-muted">${file.name}</small>
+                                    <button type="button" class="btn btn-sm btn-outline-danger float-end" 
+                                            onclick="removeImage(${index})">×</button>
+                                </div>
+                            </div>
+                        `;
+                        imagePreview.appendChild(col);
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
 
-            // 3. Submit form
+            // 3. Hàm xóa ảnh
+            window.removeImage = function(index) {
+                selectedFiles.splice(index, 1);
+                // Cập nhật lại input file
+                const dt = new DataTransfer();
+                selectedFiles.forEach(file => dt.items.add(file));
+                imageFilesInput.files = dt.files;
+                
+                // Cập nhật preview
+                imageFilesInput.dispatchEvent(new Event('change'));
+            };
+
+            // 4. Submit form
             form.addEventListener('submit', async e => {
                 e.preventDefault();
-                // Nếu còn ảnh trong input, tự động add luôn vào mảng
-                const pendingUrl = newImageInput.value.trim();
-                if (pendingUrl && !imageUrls.includes(pendingUrl)) {
-                    imageUrls.push(pendingUrl);
+                
+                const formData = new FormData();
+                formData.append('productName', document.getElementById('productName').value.trim());
+                formData.append('entryPrice', document.getElementById('entryPrice').value);
+                formData.append('retailPrice', document.getElementById('retailPrice').value);
+                formData.append('wholesalePrice', document.getElementById('wholesalePrice').value);
+                formData.append('description', document.getElementById('description').value.trim());
+                formData.append('categoryId', categorySelect.value);
+                
+                // Thêm tất cả file ảnh vào FormData
+                selectedFiles.forEach((file, index) => {
+                    formData.append('images', file);
+                });
 
-                    // Optionally, thêm ảnh vào UI (hiện lên list)
-                    const li = document.createElement('li');
-                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    li.textContent = pendingUrl;
-
-                    const rm = document.createElement('button');
-                    rm.type = 'button';
-                    rm.className = 'btn btn-sm btn-outline-danger';
-                    rm.textContent = '×';
-                    rm.onclick = () => {
-                        imageUrls = imageUrls.filter(u => u !== pendingUrl);
-                        li.remove();
-                    };
-
-                    li.appendChild(rm);
-                    imageList.appendChild(li);
-                    newImageInput.value = '';
-                }
-
-                const payload = {
-                    productName: document.getElementById('productName').value.trim(),
-                    entryPrice: Number(document.getElementById('entryPrice').value),
-                    retailPrice: Number(document.getElementById('retailPrice').value),
-                    wholesalePrice: Number(document.getElementById('wholesalePrice').value),
-                    description: document.getElementById('description').value.trim(),
-                    categoryId: Number(categorySelect.value),
-                    imageUrls: imageUrls
-                };
-
-                // simple validation
-                if (!payload.productName || !payload.categoryId || payload.imageUrls.length === 0) {
-                    alert('Vui lòng điền đầy đủ tên, category và ít nhất 1 ảnh.');
+                // Validation
+                if (!formData.get('productName') || !formData.get('categoryId') || selectedFiles.length === 0) {
+                    alert('Vui lòng điền đầy đủ tên, category và chọn ít nhất 1 ảnh.');
                     return;
                 }
 
-                // Kiểm tra trùng tên sản phẩm (không phân biệt hoa thường)
+                // Kiểm tra trùng tên sản phẩm
                 try {
                     const res = await fetch('http://localhost:8080/api/product-view');
                     if (res.ok) {
                         const products = await res.json();
-                        const exists = products.some(p => (p.productName || p.name || '').trim().toLowerCase() === payload.productName.toLowerCase());
+                        const exists = products.some(p => (p.productName || p.name || '').trim().toLowerCase() === formData.get('productName').toLowerCase());
                         if (exists) {
                             alert('Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác!');
                             return;
                         }
                     }
                 } catch (err) {
-                    // Nếu lỗi API, vẫn cho phép submit (có thể backend sẽ kiểm tra tiếp)
                     console.warn('Không kiểm tra được trùng tên:', err);
                 }
 
                 try {
-                    const resp = await fetch('http://localhost:8080/api/product', {
+                    const resp = await fetch('http://localhost:8080/api/products-list', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
+                        body: formData // Gửi FormData thay vì JSON
                     });
 
                     if (resp.ok) {
+                        const result = await resp.json();
                         alert('Tạo sản phẩm thành công!');
+                        console.log('Backend response:', result);
                         window.location.reload();
                     } else {
                         const err = await resp.json();

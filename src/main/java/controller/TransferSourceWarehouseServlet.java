@@ -2,9 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.WarehouseStaffDAO;
 import dto.StockTransferRequestDTO;
-import entity.WarehouseManager;
 import entity.WarehouseStaff;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import service.StockTransferService;
-import service.WarehouseManagerService;
 import service.WarehouseStaffService;
 import util.LocalDateTimeAdapter;
 

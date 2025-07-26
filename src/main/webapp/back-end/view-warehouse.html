@@ -1,4 +1,5 @@
 <!-- Modal Thêm Kho Mới -->
+<meta charset="UTF-8">
 <div class="modal fade" id="addWarehouseModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -17,12 +18,6 @@
             <input type="text" class="form-control" id="warehousePhone" required pattern="^[0-9]{9,11}$"
               maxlength="11" />
             <div class="invalid-feedback">Số điện thoại phải là 9-11 chữ số.</div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Quản lý kho</label>
-            <select class="form-select" id="managerId" required>
-              <option value="">Chọn quản lý</option>
-            </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Tỉnh/Thành phố</label>
@@ -85,7 +80,6 @@
     editingId = null;
     document.getElementById('addWarehouseForm').reset();
     document.getElementById('addWarehouseError').classList.add('d-none');
-    loadManagers();
     loadProvinces();
     document.getElementById('saveWarehouseBtn').textContent = 'Lưu';
   }
@@ -109,15 +103,6 @@
     // Chỉ set tên kho và số điện thoại
     document.getElementById('warehouseName').value = data.warehouseName;
     document.getElementById('warehousePhone').value = data.warehousePhone;
-  }
-
-  // Load managers
-  async function loadManagers(selectedId) {
-    const sel = document.getElementById('managerId');
-    sel.innerHTML = '<option value="">Chọn quản lý</option>';
-    const list = await fetch('http://localhost:8080/api/warehouse-managers').then(r => r.ok ? r.json() : []);
-    list.forEach(m => sel.innerHTML += `<option value="${m.managerId}">${m.name}</option>`);
-    if (selectedId) sel.value = selectedId;
   }
 
   // Load provinces, districts, wards
@@ -275,7 +260,6 @@
     e.preventDefault();
     const name = document.getElementById('warehouseName').value.trim();
     const phone = document.getElementById('warehousePhone').value.trim();
-    const managerId = document.getElementById('managerId').value;
     const street = document.getElementById('street').value.trim();
     const wardId = document.getElementById('wardId').value;
     const districtId = document.getElementById('districtId').value;
@@ -284,7 +268,7 @@
     const lon = parseFloat(document.getElementById('longitude').value);
     const errorDiv = document.getElementById('addWarehouseError');
     errorDiv.classList.add('d-none');
-    if (!name || !phone.match(/^\d{9,11}$/) || !managerId || !street || !provinceId || !districtId || !wardId || isNaN(lat) || isNaN(lon)) {
+    if (!name || !phone.match(/^\d{9,11}$/) || !street || !provinceId || !districtId || !wardId || isNaN(lat) || isNaN(lon)) {
       errorDiv.textContent = 'Vui lòng nhập đầy đủ thông tin hợp lệ.';
       errorDiv.classList.remove('d-none');
       return;
@@ -310,7 +294,6 @@
         body: JSON.stringify({
           warehouseName: name,
           warehousePhone: phone,
-          managerId: parseInt(managerId),
           street,
           provinceId: parseInt(provinceId),
           districtId: parseInt(districtId),
@@ -378,7 +361,6 @@
         <td>${item.warehouseName}</td>
         <td>${item.warehousePhone}</td>
         <td>${item.fullAddress}</td>
-        <td>${item.managerName}</td>
         <td>${item.staffName}</td>
         <td>
           <button class="btn btn-sm btn-warning btn-edit" data-id="${item.warehouseId}"><i class="ri-edit-line"></i></button>
@@ -531,12 +513,14 @@
                         <div id="sidebar-menu">
                             <ul class="sidebar-links" id="simple-bar">
                                 <li class="back-btn"></li>
+
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" href="index.html">
+                                    <a class="sidebar-link sidebar-title link-nav active" href="reports.html">
                                         <i class="ri-home-line"></i>
-                                        <span>Quản lí </span>
+                                        <span>Trang chủ</span>
                                     </a>
                                 </li>
+
                                 <li class="sidebar-list">
                                     <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i class="ri-store-3-line"></i>
@@ -564,20 +548,6 @@
                                 </li>
                                 <li class="sidebar-list">
                                     <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
-                                        <i class="ri-list-check-2"></i>
-                                        <span>Lô hàng</span>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li>
-                                            <a href="product.html">Danh sách thông tin các lô hàng</a>
-                                        </li>
-                                        <li>
-                                            <a href="add-new-stoklot.html">Thêm lô hàng</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="sidebar-list">
-                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i class="ri-store-3-line"></i>
                                         <span>Kho</span>
                                     </a>
@@ -587,10 +557,37 @@
                                         </li>
                                     </ul>
                                 </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-archive-line"></i>
+                                        <span>Báo Cáo Giao Hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="shipping-status.html">Trạng Thái Các Đơn Hàng </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-price-tag-3-line"></i>
+                                        <span>Top Sản Phẩm</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="top-product.html">Chi Tiết Top Sản Phẩm</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i class="ri-user-3-line"></i>
-                                        <span>Nhân viên</span>
+                                        <span>Nhân viên kho</span>
                                     </a>
                                     <ul class="sidebar-submenu">
                                         <li>
@@ -601,6 +598,50 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-user-3-line"></i>
+                                        <span>Nhân viên bán hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-seller.html">Danh sách nhân viên</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-seller.html">Thêm tài khoản</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-user-3-line"></i>
+                                        <span>Nhân viên giao hàng</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-shipper.html">Danh sách nhân viên giao hàng</a>
+                                        </li>
+                                        <li>
+                                            <a href="add-new-shipper.html">Thêm tài khoản</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="manager-deal-list.html">
+                                        <i class="ri-list-check"></i>
+                                        <span>Danh sách deal</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="manager-order-confirmation.html">
+                                        <i class="ri-checkbox-circle-line"></i>
+                                        <span>Xác nhận đơn hàng</span>
+                                    </a>
+                                </li>
+
+
                             </ul>
                         </div>
                         <div class="right-arrow" id="right-arrow">
@@ -632,7 +673,6 @@
                   <th style="width: 20%;">Tên kho</th>
                   <th style="width: 15%;">Điện thoại</th>
                   <th style="width: 25%;">Địa chỉ</th>
-                  <th style="width: 15%;">Quản lý</th>
                   <th style="width: 15%;">Nhân viên</th>
                 </tr>
               </thead>
@@ -721,7 +761,6 @@
         <td>${item.warehouseName}</td>
         <td>${item.warehousePhone}</td>
         <td>${item.fullAddress}</td>
-        <td>${item.managerName}</td>
         <td>${item.staffName}</td>
       `;
             tbody.appendChild(tr);

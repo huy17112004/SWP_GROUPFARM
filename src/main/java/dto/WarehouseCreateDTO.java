@@ -14,7 +14,6 @@ public class WarehouseCreateDTO {
     // Warehouse fields
     private String warehouseName;
     private String warehousePhone;
-    private int managerId;
 
     // Address fields
     private String street;

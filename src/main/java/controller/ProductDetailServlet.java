@@ -22,19 +22,6 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("accountId") == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn chưa đăng nhập");
-            return;
-        }
-
-
-        Object accountId = session.getAttribute("accountId");
-        if (!(accountId instanceof Integer || accountId instanceof Long)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu không hợp lệ");
-            return;
-        }
         String pathInfo = request.getPathInfo(); //
 
         response.setContentType("application/json;charset=UTF-8");
