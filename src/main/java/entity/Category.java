@@ -18,7 +18,7 @@ public class Category {
     @Column(name = "CategoryID")
     private int id;
 
-    @Column(name = "CategoryName",columnDefinition = "NVARCHAR(50)", length = 255, nullable = false)
+    @Column(name = "CategoryName",columnDefinition = "NVARCHAR(50)", nullable = false)
     private String categoryName;
 
     /* 1 Category ↔ n Product */

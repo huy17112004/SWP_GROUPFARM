@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@WebServlet("/api/shipping/estimate")
+    @WebServlet("/api/shipping/estimate")
 public class ShippingFeeEstimateServlet extends HttpServlet {
 
     private final ShippingService shippingService = new ShippingService();

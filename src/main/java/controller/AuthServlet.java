@@ -16,7 +16,7 @@ public class AuthServlet extends HttpServlet {
 
         if (session != null && session.getAttribute("userId") != null) {
 
-            response.getWriter().write("{\"loggedIn\": true, \"name\": \"" + session.getAttribute("name") + "\"}");
+            response.getWriter().write("{\"loggedIn\": true, \"name\": \"" + session.getAttribute("username") + "\"}");
         } else {
             response.getWriter().write("{\"loggedIn\": false}");
         }

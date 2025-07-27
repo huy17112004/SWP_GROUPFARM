@@ -723,8 +723,6 @@
             }
             
             currentOrder.forEach((item, idx) => {
-                const itemImage = item.productImage && item.productImage.trim() !== '' ? 
-                    item.productImage : 'assets/images/product/1.png';
                 const itemName = item.productName || 'Sản phẩm không xác định';
                 const itemQuantity = item.quantity || 0;
                 const itemPrice = formatVND(item.originalPrice);
@@ -759,9 +757,6 @@
                 const productHtml = `
                     <div class="product-item">
                         <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <img src="${itemImage}" class="product-image" alt="${itemName}">
-                            </div>
                             <div class="col-md-4">
                                 <h6 class="mb-1">${itemName}</h6>
                                 <p class="text-muted mb-0">Số lượng: ${itemQuantity}</p>
@@ -1013,9 +1008,6 @@
             $('#dealProductInfo').html(`
                 <div class="deal-product-info">
                     <div class="row align-items-center">
-                        <div class="col-md-4">
-                            <img src="${productImage}" alt="${currentDealItem.productName}" class="img-fluid">
-                        </div>
                         <div class="col-md-8">
                             <h6 class="mb-1">${currentDealItem.productName}</h6>
                             <p class="text-muted mb-1">Số lượng: ${currentDealItem.quantity}</p>

@@ -43,16 +43,6 @@ function renderPage(page) {
                         <a href="product-image.html?productId=${p.id}">
                             <h5 class="name">${p.productName}</h5>
                         </a>
-                        <div class="product-rating mt-2">
-                            <ul class="rating">
-                                <li><i data-feather="star" class="fill"></i></li>
-                                <li><i data-feather="star" class="fill"></i></li>
-                                <li><i data-feather="star" class="fill"></i></li>
-                                <li><i data-feather="star" class="fill"></i></li>
-                                <li><i data-feather="star"></i></li>
-                            </ul>
-                            <span>(4.5)</span>
-                        </div>
                         <h6></h6>
                         <h6 class="unit"></h6>
                         <h5 class="price"><span class="theme-color">${p.wholesalePrice.toLocaleString()}đ</span></h5>

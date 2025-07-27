@@ -128,7 +128,7 @@ public class SellerOrderService {
                 order.getItemsTotal()!= null ? order.getItemsTotal() : BigDecimal.ZERO,
                 order.getTotalPrice() != null ? order.getTotalPrice() : BigDecimal.ZERO,
                 order.getEstimatedShipFee() != null ? order.getEstimatedShipFee() : BigDecimal.ZERO,
-                order.getCustomer() != null ? order.getCustomer().getContactPerson() : "",
+                order.getCustomer() != null ? order.getCustomer().getUsername() : "",
                 order.getCustomer() != null ? order.getCustomer().getPhone() : "",
                 order.getCustomer() != null ? order.getCustomer().getEmail() : "",
                 deliveryAddress,
