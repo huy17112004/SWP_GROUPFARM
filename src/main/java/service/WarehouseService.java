@@ -2,14 +2,11 @@ package service;
 
 import dao.WardDAO;
 import dao.WarehouseDAO;
-import dao.WarehouseManagerDAO;
 import dto.WarehouseCreateDTO;
-import dto.WarehouseDetailViewDTO;
 import dto.WarehouseRequestDTO;
 import entity.Address;
 import entity.Ward;
 import entity.Warehouse;
-import entity.WarehouseManager;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import util.JpaUtil;
@@ -76,11 +73,6 @@ public class WarehouseService {
             warehouse.setWarehousePhone(dto.getWarehousePhone());
             warehouse.setAddress(address);
 
-            // 3. Gắn Manager
-            WarehouseManagerDAO mgrDAO = new WarehouseManagerDAO(em);
-            WarehouseManager manager = mgrDAO.findById(dto.getManagerId());
-            warehouse.setWarehouseManager(manager);
-
             // 4. Lưu Warehouse
             warehouseDAO.save(warehouse);
 
@@ -109,13 +101,6 @@ public class WarehouseService {
             // 2. Cập nhật dữ liệu chính
             warehouse.setWarehouseName(dto.getWarehouseName());
             warehouse.setWarehousePhone(dto.getWarehousePhone());
-
-            // 3. Cập nhật Manager
-            WarehouseManager mgr = new WarehouseManagerDAO(em).findById(dto.getManagerId());
-            if (mgr == null) {
-                throw new IllegalStateException("Manager không tồn tại với id = " + dto.getManagerId());
-            }
-            warehouse.setWarehouseManager(mgr);
 
             // 4. Cập nhật Address
             Address address = warehouse.getAddress();

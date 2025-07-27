@@ -505,6 +505,18 @@
                                 </li>
 
                                 <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Kho</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-warehouse.html">Quản lí danh sách kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i class="ri-archive-line"></i>
                                         <span>Báo Cáo Giao Hàng</span>
@@ -642,17 +654,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="container-fluid">
-                <!-- footer start-->
-                <footer class="footer">
-                    <div class="row">
-                        <div class="col-md-12 footer-copyright text-center">
-                            <p class="mb-0">Bản quyền 2022 © Fastkart theme by pixelstrap</p>
-                        </div>
-                    </div>
-                </footer>
-            </div>
         </div>
     </div>
     <!-- page-wrapper End-->
@@ -752,7 +753,7 @@
                     <td>${product.rank}</td>
                     <td>${product.productName}</td>
                     <td>
-                        <img src="../images/product/${product.productId}.jpg" 
+                        <img src="${product.imageUrl}"
                              alt="${product.productName}">
                     </td>
                     <td>${formatCurrency(product.totalRevenue)}</td>

@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "Manager")
 public class Manager extends Account {
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "Name", columnDefinition = "NVARCHAR(50)", nullable = false)
     private String name;
 
 }

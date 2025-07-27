@@ -18,7 +18,7 @@ public class Message {
     @Column(name = "MessageID")
     private int id;
 
-    @Column(name = "Content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "Content", nullable = false, columnDefinition = "NVARCHAR(200)")
     private String content;
 
     @Column(name = "CreatedAt", nullable = false)

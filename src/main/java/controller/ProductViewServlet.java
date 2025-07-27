@@ -72,7 +72,7 @@ public class ProductViewServlet extends HttpServlet {
             categoryId = Integer.parseInt(categoryIdParam);
         }
 
-        int page = 0, size = 100;
+        int page = 0, size = 1000;
         try { if (pageParam  != null) page = Math.max(0, Integer.parseInt(pageParam)); } catch(Exception ignored){}
         try { if (sizeParam  != null) size = Math.max(1, Integer.parseInt(sizeParam)); } catch(Exception ignored){}
 

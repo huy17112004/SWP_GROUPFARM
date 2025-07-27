@@ -36,6 +36,6 @@ public class DealRequest {
     @Column(name = "RespondedAt")
     private LocalDateTime respondedAt;
 
-    @Column(name = "Message", columnDefinition = "TEXT")
+    @Column(name = "Message", columnDefinition = "NVARCHAR(50)")
     private String message;
 }

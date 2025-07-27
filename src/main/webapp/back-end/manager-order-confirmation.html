@@ -49,6 +49,10 @@
     
     <!-- Custom CSS for order details -->
     <style>
+        /* Ẩn thanh search của DataTables */
+        .dataTables_filter {
+            display: none !important;
+        }
         .order-item-detail {
             background-color: #f8f9fa;
             transition: all 0.3s ease;
@@ -206,6 +210,17 @@
                                         </li>
                                     </ul>
                                 </li>
+                                <li class="sidebar-list">
+                                    <a class="linear-icon-link sidebar-link sidebar-title" href="javascript:void(0)">
+                                        <i class="ri-store-3-line"></i>
+                                        <span>Kho</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <a href="view-warehouse.html">Quản lí danh sách kho</a>
+                                        </li>
+                                    </ul>
+                                </li>
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title" href="javascript:void(0)">
@@ -344,15 +359,6 @@
             <!-- Main Content End-->
 
             <!-- footer start-->
-            <div class="container-fluid">
-                <footer class="footer">
-                    <div class="row">
-                        <div class="col-md-12 footer-copyright text-center">
-                            <p class="mb-0">Copyright 2022 © Fastkart theme by pixelstrap</p>
-                        </div>
-                    </div>
-                </footer>
-            </div>
             <!-- footer end-->
         </div>
     </div>

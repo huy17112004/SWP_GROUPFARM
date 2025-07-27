@@ -563,10 +563,10 @@
             $('#totalPrice').text(formatVND(totalAmount));
             
             // Update seller info (placeholder for now)
-            $('#sellerName').text('Cửa hàng ABC');
-            $('#sellerEmail').text('seller@example.com');
-            $('#sellerPhone').text('0123456789');
-            $('#sellerAddress').text('123 Đường ABC, Quận 1, TP.HCM');
+            $('#sellerName').text('Cửa hàng Fastkart');
+            $('#sellerEmail').text('fastkart@gmail.com');
+            $('#sellerPhone').text('0397529331');
+            $('#sellerAddress').text('Hòa lạc, Đại học FPT');
             
             // Show/hide sections based on status
             if (currentOrder.status === 'NEGOTIATING') {
@@ -686,9 +686,6 @@
                 const productHtml = `
                     <div class="product-item">
                         <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <img src="${itemImage}" class="product-image" alt="${itemName}">
-                            </div>
                             <div class="col-md-4">
                                 <h6 class="mb-1">${itemName}</h6>
                                 <p class="text-muted mb-0">Số lượng: ${itemQuantity}</p>
@@ -1009,11 +1006,61 @@
     </script>
 
     <script>
+
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-placeholder').innerHTML = data;
                 feather.replace();
+
+                // Đặt script xử lý đăng nhập/đăng xuất ở đây!
+                fetch('/api/auth/user')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.loggedIn) {
+                            document.getElementById('user-not-logged-in').classList.add('d-none');
+                            document.getElementById('user-logged-in').classList.remove('d-none');
+                            // Đổi icon thành filled
+                            document.getElementById('user-icon-area').innerHTML = '<i data-feather="user-check"></i>';
+                            // Cập nhật tên người dùng
+                            document.getElementById('user-greeting').textContent = `Xin chào,`;
+                            document.getElementById('user-account-label').textContent = `${data.name}`;
+                        } else {
+                            document.getElementById('user-not-logged-in').classList.remove('d-none');
+                            document.getElementById('user-logged-in').classList.add('d-none');
+                            // Đổi lại icon outline
+                            document.getElementById('user-icon-area').innerHTML = '<i data-feather="user"></i>';
+                            // Cập nhật lại về mặc định
+                            document.getElementById('user-greeting').textContent = "Gia nhập";
+                            document.getElementById('user-account-label').textContent = "với chúng tôi";
+                            feather.replace();
+                        }
+                    });
+                document.addEventListener('click', function(e) {
+                    if (e.target && e.target.id === 'logout-btn') {
+                        e.preventDefault();
+                        fetch('/logout', { method: 'GET' })
+                            .then(() => window.location.href = 'login.html');
+                    }
+                });
+
+                // Thêm logic search cho thanh search trong header
+                (function() {
+                    // Tìm input và button trong header
+                    const input = document.querySelector('.middle-box input[type="search"]');
+                    const btn = document.getElementById('button-addon2');
+                    if (!input || !btn) return;
+                    function doSearch() {
+                        const value = input.value.trim();
+                        if (value) {
+                            window.location.href = `shop-category.html?name=${encodeURIComponent(value)}`;
+                        }
+                    }
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') doSearch();
+                    });
+                    btn.addEventListener('click', doSearch);
+                })();
             });
         fetch('footer.html')
             .then(response => response.text())
@@ -1021,6 +1068,7 @@
                 document.getElementById('footer-placeholder').innerHTML = data;
                 feather.replace();
             });
+
     </script>
 </body>
 

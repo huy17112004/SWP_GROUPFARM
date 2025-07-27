@@ -36,8 +36,8 @@ export function renderProducts(containerId, products) {
       <div class="product-box product-white-bg wow fadeIn">
         <div class="product-image">
           <a href="product-image.html?productId=${prod.productId}">
-            <img src="../assets/images/bg.png" alt="${prod.productName}"
-                 class="img-fluid blur-up lazyload">
+            <img src="${prod.imageUrl}" alt="${prod.productName}"
+     class="img-fluid blur-up lazyload">
           </a>
           <ul class="product-option">
             <!-- các icon View/Compare/Wishlist -->
@@ -110,7 +110,7 @@ export function renderProductsInShopCategory(productsOrObj) {
                                 <div class="product-header">
                                     <div class="product-image">
                                         <a href="product-image.html?productId=${prod.productId}">
-                                            <img src="../assets/images/cake/product/2.png"
+                                            <img src="${prod.imageUrl}"
                                                 class="img-fluid blur-up lazyload" alt="">
                                         </a>
 

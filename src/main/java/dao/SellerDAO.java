@@ -1,14 +1,11 @@
 package dao;
 
-import entity.Admin;
 import entity.Seller;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SellerDAO extends GenericDAO<Seller> {
     public SellerDAO(EntityManager em) {

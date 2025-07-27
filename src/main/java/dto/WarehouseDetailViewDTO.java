@@ -14,7 +14,6 @@ public class WarehouseDetailViewDTO {
     private String warehouseName;
     private String warehousePhone;
     private String fullAddress;
-    private String managerName;
     private String staffName;
 }
 

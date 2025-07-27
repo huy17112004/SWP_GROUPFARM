@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "Seller")
 public class Seller extends Account {
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "Name", columnDefinition = "NVARCHAR(50)", nullable = false)
     private String name;
 
     @Column(name = "Email", nullable = false, length = 100)

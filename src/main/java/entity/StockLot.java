@@ -37,9 +37,6 @@ public class StockLot {
     @JoinColumn(name = "WarehouseID", nullable = false)
     private Warehouse warehouse;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockLot")
-    private List<ExportOrderItem> exportOrderItems;
-
     @OneToMany(mappedBy = "stockLot", fetch = FetchType.LAZY)
     private List<OrderItemAllocation>  orderItemAllocations;
 }
