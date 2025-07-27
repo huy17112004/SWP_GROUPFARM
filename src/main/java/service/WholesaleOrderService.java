@@ -269,9 +269,12 @@ public class WholesaleOrderService {
             List<DealRequest> pendingDeals = new ArrayList<>();
             for (WholesaleOrderItem item : order.getItems()) {
                 DealRequest itemDeal = dealDao.findLastByOrderItemId(item.getId());
-                if ("PENDING".equals(itemDeal.getStatus())) {
-                    pendingDeals.add(itemDeal);
+                if (itemDeal != null) {
+                    if ("PENDING".equals(itemDeal.getStatus())) {
+                        pendingDeals.add(itemDeal);
+                    }
                 }
+
             }
 
             if (!pendingDeals.isEmpty()) {

@@ -1006,11 +1006,61 @@
     </script>
 
     <script>
+
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header-placeholder').innerHTML = data;
                 feather.replace();
+
+                // Đặt script xử lý đăng nhập/đăng xuất ở đây!
+                fetch('/api/auth/user')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.loggedIn) {
+                            document.getElementById('user-not-logged-in').classList.add('d-none');
+                            document.getElementById('user-logged-in').classList.remove('d-none');
+                            // Đổi icon thành filled
+                            document.getElementById('user-icon-area').innerHTML = '<i data-feather="user-check"></i>';
+                            // Cập nhật tên người dùng
+                            document.getElementById('user-greeting').textContent = `Xin chào,`;
+                            document.getElementById('user-account-label').textContent = `${data.name}`;
+                        } else {
+                            document.getElementById('user-not-logged-in').classList.remove('d-none');
+                            document.getElementById('user-logged-in').classList.add('d-none');
+                            // Đổi lại icon outline
+                            document.getElementById('user-icon-area').innerHTML = '<i data-feather="user"></i>';
+                            // Cập nhật lại về mặc định
+                            document.getElementById('user-greeting').textContent = "Gia nhập";
+                            document.getElementById('user-account-label').textContent = "với chúng tôi";
+                            feather.replace();
+                        }
+                    });
+                document.addEventListener('click', function(e) {
+                    if (e.target && e.target.id === 'logout-btn') {
+                        e.preventDefault();
+                        fetch('/logout', { method: 'GET' })
+                            .then(() => window.location.href = 'login.html');
+                    }
+                });
+
+                // Thêm logic search cho thanh search trong header
+                (function() {
+                    // Tìm input và button trong header
+                    const input = document.querySelector('.middle-box input[type="search"]');
+                    const btn = document.getElementById('button-addon2');
+                    if (!input || !btn) return;
+                    function doSearch() {
+                        const value = input.value.trim();
+                        if (value) {
+                            window.location.href = `shop-category.html?name=${encodeURIComponent(value)}`;
+                        }
+                    }
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') doSearch();
+                    });
+                    btn.addEventListener('click', doSearch);
+                })();
             });
         fetch('footer.html')
             .then(response => response.text())
@@ -1018,6 +1068,7 @@
                 document.getElementById('footer-placeholder').innerHTML = data;
                 feather.replace();
             });
+
     </script>
 </body>
 
